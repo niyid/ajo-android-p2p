@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main Dark Orange Theme -->
+    <style name="Theme.Ajo" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Primary colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/text_inverse</item>
+        
+        <!-- Secondary colors -->
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent_variant</item>
+        <item name="colorOnSecondary">@color/text_inverse</item>
+        
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        
+        <!-- Status bar and navigation bar -->
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
+        <!-- Error colors -->
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/white</item>
+        
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorTertiary">@color/text_tertiary</item>
+        
+        <!-- Widget colors -->
+        <item name="colorControlNormal">@color/icon_tint</item>
+        <item name="colorControlActivated">@color/primary</item>
+        <item name="colorControlHighlight">@color/primary_light</item>
+        
+        <!-- Card style -->
+        <item name="cardViewStyle">@style/Widget.Ajo.CardView</item>
+    </style>
+    
+    <!-- Splash Screen Theme -->
+    <style name="Theme.Ajo.Splash" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="colorPrimary">@color/primary</item>
+    </style>
+    
+    <!-- Card View Style -->
+    <style name="Widget.Ajo.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">12dp</item>
+    </style>
+    
+    <!-- Button Styles -->
+    <style name="Widget.Ajo.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/button_primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+    
+    <style name="Widget.Ajo.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/accent</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+    
+    <style name="Widget.Ajo.Button.Danger" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/button_danger</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+    
+    <!-- Text Styles -->
+    <style name="TextAppearance.Ajo.Headline1" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="TextAppearance.Ajo.Headline2" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="TextAppearance.Ajo.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    
+    <style name="TextAppearance.Ajo.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    
+    <!-- Status Badge Styles -->
+    <style name="TextAppearance.Ajo.Status.Verified">
+        <item name="android:textColor">@color/status_verified</item>
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="TextAppearance.Ajo.Status.NotVerified">
+        <item name="android:textColor">@color/status_not_verified</item>
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <!-- Balance Display Style -->
+    <style name="TextAppearance.Ajo.Balance">
+        <item name="android:textColor">@color/wallet_balance</item>
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <!-- Statistic Value Style -->
+    <style name="TextAppearance.Ajo.StatValue">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">sans-serif-bold</item>
+    </style>
+</resources>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- ROSCA Icon -->
+        <TextView
+            android:id="@+id/textViewRoscaIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/circle_background"
+            android:gravity="center"
+            android:text="🏦"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- ROSCA Name -->
+        <TextView
+            android:id="@+id/textViewRoscaItemName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="ROSCA Name"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/textViewRoscaItemBalance"
+            app:layout_constraintStart_toEndOf="@id/textViewRoscaIcon"
+            app:layout_constraintTop_toTopOf="@id/textViewRoscaIcon"
+            tools:text="Family Savings Group" />
+
+        <!-- ROSCA Status -->
+        <TextView
+            android:id="@+id/textViewRoscaItemStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:text="Status: ACTIVE"
+            android:textColor="@color/success"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textViewRoscaIcon"
+            app:layout_constraintTop_toBottomOf="@id/textViewRoscaItemName"
+            tools:text="Status: ACTIVE" />
+
+        <!-- Round Info -->
+        <TextView
+            android:id="@+id/textViewRoscaItemRound"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:text="Round 1/5"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textViewRoscaIcon"
+            app:layout_constraintTop_toBottomOf="@id/textViewRoscaItemStatus"
+            tools:text="Round 3/5 • 4/5 members" />
+
+        <!-- Balance -->
+        <TextView
+            android:id="@+id/textViewRoscaItemBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00 XMR"
+            android:textColor="@color/wallet_balance"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/textViewRoscaIcon"
+            tools:text="5.00 XMR" />
+
+        <!-- Chevron Arrow -->
+        <ImageView
+            android:id="@+id/imageViewChevron"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="View Details"
+            android:src="@android:drawable/ic_menu_more"
+            android:tint="@color/icon_tint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewRoscaItemBalance" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

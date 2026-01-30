@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Loading Indicator -->
+                <ProgressBar
+                    android:id="@+id/progressBarLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@color/primary"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <!-- Wallet Error Layout -->
+                <LinearLayout
+                    android:id="@+id/layoutWalletError"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:contentDescription="Wallet Error"
+                        android:src="@android:drawable/stat_notify_error"
+                        android:tint="@color/error" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Wallet Error"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:text="Failed to initialize wallet.\nPlease try again."
+                        android:textColor="@color/text_secondary" />
+
+                </LinearLayout>
+
+                <!-- Wallet Content Layout -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutWalletContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Balance Card - Hero Element -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardBalance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/surface"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="@color/divider_strong"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="24dp">
+
+                            <!-- Balance Label -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Balance"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="14sp"
+                                android:textAllCaps="true"
+                                android:letterSpacing="0.1" />
+
+                            <!-- XMR Balance - Prominent -->
+                            <TextView
+                                android:id="@+id/textViewBalance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="0.000000000000 XMR"
+                                android:textColor="@color/wallet_balance"
+                                android:textSize="32sp"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="1.234567890000 XMR" />
+
+                            <!-- USD Equivalent -->
+                            <TextView
+                                android:id="@+id/textViewBalanceUsd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="≈ $0.00 USD"
+                                android:textColor="@color/text_tertiary"
+                                android:textSize="16sp"
+                                tools:text="≈ $185.00 USD" />
+
+                            <!-- Divider -->
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="12dp"
+                                android:background="@color/divider" />
+
+                            <!-- Unlocked Balance -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Unlocked"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/textViewUnlockedBalance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0.000000000000 XMR"
+                                    android:textColor="@color/success"
+                                    android:textSize="14sp"
+                                    android:fontFamily="sans-serif-medium"
+                                    tools:text="1.234567890000 XMR" />
+                            </LinearLayout>
+
+                            <!-- Locked Balance (optional) -->
+                            <LinearLayout
+                                android:id="@+id/lockedBalanceLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                tools:visibility="visible">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Locked"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/textViewLockedBalance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0.000000000000 XMR"
+                                    android:textColor="@color/warning"
+                                    android:textSize="14sp"
+                                    android:fontFamily="sans-serif-medium"
+                                    tools:text="0.100000000000 XMR" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Sync Status Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/syncStatusCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:cardBackgroundColor="@color/surface"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardBalance">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <!-- Sync Status Text -->
+                            <TextView
+                                android:id="@+id/textViewSyncStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Syncing..."
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="Synced • Height: 2845123" />
+
+                            <!-- Sync Progress Bar -->
+                            <ProgressBar
+                                android:id="@+id/progressBarSync"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="8dp"
+                                android:layout_marginTop="8dp"
+                                android:max="100"
+                                android:progress="0"
+                                android:progressTint="@color/primary"
+                                android:progressBackgroundTint="@color/divider"
+                                tools:progress="75" />
+
+                            <!-- Last Sync Time -->
+                            <TextView
+                                android:id="@+id/textViewLastSync"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Last sync: Never"
+                                android:textColor="@color/text_tertiary"
+                                android:textSize="12sp"
+                                tools:text="Last sync: Nov 12, 2025 14:30" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Action Buttons -->
+                    <LinearLayout
+                        android:id="@+id/actionButtonsLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/syncStatusCard">
+
+                        <!-- Send Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonSend"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="0dp"
+                            android:layout_height="56dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:text="Send"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/primary"
+                            app:cornerRadius="12dp"
+                            app:icon="@android:drawable/ic_menu_send"
+                            app:iconTint="@color/white" />
+
+                        <!-- Receive Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonReceive"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="0dp"
+                            android:layout_height="56dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="Receive"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/accent"
+                            app:cornerRadius="12dp"
+                            app:icon="@android:drawable/ic_menu_revert"
+                            app:iconTint="@color/white" />
+
+                    </LinearLayout>
+
+                    <!-- Exchange Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonExchange"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Exchange"
+                        android:textColor="@color/secondary"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_rotate"
+                        app:iconTint="@color/secondary"
+                        app:strokeColor="@color/secondary"
+                        app:strokeWidth="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/actionButtonsLayout" />
+
+                    <!-- Address Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/addressCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:cardBackgroundColor="@color/surface"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/buttonExchange">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <!-- Address Label -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Your Monero Address"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <!-- Address (Short Format) -->
+                            <TextView
+                                android:id="@+id/textViewAddressShort"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:background="@color/background_secondary"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:padding="12dp"
+                                android:text="Loading..."
+                                android:textColor="@color/accent"
+                                android:textIsSelectable="true"
+                                android:textSize="14sp"
+                                android:fontFamily="monospace"
+                                tools:text="4AdUndXHHZ...gu4BEaqSHdC" />
+
+                            <!-- Full Address (Hidden by default) -->
+                            <TextView
+                                android:id="@+id/textViewAddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:background="@color/background_secondary"
+                                android:padding="12dp"
+                                android:text="Loading..."
+                                android:textColor="@color/text_secondary"
+                                android:textIsSelectable="true"
+                                android:textSize="10sp"
+                                android:fontFamily="monospace"
+                                android:visibility="gone"
+                                tools:text="4AdUndXHHZmPAojLLmq2LdMGqJaQmZPnQGmSfmRTrfMg7DwMwkGGMUACFSMHhsDhmxfxPCZVbWqNqhqvFqxJxgbYGuXvSWhFf21h2WBmL9gu4BEaqSHdC"
+                                tools:visibility="visible" />
+
+                            <!-- Copy Button -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonCopyAddress"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="8dp"
+                                android:text="Copy Address"
+                                android:textColor="@color/primary"
+                                app:icon="@android:drawable/ic_menu_share"
+                                app:iconTint="@color/primary" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Transaction History Section -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/transactionCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardBackgroundColor="@color/surface"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/addressCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:contentDescription="Transactions"
+                                android:src="@android:drawable/ic_menu_recent_history"
+                                android:tint="@color/icon_tint" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_weight="1"
+                                android:text="Transaction History"
+                                android:textColor="@color/text_primary"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/textViewTransactionCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:text="0 Transactions"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="14sp"
+                                tools:text="5 Transactions" />
+
+                            <ImageView
+                                android:id="@+id/buttonViewTransactions"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:contentDescription="View"
+                                android:src="@android:drawable/ic_menu_more"
+                                android:tint="@color/icon_tint" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- Floating Action Button for Refresh -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="Refresh Wallet"
+        app:backgroundTint="@color/secondary"
+        app:tint="@color/text_inverse"
+        app:srcCompat="@android:drawable/ic_popup_sync" />
+
+    <!-- Login Layout Overlay -->
+    <LinearLayout
+        android:id="@+id/loginLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:visibility="gone">
+
+        <!-- Login Icon -->
+        <TextView
+            android:id="@+id/loginIcon"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/circle_background"
+            android:gravity="center"
+            android:text="💳"
+            android:textSize="60sp" />
+
+        <!-- Login Title -->
+        <TextView
+            android:id="@+id/loginTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Sign in to wallet"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Login Message -->
+        <TextView
+            android:id="@+id/loginMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:paddingHorizontal="24dp"
+            android:text="Log in to access your wallet"
+            android:textAlignment="center"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp" />
+
+        <!-- Google Sign-In Button -->
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btnGoogleSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Optional: Progress indicator for login -->
+        <ProgressBar
+            android:id="@+id/loginProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:indeterminateTint="@color/primary"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

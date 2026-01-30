@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base Material colors (keep for compatibility) -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Dark Orange Theme - Primary Palette -->
+    <color name="background">#FF1A0F0A</color> <!-- Very dark warm brown/black -->
+    <color name="background_primary">#FF1A0F0A</color> <!-- Alias for consistency -->
+    <color name="background_secondary">#FF2D1810</color> <!-- Slightly lighter dark brown -->
+    <color name="surface">#FF3D2418</color> <!-- Card/surface dark brown -->
+    <color name="surface_elevated">#FF4D2E1D</color> <!-- Elevated surfaces -->
+    
+    <!-- Primary - Deep Orange/Burnt Orange -->
+    <color name="primary">#FFFF6B35</color> <!-- Vibrant burnt orange -->
+    <color name="primary_variant">#FFE85D2A</color> <!-- Darker orange -->
+    <color name="primary_light">#FFFF8859</color> <!-- Lighter orange for highlights -->
+    
+    <!-- Accent - Complementary Teal/Cyan -->
+    <color name="accent">#FF35D9FF</color> <!-- Bright cyan (complementary to orange) -->
+    <color name="accent_variant">#FF2AB8D9</color> <!-- Deeper cyan -->
+    <color name="accent_light">#FF5CE3FF</color> <!-- Light cyan -->
+    
+    <!-- Secondary - Warm Gold -->
+    <color name="secondary">#FFFFA726</color> <!-- Warm gold/amber -->
+    <color name="secondary_variant">#FFFB8C00</color> <!-- Deep amber -->
+    
+    <!-- Text Colors (optimized for dark background) -->
+    <color name="text_primary">#FFFAF8F6</color> <!-- Off-white, warm tint -->
+    <color name="text_secondary">#FFBFB5AD</color> <!-- Warm gray -->
+    <color name="text_tertiary">#FF8C7E73</color> <!-- Muted warm gray -->
+    <color name="text_inverse">#FF1A0F0A</color> <!-- Dark text for light backgrounds -->
+    <color name="text_on_primary">#FFFFFFFF</color> <!-- White text on orange buttons -->
+    <color name="text_on_accent">#FF1A0F0A</color> <!-- Dark text on cyan buttons -->
+    <color name="text_on_secondary">#FF1A0F0A</color> <!-- Dark text on gold buttons -->
+    
+    <!-- Status Colors (redesigned for dark orange theme) -->
+    <color name="status_verified">#FF4CAF50</color> <!-- Keep green for verified -->
+    <color name="status_not_verified">#FFFFEB3B</color> <!-- Bright yellow instead of orange -->
+    <color name="status_forming">#FFFFA726</color> <!-- Warm amber -->
+    <color name="status_active">#FF66BB6A</color> <!-- Soft green -->
+    <color name="status_completed">#FF42A5F5</color> <!-- Blue -->
+    <color name="status_paused">#FFFFCA28</color> <!-- Yellow -->
+    <color name="status_error">#FFEF5350</color> <!-- Soft red -->
+    
+    <!-- UI Element Colors -->
+    <color name="icon_tint">#FFBFB5AD</color> <!-- Warm gray for icons -->
+    <color name="icon_tint_active">#FFFF6B35</color> <!-- Orange for active icons -->
+    <color name="divider">#FF4D2E1D</color> <!-- Subtle warm divider -->
+    <color name="divider_strong">#FF6B4832</color> <!-- More visible divider -->
+    <color name="border">#FF6B4832</color> <!-- Border color for cards and inputs -->
+    
+    <!-- Wallet/Money Colors -->
+    <color name="wallet_balance">#FF35D9FF</color> <!-- Cyan for XMR balance -->
+    <color name="contribution_amount">#FFFFA726</color> <!-- Gold for contributions -->
+    
+    <!-- Semantic Colors -->
+    <color name="success">#FF66BB6A</color>
+    <color name="warning">#FFFFCA28</color>
+    <color name="error">#FFEF5350</color>
+    <color name="info">#FF42A5F5</color>
+    
+    <!-- Button Colors -->
+    <color name="button_primary">#FFFF6B35</color> <!-- Orange -->
+    <color name="button_primary_pressed">#FFE85D2A</color>
+    <color name="button_secondary">#FF35D9FF</color> <!-- Cyan -->
+    <color name="button_secondary_pressed">#FF2AB8D9</color>
+    <color name="button_danger">#FFEF5350</color> <!-- Red for logout -->
+    <color name="button_danger_pressed">#FFE53935</color>
+    
+    <!-- Legacy mappings for backwards compatibility -->
+    <color name="ajo_primary">#FFFF6B35</color>
+    <color name="ajo_accent">#FF35D9FF</color>
+    <color name="ajo_background">#FF1A0F0A</color>
+    <color name="ajo_surface">#FF3D2418</color>
+    <color name="ajo_error">#FFEF5350</color>
+    
+    <!-- Overlay Colors -->
+    <color name="overlay_light">#1AFFFFFF</color> <!-- 10% white -->
+    <color name="overlay_medium">#33FFFFFF</color> <!-- 20% white -->
+    <color name="overlay_dark">#1A000000</color> <!-- 10% black -->
+    
+    <!-- Gradient Colors (for advanced UI) -->
+    <color name="gradient_start">#FFFF6B35</color> <!-- Orange -->
+    <color name="gradient_end">#FFFFA726</color> <!-- Gold -->
+    
+    <!-- Info card colors -->
+    <color name="info_background">#E3F2FD</color>
+    <color name="info_text">#1976D2</color>
+
+    <!-- Badge background -->
+    <color name="badge_primary">#1976D2</color>
+    
+</resources>

@@ -1,0 +1,52 @@
+# Dependencies to Add to build.gradle.kts
+
+## Add to plugins block:
+```kotlin
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"  // ← ADD THIS LINE
+}
+```
+
+## Add to dependencies block:
+```kotlin
+dependencies {
+    // ... existing dependencies ...
+    
+    // ========== P2P SYNC DEPENDENCIES ==========
+    
+    // Ed25519 Cryptography for message signing
+    implementation("net.i2p.crypto:eddsa:0.3.0")
+    
+    // JSON Serialization for sync messages
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    
+    // OPTIONAL: I2P Networking (can add later in Phase 3)
+    // implementation("net.i2p.android:client:0.9.50")
+    // implementation("net.i2p.android:helper:0.9.50")
+    
+    // OPTIONAL: QR Code generation for referrals (if not already using)
+    // implementation("com.google.zxing:core:3.5.1")
+    // implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+}
+```
+
+## Update AndroidManifest.xml (if using I2P later):
+```xml
+<manifest>
+    <!-- Add permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- Optional: for background sync -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+</manifest>
+```
+
+## Sync Gradle:
+```bash
+./gradlew clean
+./gradlew build
+```

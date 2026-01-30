@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "576228553366",
+    "project_id": "ajo-android-9e49e",
+    "storage_bucket": "ajo-android-9e49e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576228553366:android:e6f3a2c5a34880dc8bc8b7",
+        "android_client_info": {
+          "package_name": "com.techducat.ajo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "576228553366-s7dn4g61a1rdvlt52un7cpf9j5e70ut1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techducat.ajo",
+            "certificate_hash": "5a936a5c238a6196cacdb491f98ede6f8759d51b"
+          }
+        },
+        {
+          "client_id": "576228553366-6r1cnaumhv2jkd4cvs0efndmgdffubne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ62WW_BTBUavHwMvCUCe-0kzpdAHLa7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "576228553366-6r1cnaumhv2jkd4cvs0efndmgdffubne.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

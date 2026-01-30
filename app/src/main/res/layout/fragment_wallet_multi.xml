@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <!-- ============================================ -->
+    <!-- Main Wallet Content (hidden when not logged in) -->
+    <!-- ============================================ -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Loading Indicator -->
+                <ProgressBar
+                    android:id="@+id/progressBarLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateTint="@color/primary"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <!-- Wallet Content Layout -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutWalletContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Tab Layout for Wallet Selection -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/tabCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/surface"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="@color/divider_strong"
+                        app:strokeWidth="1dp">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tabLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            app:tabIndicatorColor="@color/primary"
+                            app:tabIndicatorHeight="3dp"
+                            app:tabMode="fixed"
+                            app:tabSelectedTextColor="@color/primary"
+                            app:tabTextColor="@color/text_secondary" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Personal Wallet Layout -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutPersonalWallet"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tabCard">
+
+                        <!-- Balance Card -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardPersonalBalance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/surface"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:strokeColor="@color/divider_strong"
+                            app:strokeWidth="1dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="24dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:letterSpacing="0.1"
+                                    android:text="@string/personal_balance"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/textViewPersonalBalance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/zero_xmr"
+                                    android:textColor="@color/wallet_balance"
+                                    android:textSize="32sp"
+                                    android:textStyle="bold"
+                                    tools:text="1.234567890000 XMR" />
+
+                                <TextView
+                                    android:id="@+id/textViewPersonalBalanceUsd"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/zero_usd"
+                                    android:textColor="@color/text_tertiary"
+                                    android:textSize="16sp"
+                                    tools:text="≈ $185.00 USD" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginBottom="12dp"
+                                    android:background="@color/divider" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="@string/unlocked"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:id="@+id/textViewPersonalUnlockedBalance"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:text="@string/zero_xmr"
+                                        android:textColor="@color/success"
+                                        android:textSize="14sp"
+                                        tools:text="1.234567890000 XMR" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/personalLockedBalanceLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:orientation="horizontal"
+                                    android:visibility="gone">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="@string/locked"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:id="@+id/textViewPersonalLockedBalance"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:text="@string/zero_xmr"
+                                        android:textColor="@color/warning"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Sync Status Card -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/personalSyncStatusCard"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:cardBackgroundColor="@color/surface"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="2dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cardPersonalBalance">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <TextView
+                                    android:id="@+id/textViewSyncStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/syncing"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp" />
+
+                                <ProgressBar
+                                    android:id="@+id/progressBarSync"
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:max="100"
+                                    android:progress="0"
+                                    android:progressBackgroundTint="@color/divider"
+                                    android:progressTint="@color/primary" />
+
+                                <TextView
+                                    android:id="@+id/textViewLastSync"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/last_sync_never"
+                                    android:textColor="@color/text_tertiary"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Action Buttons -->
+                        <LinearLayout
+                            android:id="@+id/personalActionButtonsLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/personalSyncStatusCard">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonSendFromPersonal"
+                                style="@style/Widget.Material3.Button"
+                                android:layout_width="0dp"
+                                android:layout_height="56dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:text="@string/WalletFragment_send"
+                                android:textColor="@color/white"
+                                app:backgroundTint="@color/primary"
+                                app:cornerRadius="12dp"
+                                app:icon="@android:drawable/ic_menu_send"
+                                app:iconTint="@color/white" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonReceiveToPersonal"
+                                style="@style/Widget.Material3.Button"
+                                android:layout_width="0dp"
+                                android:layout_height="56dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:text="@string/WalletFragment_receive"
+                                android:textColor="@color/white"
+                                app:backgroundTint="@color/accent"
+                                app:cornerRadius="12dp"
+                                app:icon="@android:drawable/ic_menu_revert"
+                                app:iconTint="@color/white" />
+
+                        </LinearLayout>
+
+                        <!-- Address Card -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/personalAddressCard"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:cardBackgroundColor="@color/surface"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="2dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/personalActionButtonsLayout">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/your_monero_address_1"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/textViewPersonalAddressShort"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/background_secondary"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:fontFamily="monospace"
+                                    android:padding="12dp"
+                                    android:text="@string/WalletFragment_loading"
+                                    android:textColor="@color/accent"
+                                    android:textIsSelectable="true"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/textViewPersonalAddress"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/background_secondary"
+                                    android:fontFamily="monospace"
+                                    android:padding="12dp"
+                                    android:text="@string/WalletFragment_loading"
+                                    android:textColor="@color/text_secondary"
+                                    android:textIsSelectable="true"
+                                    android:textSize="10sp"
+                                    android:visibility="gone" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/buttonCopyPersonalAddress"
+                                    style="@style/Widget.Material3.Button.TextButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/WalletFragment_copy_address"
+                                    android:textColor="@color/primary"
+                                    app:icon="@android:drawable/ic_menu_share"
+                                    app:iconTint="@color/primary" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Transaction History Section -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/personalTransactionCard"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="80dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            app:cardBackgroundColor="@color/surface"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="2dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/personalAddressCard">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:padding="16dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:contentDescription="@string/transactions"
+                                    android:src="@android:drawable/ic_menu_recent_history"
+                                    android:tint="@color/icon_tint" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/transaction_history_title"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/textViewTransactionCount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:text="@string/default_transaction_count"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="14sp" />
+
+                                <ImageView
+                                    android:id="@+id/buttonViewPersonalTransactions"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:contentDescription="@string/cd_view"
+                                    android:src="@android:drawable/ic_menu_more"
+                                    android:tint="@color/icon_tint" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- ROSCA Wallets Layout -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutRoscaWallets"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tabCard">
+
+                        <!-- ROSCA List Card -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/roscaListCard"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/surface"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="4dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:strokeColor="@color/divider_strong"
+                            app:strokeWidth="1dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/roscaEmptyState"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="48dp"
+                                    android:visibility="gone">
+
+                                    <ImageView
+                                        android:layout_width="64dp"
+                                        android:layout_height="64dp"
+                                        android:contentDescription="@string/cd_no_roscas"
+                                        android:src="@android:drawable/ic_menu_my_calendar"
+                                        android:tint="@color/text_tertiary" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:text="@string/no_rosca_wallets"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/textViewNoRoscaWallets"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:gravity="center"
+                                        android:text="@string/no_rosca_groups_joined"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="14sp" />
+
+                                </LinearLayout>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recyclerViewRoscaWallets"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="8dp"
+                                    tools:itemCount="3"
+                                    tools:listitem="@layout/item_rosca_wallet" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- ROSCA Wallet Detail -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layoutRoscaWalletDetail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="80dp"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/roscaListCard"
+                            tools:visibility="visible">
+
+                            <!-- ROSCA Info Card -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/roscaInfoCard"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@color/surface"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="8dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:strokeColor="@color/divider_strong"
+                                app:strokeWidth="1dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:padding="24dp">
+
+                                    <!-- ROSCA Name & Status -->
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/textViewRoscaName"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:text="@string/name_hint"
+                                            android:textColor="@color/text_primary"
+                                            android:textSize="20sp"
+                                            android:textStyle="bold"
+                                            tools:text="Family Savings Circle" />
+
+                                        <TextView
+                                            android:id="@+id/textViewRoscaStatus"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="@drawable/badge_background"
+                                            android:paddingHorizontal="12dp"
+                                            android:paddingVertical="4dp"
+                                            android:text="@string/active"
+                                            android:textColor="@color/success"
+                                            android:textSize="12sp"
+                                            android:textStyle="bold"
+                                            tools:text="ACTIVE" />
+
+                                    </LinearLayout>
+
+                                    <!-- Round Info -->
+                                    <TextView
+                                        android:id="@+id/textViewRoscaRound"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="@string/round_placeholder"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="14sp"
+                                        tools:text="Round 3 of 12" />
+
+                                    <!-- Divider -->
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_marginBottom="16dp"
+                                        android:background="@color/divider" />
+
+                                    <!-- Balance Label -->
+                                    <TextView
+                                        android:id="@+id/textViewRoscaBalanceLabel"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:letterSpacing="0.1"
+                                        android:text="@string/your_contribution_balance"
+                                        android:textAllCaps="true"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="14sp" />
+
+                                    <!-- XMR Balance - Prominent -->
+                                    <TextView
+                                        android:id="@+id/textViewRoscaBalance"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:text="@string/zero_xmr"
+                                        android:textColor="@color/wallet_balance"
+                                        android:textSize="32sp"
+                                        android:textStyle="bold"
+                                        tools:text="0.500000000000 XMR" />
+
+                                    <!-- USD Equivalent -->
+                                    <TextView
+                                        android:id="@+id/textViewRoscaBalanceUsd"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="@string/zero_usd"
+                                        android:textColor="@color/text_tertiary"
+                                        android:textSize="16sp"
+                                        tools:text="≈ $75.00 USD" />
+
+                                    <!-- Divider -->
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_marginBottom="12dp"
+                                        android:background="@color/divider" />
+
+                                    <!-- Unlocked Balance -->
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:text="@string/unlocked"
+                                            android:textColor="@color/text_secondary"
+                                            android:textSize="14sp" />
+
+                                        <TextView
+                                            android:id="@+id/textViewRoscaUnlockedBalance"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:text="@string/zero_xmr"
+                                            android:textColor="@color/success"
+                                            android:textSize="14sp"
+                                            tools:text="0.500000000000 XMR" />
+                                    </LinearLayout>
+
+                                    <!-- Info Note -->
+                                    <TextView
+                                        android:id="@+id/textViewRoscaBalanceNote"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="12dp"
+                                        android:text="This wallet is shared by all ROSCA members"
+                                        android:textColor="@color/text_tertiary"
+                                        android:textSize="12sp"
+                                        android:textStyle="italic"
+                                        android:visibility="gone"
+                                        tools:visibility="visible" />
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <!-- ROSCA Multisig Address Card -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/roscaAddressCard"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                app:cardBackgroundColor="@color/surface"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="2dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/roscaInfoCard">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <!-- Address Label -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/WalletFragment_rosca_multisig_address"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                    <!-- Address -->
+                                    <TextView
+                                        android:id="@+id/textViewRoscaMultisigAddress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:background="@color/background_secondary"
+                                        android:fontFamily="monospace"
+                                        android:padding="12dp"
+                                        android:text="@string/setting_up_multisig"
+                                        android:textColor="@color/text_secondary"
+                                        android:textIsSelectable="true"
+                                        android:textSize="10sp"
+                                        tools:text="4AdUndXHHZmPAojLLmq2LdMGqJaQmZPnQGmSfmRTrfMg7DwMwkGGMUACFSMHhsDhmxfxPCZVbWqNqhqvFqxJxgbYGuXvSWhFf21h2WBmL9gu4BEaqSHdC" />
+
+                                    <!-- Copy Button -->
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/buttonCopyRoscaAddress"
+                                        style="@style/Widget.Material3.Button.TextButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:layout_marginTop="8dp"
+                                        android:text="@string/WalletFragment_copy_address"
+                                        android:textColor="@color/primary"
+                                        app:icon="@android:drawable/ic_menu_share"
+                                        app:iconTint="@color/primary" />
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <!-- ROSCA Action Button -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonContributeToRosca"
+                                style="@style/Widget.Material3.Button"
+                                android:layout_width="0dp"
+                                android:layout_height="56dp"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/contribute_to_rosca"
+                                android:textColor="@color/white"
+                                app:backgroundTint="@color/primary"
+                                app:cornerRadius="12dp"
+                                app:icon="@android:drawable/ic_menu_add"
+                                app:iconTint="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/roscaAddressCard" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Exchange Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonExchange"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/exchange"
+                        android:textColor="@color/secondary"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_rotate"
+                        app:iconTint="@color/secondary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layoutPersonalWallet"
+                        app:strokeColor="@color/secondary"
+                        app:strokeWidth="2dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- ============================================ -->
+    <!-- FAB (always visible) -->
+    <!-- ============================================ -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/cd_refresh_wallet"
+        app:backgroundTint="@color/secondary"
+        app:srcCompat="@android:drawable/ic_popup_sync"
+        app:tint="@color/text_inverse" />
+
+    <!-- ============================================ -->
+    <!-- Login Layout Overlay (shown when not logged in) -->
+    <!-- ============================================ -->
+    <LinearLayout
+        android:id="@+id/loginLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/loginIcon"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/circle_background"
+            android:gravity="center"
+            android:text="💳"
+            android:textSize="60sp" />
+
+        <TextView
+            android:id="@+id/loginTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/sign_in_to_wallet"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/loginMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:paddingHorizontal="24dp"
+            android:text="@string/log_in_to_access_wallet"
+            android:textAlignment="center"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btnGoogleSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/loginProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:indeterminateTint="@color/primary"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

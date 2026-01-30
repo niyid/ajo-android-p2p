@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".AjoApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Ajo"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        
+        <!-- Splash Screen - Initial Launch -->
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Ajo.Splash"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Deep Link Support: ajo://join?ref=ABC123&rosca=xyz -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                
+                <data
+                    android:scheme="ajo"
+                    android:host="join" />
+            </intent-filter>
+
+            <!-- Web Link Support: https://ajo.app/join?ref=ABC123&rosca=xyz -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                
+                <data
+                    android:scheme="https"
+                    android:host="ajo.app"
+                    android:pathPrefix="/join" />
+            </intent-filter>
+
+            <!-- Alternative Web Link: https://www.ajo.app/join?ref=ABC123&rosca=xyz -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                
+                <data
+                    android:scheme="https"
+                    android:host="www.ajo.app"
+                    android:pathPrefix="/join" />
+            </intent-filter>
+
+            <!-- Alternative Deep Link: ajo://invite?ref=ABC123&rosca=xyz -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                
+                <data
+                    android:scheme="ajo"
+                    android:host="invite" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Main Activity -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+        
+        <!-- Create ROSCA Activity -->
+        <activity
+            android:name=".ui.create.CreateRoscaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".ui.MainActivity" />
+        
+        <!-- ROSCA Detail Activity -->
+        <activity
+            android:name=".ui.detail.RoscaDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+        
+        <!-- Invite Activity -->
+        <activity
+            android:name=".ui.invite.InviteActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".ui.MainActivity" />
+        
+        <!-- Group Contributions Activity -->
+        <activity
+            android:name=".ui.contributions.GroupContributionsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+        
+        <!-- Exchange Activity -->
+        <activity
+            android:name=".ui.exchange.ExchangeActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+        
+        <!-- Notification Service -->
+        <service
+            android:name=".service.NotificationService"
+            android:exported="false" />
+        
+        <!-- Sync Service -->
+        <service
+            android:name=".service.SyncService"
+            android:exported="false" />
+    </application>
+</manifest>
