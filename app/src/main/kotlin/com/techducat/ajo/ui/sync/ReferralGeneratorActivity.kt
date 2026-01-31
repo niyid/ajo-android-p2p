@@ -158,9 +158,7 @@ class ReferralGeneratorActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_SUBJECT, "Join my ROSCA")
-            putExtra(Intent.EXTRA_TEXT, "Join my ROSCA with this code:
-
-$generatedCode")
+            putExtra(Intent.EXTRA_TEXT, "Join my ROSCA with this code:\n\n$generatedCode")
         }
         startActivity(Intent.createChooser(intent, "Share Invitation"))
     }

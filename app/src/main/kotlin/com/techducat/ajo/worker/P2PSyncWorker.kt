@@ -10,18 +10,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
-/**
- * P2P Sync Worker - handles peer-to-peer synchronization
- * This runs alongside your existing DLT SyncWorker
- */
 class P2PSyncWorker(
     context: Context,
     params: WorkerParameters
 ) : CoroutineWorker(context, params) {
     
     private val transport: NetworkTransport by lazy {
-        // TODO: Replace with actual I2P/Tor transport
-        // For Phase 1, use mock transport
         MockTransport()
     }
     
@@ -33,22 +27,26 @@ class P2PSyncWorker(
         MessageHandler(applicationContext)
     }
     
+    // FIXED: Simple flags instead of lateinit checks
+    private var transportInitialized = false
+    private var listenerSet = false
+    
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
             // Initialize network
-            if (!::_transportInitialized.isInitialized) {
+            if (!transportInitialized) {
                 transport.initialize()
-                _transportInitialized = true
+                transportInitialized = true
             }
             
-            // Set up message listener (one-time)
-            if (!::_listenerSet.isInitialized) {
+            // Set up message listener
+            if (!listenerSet) {
                 transport.setReceiveListener { messageBytes ->
                     kotlinx.coroutines.runBlocking {
                         messageHandler.handleMessage(messageBytes)
                     }
                 }
-                _listenerSet = true
+                listenerSet = true
             }
             
             // Process outbound sync queue
@@ -74,12 +72,7 @@ class P2PSyncWorker(
     
     companion object {
         private const val WORK_NAME = "ajo_p2p_sync"
-        private var _transportInitialized = false
-        private var _listenerSet = false
         
-        /**
-         * Schedule periodic P2P sync (every 15 minutes)
-         */
         fun schedule(context: Context) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -103,17 +96,11 @@ class P2PSyncWorker(
             )
         }
         
-        /**
-         * Trigger immediate P2P sync
-         */
         fun syncNow(context: Context) {
             val syncRequest = OneTimeWorkRequestBuilder<P2PSyncWorker>().build()
             WorkManager.getInstance(context).enqueue(syncRequest)
         }
         
-        /**
-         * Cancel P2P sync
-         */
         fun cancel(context: Context) {
             WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
         }

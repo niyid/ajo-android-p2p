@@ -9,9 +9,6 @@ import com.techducat.ajo.core.crypto.KeyManagerImpl
 import com.techducat.ajo.data.local.AjoDatabase
 import kotlinx.coroutines.launch
 
-/**
- * COMPLETE Referral Generation UI
- */
 class ReferralActivity : AppCompatActivity() {
     
     private lateinit var db: AjoDatabase
@@ -79,8 +76,8 @@ class ReferralActivity : AppCompatActivity() {
                 privateKey = privateKey
             )
             
-            // Generate QR
-            val qr = QRCodeGenerator.generateQRCode(code)
+            // Generate QR - FIXED METHOD NAME
+            val qr = QRCodeGenerator.generate(code)
             
             findViewById<ImageView>(android.R.id.icon).setImageBitmap(qr)
             findViewById<TextView>(android.R.id.text1).text = code

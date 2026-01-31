@@ -21,12 +21,18 @@ import com.techducat.ajo.data.local.dao.DividendDao;
 import com.techducat.ajo.data.local.dao.DividendDao_Impl;
 import com.techducat.ajo.data.local.dao.InviteDao;
 import com.techducat.ajo.data.local.dao.InviteDao_Impl;
+import com.techducat.ajo.data.local.dao.LocalNodeDao;
+import com.techducat.ajo.data.local.dao.LocalNodeDao_Impl;
+import com.techducat.ajo.data.local.dao.LocalWalletDao;
+import com.techducat.ajo.data.local.dao.LocalWalletDao_Impl;
 import com.techducat.ajo.data.local.dao.MemberDao;
 import com.techducat.ajo.data.local.dao.MemberDao_Impl;
 import com.techducat.ajo.data.local.dao.MultisigSignatureDao;
 import com.techducat.ajo.data.local.dao.MultisigSignatureDao_Impl;
 import com.techducat.ajo.data.local.dao.PayoutDao;
 import com.techducat.ajo.data.local.dao.PayoutDao_Impl;
+import com.techducat.ajo.data.local.dao.PeerDao;
+import com.techducat.ajo.data.local.dao.PeerDao_Impl;
 import com.techducat.ajo.data.local.dao.PenaltyDao;
 import com.techducat.ajo.data.local.dao.PenaltyDao_Impl;
 import com.techducat.ajo.data.local.dao.RoscaDao;
@@ -35,6 +41,12 @@ import com.techducat.ajo.data.local.dao.RoundDao;
 import com.techducat.ajo.data.local.dao.RoundDao_Impl;
 import com.techducat.ajo.data.local.dao.ServiceFeeDao;
 import com.techducat.ajo.data.local.dao.ServiceFeeDao_Impl;
+import com.techducat.ajo.data.local.dao.SyncConflictDao;
+import com.techducat.ajo.data.local.dao.SyncConflictDao_Impl;
+import com.techducat.ajo.data.local.dao.SyncLogDao;
+import com.techducat.ajo.data.local.dao.SyncLogDao_Impl;
+import com.techducat.ajo.data.local.dao.SyncTargetDao;
+import com.techducat.ajo.data.local.dao.SyncTargetDao_Impl;
 import com.techducat.ajo.data.local.dao.TransactionDao;
 import com.techducat.ajo.data.local.dao.TransactionDao_Impl;
 import com.techducat.ajo.data.local.dao.UserProfileDao;
@@ -55,6 +67,12 @@ import javax.annotation.processing.Generated;
 @Generated("androidx.room.RoomProcessor")
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class AjoDatabase_Impl extends AjoDatabase {
+  private volatile LocalNodeDao _localNodeDao;
+
+  private volatile PeerDao _peerDao;
+
+  private volatile SyncTargetDao _syncTargetDao;
+
   private volatile RoscaDao _roscaDao;
 
   private volatile ContributionDao _contributionDao;
@@ -64,8 +82,6 @@ public final class AjoDatabase_Impl extends AjoDatabase {
   private volatile DistributionDao _distributionDao;
 
   private volatile ServiceFeeDao _serviceFeeDao;
-
-  private volatile SyncQueueDao _syncQueueDao;
 
   private volatile UserProfileDao _userProfileDao;
 
@@ -85,14 +101,29 @@ public final class AjoDatabase_Impl extends AjoDatabase {
 
   private volatile MultisigSignatureDao _multisigSignatureDao;
 
+  private volatile LocalWalletDao _localWalletDao;
+
+  private volatile SyncQueueDao _syncQueueDao;
+
+  private volatile SyncLogDao _syncLogDao;
+
+  private volatile SyncConflictDao _syncConflictDao;
+
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(9) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(10) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
+        db.execSQL("CREATE TABLE IF NOT EXISTS `local_node` (`nodeId` TEXT NOT NULL, `publicKey` TEXT NOT NULL, `privateKeyEncrypted` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `lastSyncAt` INTEGER, `displayName` TEXT, `deviceInfo` TEXT, PRIMARY KEY(`nodeId`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `peers` (`id` TEXT NOT NULL, `nodeId` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `publicKey` TEXT NOT NULL, `role` TEXT NOT NULL, `endpoint` TEXT, `status` TEXT NOT NULL, `addedAt` INTEGER NOT NULL, `lastSeenAt` INTEGER, `displayName` TEXT, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_peers_nodeId` ON `peers` (`nodeId`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_peers_roscaId` ON `peers` (`roscaId`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `sync_targets` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `targetPeerId` TEXT NOT NULL, `syncEnabled` INTEGER NOT NULL, `lastSyncAttempt` INTEGER, `lastSyncSuccess` INTEGER, `consecutiveFailures` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`targetPeerId`) REFERENCES `peers`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_sync_targets_roscaId` ON `sync_targets` (`roscaId`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_sync_targets_targetPeerId` ON `sync_targets` (`targetPeerId`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `roscas` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `creatorId` TEXT, `groupType` TEXT NOT NULL, `contributionAmount` INTEGER NOT NULL, `contributionFrequency` TEXT NOT NULL, `frequencyDays` INTEGER NOT NULL, `totalMembers` INTEGER NOT NULL, `currentMembers` INTEGER NOT NULL, `payoutOrder` TEXT NOT NULL, `distributionMethod` TEXT NOT NULL, `cycleNumber` INTEGER NOT NULL, `currentRound` INTEGER NOT NULL, `totalCycles` INTEGER NOT NULL, `status` TEXT NOT NULL, `walletAddress` TEXT, `roscaWalletPath` TEXT, `multisigAddress` TEXT, `multisigInfo` TEXT, `ipfsHash` TEXT, `ipfsCid` TEXT, `ipnsKey` TEXT, `version` INTEGER NOT NULL, `isDirty` INTEGER NOT NULL, `lastSyncedAt` INTEGER, `lastSyncTimestamp` INTEGER, `startDate` INTEGER, `startedAt` INTEGER, `completedAt` INTEGER, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `members` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `userId` TEXT NOT NULL, `name` TEXT NOT NULL, `moneroAddress` TEXT, `joinedAt` INTEGER NOT NULL, `position` INTEGER NOT NULL, `leftAt` INTEGER NOT NULL, `leftReason` TEXT NOT NULL, `isActive` INTEGER NOT NULL, `walletAddress` TEXT, `payoutOrderPosition` INTEGER, `hasReceivedPayout` INTEGER NOT NULL, `totalContributed` INTEGER NOT NULL, `missedPayments` INTEGER NOT NULL, `lastContributionAt` INTEGER, `exitedAt` INTEGER, `updatedAt` INTEGER, `ipfsHash` TEXT, `lastSyncedAt` INTEGER, `isDirty` INTEGER NOT NULL, `status` TEXT, `multisigInfo` TEXT, `hasReceived` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `members` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `userId` TEXT NOT NULL, `name` TEXT NOT NULL, `moneroAddress` TEXT, `joinedAt` INTEGER NOT NULL, `position` INTEGER NOT NULL, `leftAt` INTEGER NOT NULL, `leftReason` TEXT NOT NULL, `isActive` INTEGER NOT NULL, `walletAddress` TEXT, `payoutOrderPosition` INTEGER, `hasReceivedPayout` INTEGER NOT NULL, `totalContributed` INTEGER NOT NULL, `missedPayments` INTEGER NOT NULL, `lastContributionAt` INTEGER, `exitedAt` INTEGER, `updatedAt` INTEGER, `ipfsHash` TEXT, `lastSyncedAt` INTEGER, `isDirty` INTEGER NOT NULL, `status` TEXT, `multisigInfo` TEXT, `hasReceived` INTEGER NOT NULL, `nodeId` TEXT, `publicWalletAddress` TEXT, `signingOrder` INTEGER NOT NULL, `syncVersion` INTEGER NOT NULL, `lastModifiedBy` TEXT, `lastModifiedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `contributions` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `memberId` TEXT NOT NULL, `amount` INTEGER NOT NULL, `cycleNumber` INTEGER NOT NULL, `status` TEXT NOT NULL, `dueDate` INTEGER NOT NULL, `txHash` TEXT, `txId` TEXT, `proofOfPayment` TEXT, `paidAt` INTEGER, `confirmations` INTEGER NOT NULL, `verifiedAt` INTEGER, `notes` TEXT, `createdAt` INTEGER NOT NULL, `updated_at` INTEGER, `isDirty` INTEGER NOT NULL, `lastSyncedAt` INTEGER, `ipfsHash` TEXT, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `rounds` (`id` TEXT NOT NULL, `rosca_id` TEXT NOT NULL, `round_number` INTEGER NOT NULL, `recipient_member_id` TEXT NOT NULL, `recipient_address` TEXT NOT NULL, `status` TEXT NOT NULL, `target_amount` INTEGER NOT NULL, `collected_amount` INTEGER NOT NULL, `expected_contributors` INTEGER NOT NULL, `actual_contributors` INTEGER NOT NULL, `payout_amount` INTEGER, `service_fee` INTEGER NOT NULL, `penalty_amount` INTEGER NOT NULL, `started_at` INTEGER NOT NULL, `due_date` INTEGER NOT NULL, `payout_initiated_at` INTEGER, `completed_at` INTEGER, `payout_tx_hash` TEXT, `payout_tx_id` TEXT, `payout_confirmations` INTEGER NOT NULL, `notes` TEXT, `ipfs_hash` TEXT, `is_dirty` INTEGER NOT NULL, `last_synced_at` INTEGER, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`rosca_id`) REFERENCES `roscas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_rounds_rosca_id` ON `rounds` (`rosca_id`)");
@@ -116,27 +147,37 @@ public final class AjoDatabase_Impl extends AjoDatabase {
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_distributions_status` ON `distributions` (`status`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_distributions_txHash` ON `distributions` (`txHash`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `service_fees` (`id` TEXT NOT NULL, `distributionId` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `grossAmount` INTEGER NOT NULL, `feeAmount` INTEGER NOT NULL, `netAmount` INTEGER NOT NULL, `feePercentage` REAL NOT NULL, `serviceWallet` TEXT NOT NULL, `recipientTxHash` TEXT, `feeTxHash` TEXT, `status` TEXT NOT NULL, `errorMessage` TEXT, `createdAt` INTEGER NOT NULL, `completedAt` INTEGER, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `sync_queue` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entityType` TEXT NOT NULL, `entityId` TEXT NOT NULL, `operation` TEXT NOT NULL, `payload` TEXT NOT NULL, `attempts` INTEGER NOT NULL, `maxAttempts` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `lastAttemptAt` INTEGER)");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `user_profiles` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `displayName` TEXT NOT NULL, `photoUrl` TEXT, `idToken` TEXT, `isActive` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `lastLoginAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `payouts` (`id` TEXT NOT NULL, `rosca_id` TEXT NOT NULL, `recipient_id` TEXT NOT NULL, `round_id` TEXT, `payout_type` TEXT NOT NULL, `gross_amount` INTEGER NOT NULL, `service_fee` INTEGER NOT NULL, `penalty_amount` INTEGER NOT NULL, `net_amount` INTEGER NOT NULL, `tx_hash` TEXT, `tx_id` TEXT, `recipient_address` TEXT NOT NULL, `status` TEXT NOT NULL, `initiated_at` INTEGER NOT NULL, `completed_at` INTEGER, `failed_at` INTEGER, `error_message` TEXT, `confirmations` INTEGER NOT NULL, `verified_at` INTEGER, `notes` TEXT, `created_at` INTEGER NOT NULL, `updated_at` INTEGER, `ipfs_hash` TEXT, `last_synced_at` INTEGER, `is_dirty` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `penalties` (`id` TEXT NOT NULL, `rosca_id` TEXT NOT NULL, `member_id` TEXT NOT NULL, `payout_id` TEXT, `penalty_type` TEXT NOT NULL, `total_contributed` INTEGER NOT NULL, `cycles_participated` INTEGER NOT NULL, `cycles_remaining` INTEGER NOT NULL, `penalty_percentage` REAL NOT NULL, `penalty_amount` INTEGER NOT NULL, `reimbursement_amount` INTEGER NOT NULL, `calculation_method` TEXT NOT NULL, `reason` TEXT NOT NULL, `exit_reason` TEXT, `status` TEXT NOT NULL, `applied_at` INTEGER, `waived_at` INTEGER, `waived_by` TEXT, `waiver_reason` TEXT, `notes` TEXT, `created_at` INTEGER NOT NULL, `updated_at` INTEGER, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT NOT NULL, `txHash` TEXT, `status` TEXT NOT NULL, `confirmations` INTEGER NOT NULL, `confirmedAt` INTEGER, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `invites` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `inviterUserId` TEXT NOT NULL, `inviteeEmail` TEXT NOT NULL, `referralCode` TEXT NOT NULL, `status` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `acceptedAt` INTEGER, `expiresAt` INTEGER NOT NULL, `acceptedByUserId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`roscaId`) REFERENCES `roscas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_invites_roscaId` ON `invites` (`roscaId`)");
-        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_invites_referralCode` ON `invites` (`referralCode`)");
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_invites_inviteeEmail` ON `invites` (`inviteeEmail`)");
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_invites_status` ON `invites` (`status`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT NOT NULL, `txHash` TEXT, `status` TEXT NOT NULL, `confirmations` INTEGER NOT NULL, `confirmedAt` INTEGER, `createdAt` INTEGER NOT NULL, `roscaId` TEXT NOT NULL, `type` TEXT NOT NULL, `amount` INTEGER NOT NULL, `fromAddress` TEXT, `toAddress` TEXT, `blockHeight` INTEGER, `timestamp` INTEGER NOT NULL, `requiredSignatures` INTEGER NOT NULL, `currentSignatureCount` INTEGER NOT NULL, `syncVersion` INTEGER NOT NULL, `lastModifiedBy` TEXT, `lastModifiedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `multisig_signatures` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `roundNumber` INTEGER NOT NULL, `txHash` TEXT NOT NULL, `memberId` TEXT NOT NULL, `hasSigned` INTEGER NOT NULL, `signature` TEXT, `timestamp` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`roscaId`) REFERENCES `roscas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_multisig_signatures_roscaId` ON `multisig_signatures` (`roscaId`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_multisig_signatures_roundNumber` ON `multisig_signatures` (`roundNumber`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_multisig_signatures_memberId` ON `multisig_signatures` (`memberId`)");
         db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_multisig_signatures_roscaId_roundNumber_memberId` ON `multisig_signatures` (`roscaId`, `roundNumber`, `memberId`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `local_wallets` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `nodeId` TEXT NOT NULL, `walletPath` TEXT NOT NULL, `cacheFilePath` TEXT, `passwordEncrypted` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `lastAccessedAt` INTEGER, `isMultisig` INTEGER NOT NULL, `multisigInfo` TEXT, `label` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`roscaId`) REFERENCES `roscas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_local_wallets_roscaId` ON `local_wallets` (`roscaId`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_local_wallets_nodeId` ON `local_wallets` (`nodeId`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `user_profiles` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `displayName` TEXT NOT NULL, `photoUrl` TEXT, `idToken` TEXT, `isActive` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `lastLoginAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `invites` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `inviterUserId` TEXT NOT NULL, `inviteeEmail` TEXT NOT NULL, `referralCode` TEXT NOT NULL, `status` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `acceptedAt` INTEGER, `expiresAt` INTEGER NOT NULL, `acceptedByUserId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`roscaId`) REFERENCES `roscas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_invites_roscaId` ON `invites` (`roscaId`)");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_invites_referralCode` ON `invites` (`referralCode`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_invites_inviteeEmail` ON `invites` (`inviteeEmail`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_invites_status` ON `invites` (`status`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `sync_queue` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entityType` TEXT NOT NULL, `entityId` TEXT NOT NULL, `operation` TEXT NOT NULL, `payload` TEXT NOT NULL, `attempts` INTEGER NOT NULL, `maxAttempts` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `lastAttemptAt` INTEGER)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `sync_log` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `roscaId` TEXT NOT NULL, `direction` TEXT NOT NULL, `peerNodeId` TEXT NOT NULL, `entityType` TEXT NOT NULL, `entityId` TEXT NOT NULL, `operation` TEXT NOT NULL, `status` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `errorMessage` TEXT, `durationMs` INTEGER, `payloadSize` INTEGER)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_sync_log_roscaId` ON `sync_log` (`roscaId`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_sync_log_timestamp` ON `sync_log` (`timestamp`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `sync_conflicts` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `entityType` TEXT NOT NULL, `entityId` TEXT NOT NULL, `localVersion` INTEGER NOT NULL, `remoteVersion` INTEGER NOT NULL, `localPayload` TEXT NOT NULL, `remotePayload` TEXT NOT NULL, `detectedAt` INTEGER NOT NULL, `resolvedAt` INTEGER, `resolution` TEXT, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '518863360f451d1cf32e0d6bb307385e')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b980c38fe6742368ad65c918db6e6435')");
       }
 
       @Override
       public void dropAllTables(@NonNull final SupportSQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS `local_node`");
+        db.execSQL("DROP TABLE IF EXISTS `peers`");
+        db.execSQL("DROP TABLE IF EXISTS `sync_targets`");
         db.execSQL("DROP TABLE IF EXISTS `roscas`");
         db.execSQL("DROP TABLE IF EXISTS `members`");
         db.execSQL("DROP TABLE IF EXISTS `contributions`");
@@ -145,13 +186,16 @@ public final class AjoDatabase_Impl extends AjoDatabase {
         db.execSQL("DROP TABLE IF EXISTS `dividends`");
         db.execSQL("DROP TABLE IF EXISTS `distributions`");
         db.execSQL("DROP TABLE IF EXISTS `service_fees`");
-        db.execSQL("DROP TABLE IF EXISTS `sync_queue`");
-        db.execSQL("DROP TABLE IF EXISTS `user_profiles`");
         db.execSQL("DROP TABLE IF EXISTS `payouts`");
         db.execSQL("DROP TABLE IF EXISTS `penalties`");
         db.execSQL("DROP TABLE IF EXISTS `transactions`");
-        db.execSQL("DROP TABLE IF EXISTS `invites`");
         db.execSQL("DROP TABLE IF EXISTS `multisig_signatures`");
+        db.execSQL("DROP TABLE IF EXISTS `local_wallets`");
+        db.execSQL("DROP TABLE IF EXISTS `user_profiles`");
+        db.execSQL("DROP TABLE IF EXISTS `invites`");
+        db.execSQL("DROP TABLE IF EXISTS `sync_queue`");
+        db.execSQL("DROP TABLE IF EXISTS `sync_log`");
+        db.execSQL("DROP TABLE IF EXISTS `sync_conflicts`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
           for (RoomDatabase.Callback _callback : _callbacks) {
@@ -196,6 +240,65 @@ public final class AjoDatabase_Impl extends AjoDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
+        final HashMap<String, TableInfo.Column> _columnsLocalNode = new HashMap<String, TableInfo.Column>(7);
+        _columnsLocalNode.put("nodeId", new TableInfo.Column("nodeId", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalNode.put("publicKey", new TableInfo.Column("publicKey", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalNode.put("privateKeyEncrypted", new TableInfo.Column("privateKeyEncrypted", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalNode.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalNode.put("lastSyncAt", new TableInfo.Column("lastSyncAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalNode.put("displayName", new TableInfo.Column("displayName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalNode.put("deviceInfo", new TableInfo.Column("deviceInfo", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysLocalNode = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesLocalNode = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoLocalNode = new TableInfo("local_node", _columnsLocalNode, _foreignKeysLocalNode, _indicesLocalNode);
+        final TableInfo _existingLocalNode = TableInfo.read(db, "local_node");
+        if (!_infoLocalNode.equals(_existingLocalNode)) {
+          return new RoomOpenHelper.ValidationResult(false, "local_node(com.techducat.ajo.data.local.entity.LocalNodeEntity).\n"
+                  + " Expected:\n" + _infoLocalNode + "\n"
+                  + " Found:\n" + _existingLocalNode);
+        }
+        final HashMap<String, TableInfo.Column> _columnsPeers = new HashMap<String, TableInfo.Column>(10);
+        _columnsPeers.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("nodeId", new TableInfo.Column("nodeId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("publicKey", new TableInfo.Column("publicKey", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("role", new TableInfo.Column("role", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("endpoint", new TableInfo.Column("endpoint", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("addedAt", new TableInfo.Column("addedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("lastSeenAt", new TableInfo.Column("lastSeenAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPeers.put("displayName", new TableInfo.Column("displayName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysPeers = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesPeers = new HashSet<TableInfo.Index>(2);
+        _indicesPeers.add(new TableInfo.Index("index_peers_nodeId", true, Arrays.asList("nodeId"), Arrays.asList("ASC")));
+        _indicesPeers.add(new TableInfo.Index("index_peers_roscaId", false, Arrays.asList("roscaId"), Arrays.asList("ASC")));
+        final TableInfo _infoPeers = new TableInfo("peers", _columnsPeers, _foreignKeysPeers, _indicesPeers);
+        final TableInfo _existingPeers = TableInfo.read(db, "peers");
+        if (!_infoPeers.equals(_existingPeers)) {
+          return new RoomOpenHelper.ValidationResult(false, "peers(com.techducat.ajo.data.local.entity.PeerEntity).\n"
+                  + " Expected:\n" + _infoPeers + "\n"
+                  + " Found:\n" + _existingPeers);
+        }
+        final HashMap<String, TableInfo.Column> _columnsSyncTargets = new HashMap<String, TableInfo.Column>(7);
+        _columnsSyncTargets.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncTargets.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncTargets.put("targetPeerId", new TableInfo.Column("targetPeerId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncTargets.put("syncEnabled", new TableInfo.Column("syncEnabled", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncTargets.put("lastSyncAttempt", new TableInfo.Column("lastSyncAttempt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncTargets.put("lastSyncSuccess", new TableInfo.Column("lastSyncSuccess", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncTargets.put("consecutiveFailures", new TableInfo.Column("consecutiveFailures", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysSyncTargets = new HashSet<TableInfo.ForeignKey>(1);
+        _foreignKeysSyncTargets.add(new TableInfo.ForeignKey("peers", "CASCADE", "NO ACTION", Arrays.asList("targetPeerId"), Arrays.asList("id")));
+        final HashSet<TableInfo.Index> _indicesSyncTargets = new HashSet<TableInfo.Index>(2);
+        _indicesSyncTargets.add(new TableInfo.Index("index_sync_targets_roscaId", false, Arrays.asList("roscaId"), Arrays.asList("ASC")));
+        _indicesSyncTargets.add(new TableInfo.Index("index_sync_targets_targetPeerId", false, Arrays.asList("targetPeerId"), Arrays.asList("ASC")));
+        final TableInfo _infoSyncTargets = new TableInfo("sync_targets", _columnsSyncTargets, _foreignKeysSyncTargets, _indicesSyncTargets);
+        final TableInfo _existingSyncTargets = TableInfo.read(db, "sync_targets");
+        if (!_infoSyncTargets.equals(_existingSyncTargets)) {
+          return new RoomOpenHelper.ValidationResult(false, "sync_targets(com.techducat.ajo.data.local.entity.SyncTargetEntity).\n"
+                  + " Expected:\n" + _infoSyncTargets + "\n"
+                  + " Found:\n" + _existingSyncTargets);
+        }
         final HashMap<String, TableInfo.Column> _columnsRoscas = new HashMap<String, TableInfo.Column>(32);
         _columnsRoscas.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsRoscas.put("name", new TableInfo.Column("name", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -238,7 +341,7 @@ public final class AjoDatabase_Impl extends AjoDatabase {
                   + " Expected:\n" + _infoRoscas + "\n"
                   + " Found:\n" + _existingRoscas);
         }
-        final HashMap<String, TableInfo.Column> _columnsMembers = new HashMap<String, TableInfo.Column>(24);
+        final HashMap<String, TableInfo.Column> _columnsMembers = new HashMap<String, TableInfo.Column>(30);
         _columnsMembers.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("userId", new TableInfo.Column("userId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -263,6 +366,12 @@ public final class AjoDatabase_Impl extends AjoDatabase {
         _columnsMembers.put("status", new TableInfo.Column("status", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("multisigInfo", new TableInfo.Column("multisigInfo", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("hasReceived", new TableInfo.Column("hasReceived", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMembers.put("nodeId", new TableInfo.Column("nodeId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMembers.put("publicWalletAddress", new TableInfo.Column("publicWalletAddress", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMembers.put("signingOrder", new TableInfo.Column("signingOrder", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMembers.put("syncVersion", new TableInfo.Column("syncVersion", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMembers.put("lastModifiedBy", new TableInfo.Column("lastModifiedBy", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMembers.put("lastModifiedAt", new TableInfo.Column("lastModifiedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysMembers = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesMembers = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoMembers = new TableInfo("members", _columnsMembers, _foreignKeysMembers, _indicesMembers);
@@ -443,43 +552,6 @@ public final class AjoDatabase_Impl extends AjoDatabase {
                   + " Expected:\n" + _infoServiceFees + "\n"
                   + " Found:\n" + _existingServiceFees);
         }
-        final HashMap<String, TableInfo.Column> _columnsSyncQueue = new HashMap<String, TableInfo.Column>(9);
-        _columnsSyncQueue.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsSyncQueue.put("entityType", new TableInfo.Column("entityType", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsSyncQueue.put("entityId", new TableInfo.Column("entityId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsSyncQueue.put("operation", new TableInfo.Column("operation", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsSyncQueue.put("payload", new TableInfo.Column("payload", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsSyncQueue.put("attempts", new TableInfo.Column("attempts", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsSyncQueue.put("maxAttempts", new TableInfo.Column("maxAttempts", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsSyncQueue.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsSyncQueue.put("lastAttemptAt", new TableInfo.Column("lastAttemptAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        final HashSet<TableInfo.ForeignKey> _foreignKeysSyncQueue = new HashSet<TableInfo.ForeignKey>(0);
-        final HashSet<TableInfo.Index> _indicesSyncQueue = new HashSet<TableInfo.Index>(0);
-        final TableInfo _infoSyncQueue = new TableInfo("sync_queue", _columnsSyncQueue, _foreignKeysSyncQueue, _indicesSyncQueue);
-        final TableInfo _existingSyncQueue = TableInfo.read(db, "sync_queue");
-        if (!_infoSyncQueue.equals(_existingSyncQueue)) {
-          return new RoomOpenHelper.ValidationResult(false, "sync_queue(com.techducat.ajo.data.local.SyncQueueEntity).\n"
-                  + " Expected:\n" + _infoSyncQueue + "\n"
-                  + " Found:\n" + _existingSyncQueue);
-        }
-        final HashMap<String, TableInfo.Column> _columnsUserProfiles = new HashMap<String, TableInfo.Column>(8);
-        _columnsUserProfiles.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUserProfiles.put("email", new TableInfo.Column("email", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUserProfiles.put("displayName", new TableInfo.Column("displayName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUserProfiles.put("photoUrl", new TableInfo.Column("photoUrl", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUserProfiles.put("idToken", new TableInfo.Column("idToken", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUserProfiles.put("isActive", new TableInfo.Column("isActive", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUserProfiles.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUserProfiles.put("lastLoginAt", new TableInfo.Column("lastLoginAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        final HashSet<TableInfo.ForeignKey> _foreignKeysUserProfiles = new HashSet<TableInfo.ForeignKey>(0);
-        final HashSet<TableInfo.Index> _indicesUserProfiles = new HashSet<TableInfo.Index>(0);
-        final TableInfo _infoUserProfiles = new TableInfo("user_profiles", _columnsUserProfiles, _foreignKeysUserProfiles, _indicesUserProfiles);
-        final TableInfo _existingUserProfiles = TableInfo.read(db, "user_profiles");
-        if (!_infoUserProfiles.equals(_existingUserProfiles)) {
-          return new RoomOpenHelper.ValidationResult(false, "user_profiles(com.techducat.ajo.data.local.entity.UserProfileEntity).\n"
-                  + " Expected:\n" + _infoUserProfiles + "\n"
-                  + " Found:\n" + _existingUserProfiles);
-        }
         final HashMap<String, TableInfo.Column> _columnsPayouts = new HashMap<String, TableInfo.Column>(25);
         _columnsPayouts.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPayouts.put("rosca_id", new TableInfo.Column("rosca_id", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -547,13 +619,25 @@ public final class AjoDatabase_Impl extends AjoDatabase {
                   + " Expected:\n" + _infoPenalties + "\n"
                   + " Found:\n" + _existingPenalties);
         }
-        final HashMap<String, TableInfo.Column> _columnsTransactions = new HashMap<String, TableInfo.Column>(6);
+        final HashMap<String, TableInfo.Column> _columnsTransactions = new HashMap<String, TableInfo.Column>(18);
         _columnsTransactions.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("txHash", new TableInfo.Column("txHash", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("confirmations", new TableInfo.Column("confirmations", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("confirmedAt", new TableInfo.Column("confirmedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("type", new TableInfo.Column("type", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("amount", new TableInfo.Column("amount", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("fromAddress", new TableInfo.Column("fromAddress", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("toAddress", new TableInfo.Column("toAddress", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("blockHeight", new TableInfo.Column("blockHeight", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("timestamp", new TableInfo.Column("timestamp", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("requiredSignatures", new TableInfo.Column("requiredSignatures", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("currentSignatureCount", new TableInfo.Column("currentSignatureCount", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("syncVersion", new TableInfo.Column("syncVersion", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("lastModifiedBy", new TableInfo.Column("lastModifiedBy", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("lastModifiedAt", new TableInfo.Column("lastModifiedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysTransactions = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesTransactions = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoTransactions = new TableInfo("transactions", _columnsTransactions, _foreignKeysTransactions, _indicesTransactions);
@@ -562,31 +646,6 @@ public final class AjoDatabase_Impl extends AjoDatabase {
           return new RoomOpenHelper.ValidationResult(false, "transactions(com.techducat.ajo.data.local.entity.TransactionEntity).\n"
                   + " Expected:\n" + _infoTransactions + "\n"
                   + " Found:\n" + _existingTransactions);
-        }
-        final HashMap<String, TableInfo.Column> _columnsInvites = new HashMap<String, TableInfo.Column>(10);
-        _columnsInvites.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("inviterUserId", new TableInfo.Column("inviterUserId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("inviteeEmail", new TableInfo.Column("inviteeEmail", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("referralCode", new TableInfo.Column("referralCode", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("acceptedAt", new TableInfo.Column("acceptedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("expiresAt", new TableInfo.Column("expiresAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsInvites.put("acceptedByUserId", new TableInfo.Column("acceptedByUserId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        final HashSet<TableInfo.ForeignKey> _foreignKeysInvites = new HashSet<TableInfo.ForeignKey>(1);
-        _foreignKeysInvites.add(new TableInfo.ForeignKey("roscas", "CASCADE", "NO ACTION", Arrays.asList("roscaId"), Arrays.asList("id")));
-        final HashSet<TableInfo.Index> _indicesInvites = new HashSet<TableInfo.Index>(4);
-        _indicesInvites.add(new TableInfo.Index("index_invites_roscaId", false, Arrays.asList("roscaId"), Arrays.asList("ASC")));
-        _indicesInvites.add(new TableInfo.Index("index_invites_referralCode", true, Arrays.asList("referralCode"), Arrays.asList("ASC")));
-        _indicesInvites.add(new TableInfo.Index("index_invites_inviteeEmail", false, Arrays.asList("inviteeEmail"), Arrays.asList("ASC")));
-        _indicesInvites.add(new TableInfo.Index("index_invites_status", false, Arrays.asList("status"), Arrays.asList("ASC")));
-        final TableInfo _infoInvites = new TableInfo("invites", _columnsInvites, _foreignKeysInvites, _indicesInvites);
-        final TableInfo _existingInvites = TableInfo.read(db, "invites");
-        if (!_infoInvites.equals(_existingInvites)) {
-          return new RoomOpenHelper.ValidationResult(false, "invites(com.techducat.ajo.data.local.entity.InviteEntity).\n"
-                  + " Expected:\n" + _infoInvites + "\n"
-                  + " Found:\n" + _existingInvites);
         }
         final HashMap<String, TableInfo.Column> _columnsMultisigSignatures = new HashMap<String, TableInfo.Column>(10);
         _columnsMultisigSignatures.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
@@ -613,9 +672,140 @@ public final class AjoDatabase_Impl extends AjoDatabase {
                   + " Expected:\n" + _infoMultisigSignatures + "\n"
                   + " Found:\n" + _existingMultisigSignatures);
         }
+        final HashMap<String, TableInfo.Column> _columnsLocalWallets = new HashMap<String, TableInfo.Column>(11);
+        _columnsLocalWallets.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("nodeId", new TableInfo.Column("nodeId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("walletPath", new TableInfo.Column("walletPath", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("cacheFilePath", new TableInfo.Column("cacheFilePath", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("passwordEncrypted", new TableInfo.Column("passwordEncrypted", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("lastAccessedAt", new TableInfo.Column("lastAccessedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("isMultisig", new TableInfo.Column("isMultisig", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("multisigInfo", new TableInfo.Column("multisigInfo", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocalWallets.put("label", new TableInfo.Column("label", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysLocalWallets = new HashSet<TableInfo.ForeignKey>(1);
+        _foreignKeysLocalWallets.add(new TableInfo.ForeignKey("roscas", "CASCADE", "NO ACTION", Arrays.asList("roscaId"), Arrays.asList("id")));
+        final HashSet<TableInfo.Index> _indicesLocalWallets = new HashSet<TableInfo.Index>(2);
+        _indicesLocalWallets.add(new TableInfo.Index("index_local_wallets_roscaId", false, Arrays.asList("roscaId"), Arrays.asList("ASC")));
+        _indicesLocalWallets.add(new TableInfo.Index("index_local_wallets_nodeId", false, Arrays.asList("nodeId"), Arrays.asList("ASC")));
+        final TableInfo _infoLocalWallets = new TableInfo("local_wallets", _columnsLocalWallets, _foreignKeysLocalWallets, _indicesLocalWallets);
+        final TableInfo _existingLocalWallets = TableInfo.read(db, "local_wallets");
+        if (!_infoLocalWallets.equals(_existingLocalWallets)) {
+          return new RoomOpenHelper.ValidationResult(false, "local_wallets(com.techducat.ajo.data.local.entity.LocalWalletEntity).\n"
+                  + " Expected:\n" + _infoLocalWallets + "\n"
+                  + " Found:\n" + _existingLocalWallets);
+        }
+        final HashMap<String, TableInfo.Column> _columnsUserProfiles = new HashMap<String, TableInfo.Column>(8);
+        _columnsUserProfiles.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserProfiles.put("email", new TableInfo.Column("email", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserProfiles.put("displayName", new TableInfo.Column("displayName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserProfiles.put("photoUrl", new TableInfo.Column("photoUrl", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserProfiles.put("idToken", new TableInfo.Column("idToken", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserProfiles.put("isActive", new TableInfo.Column("isActive", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserProfiles.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserProfiles.put("lastLoginAt", new TableInfo.Column("lastLoginAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysUserProfiles = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesUserProfiles = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoUserProfiles = new TableInfo("user_profiles", _columnsUserProfiles, _foreignKeysUserProfiles, _indicesUserProfiles);
+        final TableInfo _existingUserProfiles = TableInfo.read(db, "user_profiles");
+        if (!_infoUserProfiles.equals(_existingUserProfiles)) {
+          return new RoomOpenHelper.ValidationResult(false, "user_profiles(com.techducat.ajo.data.local.entity.UserProfileEntity).\n"
+                  + " Expected:\n" + _infoUserProfiles + "\n"
+                  + " Found:\n" + _existingUserProfiles);
+        }
+        final HashMap<String, TableInfo.Column> _columnsInvites = new HashMap<String, TableInfo.Column>(10);
+        _columnsInvites.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("inviterUserId", new TableInfo.Column("inviterUserId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("inviteeEmail", new TableInfo.Column("inviteeEmail", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("referralCode", new TableInfo.Column("referralCode", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("acceptedAt", new TableInfo.Column("acceptedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("expiresAt", new TableInfo.Column("expiresAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsInvites.put("acceptedByUserId", new TableInfo.Column("acceptedByUserId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysInvites = new HashSet<TableInfo.ForeignKey>(1);
+        _foreignKeysInvites.add(new TableInfo.ForeignKey("roscas", "CASCADE", "NO ACTION", Arrays.asList("roscaId"), Arrays.asList("id")));
+        final HashSet<TableInfo.Index> _indicesInvites = new HashSet<TableInfo.Index>(4);
+        _indicesInvites.add(new TableInfo.Index("index_invites_roscaId", false, Arrays.asList("roscaId"), Arrays.asList("ASC")));
+        _indicesInvites.add(new TableInfo.Index("index_invites_referralCode", true, Arrays.asList("referralCode"), Arrays.asList("ASC")));
+        _indicesInvites.add(new TableInfo.Index("index_invites_inviteeEmail", false, Arrays.asList("inviteeEmail"), Arrays.asList("ASC")));
+        _indicesInvites.add(new TableInfo.Index("index_invites_status", false, Arrays.asList("status"), Arrays.asList("ASC")));
+        final TableInfo _infoInvites = new TableInfo("invites", _columnsInvites, _foreignKeysInvites, _indicesInvites);
+        final TableInfo _existingInvites = TableInfo.read(db, "invites");
+        if (!_infoInvites.equals(_existingInvites)) {
+          return new RoomOpenHelper.ValidationResult(false, "invites(com.techducat.ajo.data.local.entity.InviteEntity).\n"
+                  + " Expected:\n" + _infoInvites + "\n"
+                  + " Found:\n" + _existingInvites);
+        }
+        final HashMap<String, TableInfo.Column> _columnsSyncQueue = new HashMap<String, TableInfo.Column>(9);
+        _columnsSyncQueue.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncQueue.put("entityType", new TableInfo.Column("entityType", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncQueue.put("entityId", new TableInfo.Column("entityId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncQueue.put("operation", new TableInfo.Column("operation", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncQueue.put("payload", new TableInfo.Column("payload", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncQueue.put("attempts", new TableInfo.Column("attempts", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncQueue.put("maxAttempts", new TableInfo.Column("maxAttempts", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncQueue.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncQueue.put("lastAttemptAt", new TableInfo.Column("lastAttemptAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysSyncQueue = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesSyncQueue = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoSyncQueue = new TableInfo("sync_queue", _columnsSyncQueue, _foreignKeysSyncQueue, _indicesSyncQueue);
+        final TableInfo _existingSyncQueue = TableInfo.read(db, "sync_queue");
+        if (!_infoSyncQueue.equals(_existingSyncQueue)) {
+          return new RoomOpenHelper.ValidationResult(false, "sync_queue(com.techducat.ajo.data.local.SyncQueueEntity).\n"
+                  + " Expected:\n" + _infoSyncQueue + "\n"
+                  + " Found:\n" + _existingSyncQueue);
+        }
+        final HashMap<String, TableInfo.Column> _columnsSyncLog = new HashMap<String, TableInfo.Column>(12);
+        _columnsSyncLog.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("direction", new TableInfo.Column("direction", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("peerNodeId", new TableInfo.Column("peerNodeId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("entityType", new TableInfo.Column("entityType", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("entityId", new TableInfo.Column("entityId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("operation", new TableInfo.Column("operation", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("timestamp", new TableInfo.Column("timestamp", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("errorMessage", new TableInfo.Column("errorMessage", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("durationMs", new TableInfo.Column("durationMs", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncLog.put("payloadSize", new TableInfo.Column("payloadSize", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysSyncLog = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesSyncLog = new HashSet<TableInfo.Index>(2);
+        _indicesSyncLog.add(new TableInfo.Index("index_sync_log_roscaId", false, Arrays.asList("roscaId"), Arrays.asList("ASC")));
+        _indicesSyncLog.add(new TableInfo.Index("index_sync_log_timestamp", false, Arrays.asList("timestamp"), Arrays.asList("ASC")));
+        final TableInfo _infoSyncLog = new TableInfo("sync_log", _columnsSyncLog, _foreignKeysSyncLog, _indicesSyncLog);
+        final TableInfo _existingSyncLog = TableInfo.read(db, "sync_log");
+        if (!_infoSyncLog.equals(_existingSyncLog)) {
+          return new RoomOpenHelper.ValidationResult(false, "sync_log(com.techducat.ajo.data.local.entity.SyncLogEntity).\n"
+                  + " Expected:\n" + _infoSyncLog + "\n"
+                  + " Found:\n" + _existingSyncLog);
+        }
+        final HashMap<String, TableInfo.Column> _columnsSyncConflicts = new HashMap<String, TableInfo.Column>(11);
+        _columnsSyncConflicts.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("entityType", new TableInfo.Column("entityType", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("entityId", new TableInfo.Column("entityId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("localVersion", new TableInfo.Column("localVersion", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("remoteVersion", new TableInfo.Column("remoteVersion", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("localPayload", new TableInfo.Column("localPayload", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("remotePayload", new TableInfo.Column("remotePayload", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("detectedAt", new TableInfo.Column("detectedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("resolvedAt", new TableInfo.Column("resolvedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSyncConflicts.put("resolution", new TableInfo.Column("resolution", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysSyncConflicts = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesSyncConflicts = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoSyncConflicts = new TableInfo("sync_conflicts", _columnsSyncConflicts, _foreignKeysSyncConflicts, _indicesSyncConflicts);
+        final TableInfo _existingSyncConflicts = TableInfo.read(db, "sync_conflicts");
+        if (!_infoSyncConflicts.equals(_existingSyncConflicts)) {
+          return new RoomOpenHelper.ValidationResult(false, "sync_conflicts(com.techducat.ajo.data.local.entity.SyncConflictEntity).\n"
+                  + " Expected:\n" + _infoSyncConflicts + "\n"
+                  + " Found:\n" + _existingSyncConflicts);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "518863360f451d1cf32e0d6bb307385e", "d10e5d429d4a390e6888cd7d38566f6f");
+    }, "b980c38fe6742368ad65c918db6e6435", "2aa08acf960e510fd5099dbb6a55ae1f");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -626,7 +816,7 @@ public final class AjoDatabase_Impl extends AjoDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "roscas","members","contributions","rounds","bids","dividends","distributions","service_fees","sync_queue","user_profiles","payouts","penalties","transactions","invites","multisig_signatures");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "local_node","peers","sync_targets","roscas","members","contributions","rounds","bids","dividends","distributions","service_fees","payouts","penalties","transactions","multisig_signatures","local_wallets","user_profiles","invites","sync_queue","sync_log","sync_conflicts");
   }
 
   @Override
@@ -642,6 +832,9 @@ public final class AjoDatabase_Impl extends AjoDatabase {
       if (_supportsDeferForeignKeys) {
         _db.execSQL("PRAGMA defer_foreign_keys = TRUE");
       }
+      _db.execSQL("DELETE FROM `local_node`");
+      _db.execSQL("DELETE FROM `peers`");
+      _db.execSQL("DELETE FROM `sync_targets`");
       _db.execSQL("DELETE FROM `roscas`");
       _db.execSQL("DELETE FROM `members`");
       _db.execSQL("DELETE FROM `contributions`");
@@ -650,13 +843,16 @@ public final class AjoDatabase_Impl extends AjoDatabase {
       _db.execSQL("DELETE FROM `dividends`");
       _db.execSQL("DELETE FROM `distributions`");
       _db.execSQL("DELETE FROM `service_fees`");
-      _db.execSQL("DELETE FROM `sync_queue`");
-      _db.execSQL("DELETE FROM `user_profiles`");
       _db.execSQL("DELETE FROM `payouts`");
       _db.execSQL("DELETE FROM `penalties`");
       _db.execSQL("DELETE FROM `transactions`");
-      _db.execSQL("DELETE FROM `invites`");
       _db.execSQL("DELETE FROM `multisig_signatures`");
+      _db.execSQL("DELETE FROM `local_wallets`");
+      _db.execSQL("DELETE FROM `user_profiles`");
+      _db.execSQL("DELETE FROM `invites`");
+      _db.execSQL("DELETE FROM `sync_queue`");
+      _db.execSQL("DELETE FROM `sync_log`");
+      _db.execSQL("DELETE FROM `sync_conflicts`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -674,12 +870,14 @@ public final class AjoDatabase_Impl extends AjoDatabase {
   @NonNull
   protected Map<Class<?>, List<Class<?>>> getRequiredTypeConverters() {
     final HashMap<Class<?>, List<Class<?>>> _typeConvertersMap = new HashMap<Class<?>, List<Class<?>>>();
+    _typeConvertersMap.put(LocalNodeDao.class, LocalNodeDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(PeerDao.class, PeerDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(SyncTargetDao.class, SyncTargetDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(RoscaDao.class, RoscaDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(ContributionDao.class, ContributionDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(MemberDao.class, MemberDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(DistributionDao.class, DistributionDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(ServiceFeeDao.class, ServiceFeeDao_Impl.getRequiredConverters());
-    _typeConvertersMap.put(SyncQueueDao.class, SyncQueueDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(UserProfileDao.class, UserProfileDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(PayoutDao.class, PayoutDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(PenaltyDao.class, PenaltyDao_Impl.getRequiredConverters());
@@ -689,6 +887,10 @@ public final class AjoDatabase_Impl extends AjoDatabase {
     _typeConvertersMap.put(BidDao.class, BidDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(DividendDao.class, DividendDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(MultisigSignatureDao.class, MultisigSignatureDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(LocalWalletDao.class, LocalWalletDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(SyncQueueDao.class, SyncQueueDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(SyncLogDao.class, SyncLogDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(SyncConflictDao.class, SyncConflictDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -705,6 +907,48 @@ public final class AjoDatabase_Impl extends AjoDatabase {
       @NonNull final Map<Class<? extends AutoMigrationSpec>, AutoMigrationSpec> autoMigrationSpecs) {
     final List<Migration> _autoMigrations = new ArrayList<Migration>();
     return _autoMigrations;
+  }
+
+  @Override
+  public LocalNodeDao localNodeDao() {
+    if (_localNodeDao != null) {
+      return _localNodeDao;
+    } else {
+      synchronized(this) {
+        if(_localNodeDao == null) {
+          _localNodeDao = new LocalNodeDao_Impl(this);
+        }
+        return _localNodeDao;
+      }
+    }
+  }
+
+  @Override
+  public PeerDao peerDao() {
+    if (_peerDao != null) {
+      return _peerDao;
+    } else {
+      synchronized(this) {
+        if(_peerDao == null) {
+          _peerDao = new PeerDao_Impl(this);
+        }
+        return _peerDao;
+      }
+    }
+  }
+
+  @Override
+  public SyncTargetDao syncTargetDao() {
+    if (_syncTargetDao != null) {
+      return _syncTargetDao;
+    } else {
+      synchronized(this) {
+        if(_syncTargetDao == null) {
+          _syncTargetDao = new SyncTargetDao_Impl(this);
+        }
+        return _syncTargetDao;
+      }
+    }
   }
 
   @Override
@@ -773,20 +1017,6 @@ public final class AjoDatabase_Impl extends AjoDatabase {
           _serviceFeeDao = new ServiceFeeDao_Impl(this);
         }
         return _serviceFeeDao;
-      }
-    }
-  }
-
-  @Override
-  public SyncQueueDao syncQueueDao() {
-    if (_syncQueueDao != null) {
-      return _syncQueueDao;
-    } else {
-      synchronized(this) {
-        if(_syncQueueDao == null) {
-          _syncQueueDao = new SyncQueueDao_Impl(this);
-        }
-        return _syncQueueDao;
       }
     }
   }
@@ -913,6 +1143,62 @@ public final class AjoDatabase_Impl extends AjoDatabase {
           _multisigSignatureDao = new MultisigSignatureDao_Impl(this);
         }
         return _multisigSignatureDao;
+      }
+    }
+  }
+
+  @Override
+  public LocalWalletDao localWalletDao() {
+    if (_localWalletDao != null) {
+      return _localWalletDao;
+    } else {
+      synchronized(this) {
+        if(_localWalletDao == null) {
+          _localWalletDao = new LocalWalletDao_Impl(this);
+        }
+        return _localWalletDao;
+      }
+    }
+  }
+
+  @Override
+  public SyncQueueDao syncQueueDao() {
+    if (_syncQueueDao != null) {
+      return _syncQueueDao;
+    } else {
+      synchronized(this) {
+        if(_syncQueueDao == null) {
+          _syncQueueDao = new SyncQueueDao_Impl(this);
+        }
+        return _syncQueueDao;
+      }
+    }
+  }
+
+  @Override
+  public SyncLogDao syncLogDao() {
+    if (_syncLogDao != null) {
+      return _syncLogDao;
+    } else {
+      synchronized(this) {
+        if(_syncLogDao == null) {
+          _syncLogDao = new SyncLogDao_Impl(this);
+        }
+        return _syncLogDao;
+      }
+    }
+  }
+
+  @Override
+  public SyncConflictDao syncConflictDao() {
+    if (_syncConflictDao != null) {
+      return _syncConflictDao;
+    } else {
+      synchronized(this) {
+        if(_syncConflictDao == null) {
+          _syncConflictDao = new SyncConflictDao_Impl(this);
+        }
+        return _syncConflictDao;
       }
     }
   }

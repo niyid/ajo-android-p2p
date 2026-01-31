@@ -12,8 +12,11 @@ interface MemberDao {
     @Update
     suspend fun update(member: MemberEntity)
     
-    @Query("SELECT * FROM members WHERE id = :id")
+    @Query("SELECT * FROM members WHERE id = :id LIMIT 1")
     suspend fun getMemberById(id: String): MemberEntity?
+    
+    @Query("SELECT * FROM members WHERE id = :id LIMIT 1")
+    suspend fun getById(id: String): MemberEntity?
     
     @Query("SELECT * FROM members WHERE roscaId = :roscaId")
     fun getMembersByGroup(roscaId: String): List<MemberEntity>
@@ -27,9 +30,8 @@ interface MemberDao {
     @Query("SELECT * FROM members")
     suspend fun getAllMembers(): List<MemberEntity>
     
-    // Alias for getMemberById - required by some services
-    @Query("SELECT * FROM members WHERE id = :id")
-    suspend fun getById(id: String): MemberEntity?
+    @Query("SELECT * FROM members WHERE nodeId = :nodeId AND roscaId = :roscaId LIMIT 1")
+    suspend fun getByNodeId(nodeId: String, roscaId: String): MemberEntity?
     
     @Query("UPDATE members SET status = :status, updatedAt = :updatedAt WHERE id = :memberId")
     suspend fun updateStatus(memberId: String, status: String, updatedAt: Long)
