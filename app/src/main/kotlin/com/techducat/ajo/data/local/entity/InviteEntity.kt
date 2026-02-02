@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
 import androidx.room.Index
+import com.techducat.ajo.model.Invite
 
 @Entity(
     tableName = "invites",
@@ -53,3 +54,35 @@ data class InviteEntity(
     }
 }
 
+// Extension functions for converting between Entity and Domain models
+fun InviteEntity.toDomain() = Invite(
+    id = id,
+    roscaId = roscaId,
+    inviterUserId = inviterUserId,
+    inviteeEmail = inviteeEmail,
+    referralCode = referralCode,
+    status = when (status.uppercase()) {
+        "PENDING" -> Invite.InviteStatus.PENDING
+        "ACCEPTED" -> Invite.InviteStatus.ACCEPTED
+        "EXPIRED" -> Invite.InviteStatus.EXPIRED
+        "DECLINED" -> Invite.InviteStatus.DECLINED
+        else -> Invite.InviteStatus.PENDING
+    },
+    createdAt = createdAt,
+    acceptedAt = acceptedAt,
+    expiresAt = expiresAt,
+    acceptedByUserId = acceptedByUserId
+)
+
+fun Invite.toEntity() = InviteEntity(
+    id = id,
+    roscaId = roscaId,
+    inviterUserId = inviterUserId,
+    inviteeEmail = inviteeEmail,
+    referralCode = referralCode,
+    status = status.name.lowercase(),
+    createdAt = createdAt,
+    acceptedAt = acceptedAt,
+    expiresAt = expiresAt,
+    acceptedByUserId = acceptedByUserId
+)

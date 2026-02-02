@@ -25,20 +25,21 @@ class MultisigCoordinator(
     }
     
     companion object {
-        private const val TAG = "MultisigCoordinator"
+        private const val TAG = "com.techducat.ajo.sync.MultisigCoordinator"
     }
     
     fun observePendingSignatures(roscaId: String): Flow<List<PendingSignature>> {
         return db.multisigSignatureDao().getByRoscaFlow(roscaId).map { allSignatures ->
             val pending = mutableListOf<PendingSignature>()
             
+            // ✅ FIX: Use userId from localNode to find member
             val localNode = db.localNodeDao().getLocalNode()
             val myMember = localNode?.let { node ->
-                db.memberDao().getByNodeId(node.nodeId, roscaId)
+                db.memberDao().getByUserId(node.nodeId, roscaId)
             }
             
             if (myMember == null) {
-                Log.w(TAG, "Member not found for node")
+                Log.w(TAG, "Member not found for local node userId: ${localNode?.nodeId}")
                 return@map emptyList()
             }
             
@@ -57,11 +58,16 @@ class MultisigCoordinator(
                 
                 if (!iHaveSigned) {
                     val currentSigCount = txSignatures.size
-                    val mySigningOrder = myMember.signingOrder
                     
-                    val isMyTurn = if (mySigningOrder > 0) {
-                        currentSigCount + 1 == mySigningOrder
+                    // ✅ FIX: Use position instead of signingOrder
+                    val myPosition = myMember.position
+                    
+                    // Check if it's my turn based on position
+                    val isMyTurn = if (myPosition >= 0) {
+                        // If we have position-based ordering, check if it's our turn
+                        currentSigCount == myPosition
                     } else {
+                        // If no position ordering, anyone can sign
                         true
                     }
                     
@@ -97,9 +103,10 @@ class MultisigCoordinator(
             val existingSigs = db.multisigSignatureDao().getByTransaction(txHashOrId)
             Log.i(TAG, "Found ${existingSigs.size} existing signatures")
             
+            // ✅ FIX: Use userId from localNode to find member
             val localNode = KeyManagerImpl.getOrCreateLocalNode(context)
-            val myMember = db.memberDao().getByNodeId(localNode.nodeId, tx.roscaId)
-                ?: return@withContext SigningResult.Error("Member not found")
+            val myMember = db.memberDao().getByUserId(localNode.nodeId, tx.roscaId)
+                ?: return@withContext SigningResult.Error("Member not found for userId: ${localNode.nodeId}")
             
             val alreadySigned = existingSigs.any { sig ->
                 sig.memberId == myMember.id

@@ -123,7 +123,7 @@ public final class AjoDatabase_Impl extends AjoDatabase {
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_sync_targets_roscaId` ON `sync_targets` (`roscaId`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_sync_targets_targetPeerId` ON `sync_targets` (`targetPeerId`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `roscas` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `creatorId` TEXT, `groupType` TEXT NOT NULL, `contributionAmount` INTEGER NOT NULL, `contributionFrequency` TEXT NOT NULL, `frequencyDays` INTEGER NOT NULL, `totalMembers` INTEGER NOT NULL, `currentMembers` INTEGER NOT NULL, `payoutOrder` TEXT NOT NULL, `distributionMethod` TEXT NOT NULL, `cycleNumber` INTEGER NOT NULL, `currentRound` INTEGER NOT NULL, `totalCycles` INTEGER NOT NULL, `status` TEXT NOT NULL, `walletAddress` TEXT, `roscaWalletPath` TEXT, `multisigAddress` TEXT, `multisigInfo` TEXT, `ipfsHash` TEXT, `ipfsCid` TEXT, `ipnsKey` TEXT, `version` INTEGER NOT NULL, `isDirty` INTEGER NOT NULL, `lastSyncedAt` INTEGER, `lastSyncTimestamp` INTEGER, `startDate` INTEGER, `startedAt` INTEGER, `completedAt` INTEGER, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `members` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `userId` TEXT NOT NULL, `name` TEXT NOT NULL, `moneroAddress` TEXT, `joinedAt` INTEGER NOT NULL, `position` INTEGER NOT NULL, `leftAt` INTEGER NOT NULL, `leftReason` TEXT NOT NULL, `isActive` INTEGER NOT NULL, `walletAddress` TEXT, `payoutOrderPosition` INTEGER, `hasReceivedPayout` INTEGER NOT NULL, `totalContributed` INTEGER NOT NULL, `missedPayments` INTEGER NOT NULL, `lastContributionAt` INTEGER, `exitedAt` INTEGER, `updatedAt` INTEGER, `ipfsHash` TEXT, `lastSyncedAt` INTEGER, `isDirty` INTEGER NOT NULL, `status` TEXT, `multisigInfo` TEXT, `hasReceived` INTEGER NOT NULL, `nodeId` TEXT, `publicWalletAddress` TEXT, `signingOrder` INTEGER NOT NULL, `syncVersion` INTEGER NOT NULL, `lastModifiedBy` TEXT, `lastModifiedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `members` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `userId` TEXT NOT NULL, `name` TEXT NOT NULL, `moneroAddress` TEXT, `joinedAt` INTEGER NOT NULL, `position` INTEGER NOT NULL, `leftAt` INTEGER NOT NULL, `leftReason` TEXT NOT NULL, `isActive` INTEGER NOT NULL, `walletAddress` TEXT, `payoutOrderPosition` INTEGER, `hasReceivedPayout` INTEGER NOT NULL, `totalContributed` INTEGER NOT NULL, `missedPayments` INTEGER NOT NULL, `lastContributionAt` INTEGER, `exitedAt` INTEGER, `updatedAt` INTEGER, `ipfsHash` TEXT, `lastSyncedAt` INTEGER, `isDirty` INTEGER NOT NULL, `status` TEXT NOT NULL, `multisigInfo` TEXT, `hasReceived` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `contributions` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `memberId` TEXT NOT NULL, `amount` INTEGER NOT NULL, `cycleNumber` INTEGER NOT NULL, `status` TEXT NOT NULL, `dueDate` INTEGER NOT NULL, `txHash` TEXT, `txId` TEXT, `proofOfPayment` TEXT, `paidAt` INTEGER, `confirmations` INTEGER NOT NULL, `verifiedAt` INTEGER, `notes` TEXT, `createdAt` INTEGER NOT NULL, `updated_at` INTEGER, `isDirty` INTEGER NOT NULL, `lastSyncedAt` INTEGER, `ipfsHash` TEXT, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `rounds` (`id` TEXT NOT NULL, `rosca_id` TEXT NOT NULL, `round_number` INTEGER NOT NULL, `recipient_member_id` TEXT NOT NULL, `recipient_address` TEXT NOT NULL, `status` TEXT NOT NULL, `target_amount` INTEGER NOT NULL, `collected_amount` INTEGER NOT NULL, `expected_contributors` INTEGER NOT NULL, `actual_contributors` INTEGER NOT NULL, `payout_amount` INTEGER, `service_fee` INTEGER NOT NULL, `penalty_amount` INTEGER NOT NULL, `started_at` INTEGER NOT NULL, `due_date` INTEGER NOT NULL, `payout_initiated_at` INTEGER, `completed_at` INTEGER, `payout_tx_hash` TEXT, `payout_tx_id` TEXT, `payout_confirmations` INTEGER NOT NULL, `notes` TEXT, `ipfs_hash` TEXT, `is_dirty` INTEGER NOT NULL, `last_synced_at` INTEGER, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`rosca_id`) REFERENCES `roscas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_rounds_rosca_id` ON `rounds` (`rosca_id`)");
@@ -149,7 +149,7 @@ public final class AjoDatabase_Impl extends AjoDatabase {
         db.execSQL("CREATE TABLE IF NOT EXISTS `service_fees` (`id` TEXT NOT NULL, `distributionId` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `grossAmount` INTEGER NOT NULL, `feeAmount` INTEGER NOT NULL, `netAmount` INTEGER NOT NULL, `feePercentage` REAL NOT NULL, `serviceWallet` TEXT NOT NULL, `recipientTxHash` TEXT, `feeTxHash` TEXT, `status` TEXT NOT NULL, `errorMessage` TEXT, `createdAt` INTEGER NOT NULL, `completedAt` INTEGER, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `payouts` (`id` TEXT NOT NULL, `rosca_id` TEXT NOT NULL, `recipient_id` TEXT NOT NULL, `round_id` TEXT, `payout_type` TEXT NOT NULL, `gross_amount` INTEGER NOT NULL, `service_fee` INTEGER NOT NULL, `penalty_amount` INTEGER NOT NULL, `net_amount` INTEGER NOT NULL, `tx_hash` TEXT, `tx_id` TEXT, `recipient_address` TEXT NOT NULL, `status` TEXT NOT NULL, `initiated_at` INTEGER NOT NULL, `completed_at` INTEGER, `failed_at` INTEGER, `error_message` TEXT, `confirmations` INTEGER NOT NULL, `verified_at` INTEGER, `notes` TEXT, `created_at` INTEGER NOT NULL, `updated_at` INTEGER, `ipfs_hash` TEXT, `last_synced_at` INTEGER, `is_dirty` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `penalties` (`id` TEXT NOT NULL, `rosca_id` TEXT NOT NULL, `member_id` TEXT NOT NULL, `payout_id` TEXT, `penalty_type` TEXT NOT NULL, `total_contributed` INTEGER NOT NULL, `cycles_participated` INTEGER NOT NULL, `cycles_remaining` INTEGER NOT NULL, `penalty_percentage` REAL NOT NULL, `penalty_amount` INTEGER NOT NULL, `reimbursement_amount` INTEGER NOT NULL, `calculation_method` TEXT NOT NULL, `reason` TEXT NOT NULL, `exit_reason` TEXT, `status` TEXT NOT NULL, `applied_at` INTEGER, `waived_at` INTEGER, `waived_by` TEXT, `waiver_reason` TEXT, `notes` TEXT, `created_at` INTEGER NOT NULL, `updated_at` INTEGER, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT NOT NULL, `txHash` TEXT, `status` TEXT NOT NULL, `confirmations` INTEGER NOT NULL, `confirmedAt` INTEGER, `createdAt` INTEGER NOT NULL, `roscaId` TEXT NOT NULL, `type` TEXT NOT NULL, `amount` INTEGER NOT NULL, `fromAddress` TEXT, `toAddress` TEXT, `blockHeight` INTEGER, `timestamp` INTEGER NOT NULL, `requiredSignatures` INTEGER NOT NULL, `currentSignatureCount` INTEGER NOT NULL, `syncVersion` INTEGER NOT NULL, `lastModifiedBy` TEXT, `lastModifiedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `roundNumber` INTEGER NOT NULL, `txHash` TEXT, `amount` INTEGER NOT NULL, `toAddress` TEXT, `fromAddress` TEXT, `status` TEXT NOT NULL, `requiredSignatures` INTEGER NOT NULL, `currentSignatureCount` INTEGER NOT NULL, `confirmations` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `broadcastAt` INTEGER, `confirmedAt` INTEGER, `syncVersion` INTEGER NOT NULL, `lastModifiedBy` TEXT NOT NULL, `lastModifiedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `multisig_signatures` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `roundNumber` INTEGER NOT NULL, `txHash` TEXT NOT NULL, `memberId` TEXT NOT NULL, `hasSigned` INTEGER NOT NULL, `signature` TEXT, `timestamp` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`roscaId`) REFERENCES `roscas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_multisig_signatures_roscaId` ON `multisig_signatures` (`roscaId`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_multisig_signatures_roundNumber` ON `multisig_signatures` (`roundNumber`)");
@@ -170,7 +170,7 @@ public final class AjoDatabase_Impl extends AjoDatabase {
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_sync_log_timestamp` ON `sync_log` (`timestamp`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `sync_conflicts` (`id` TEXT NOT NULL, `roscaId` TEXT NOT NULL, `entityType` TEXT NOT NULL, `entityId` TEXT NOT NULL, `localVersion` INTEGER NOT NULL, `remoteVersion` INTEGER NOT NULL, `localPayload` TEXT NOT NULL, `remotePayload` TEXT NOT NULL, `detectedAt` INTEGER NOT NULL, `resolvedAt` INTEGER, `resolution` TEXT, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b980c38fe6742368ad65c918db6e6435')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '093f5fe289436947f015d949bf97fbe7')");
       }
 
       @Override
@@ -341,7 +341,7 @@ public final class AjoDatabase_Impl extends AjoDatabase {
                   + " Expected:\n" + _infoRoscas + "\n"
                   + " Found:\n" + _existingRoscas);
         }
-        final HashMap<String, TableInfo.Column> _columnsMembers = new HashMap<String, TableInfo.Column>(30);
+        final HashMap<String, TableInfo.Column> _columnsMembers = new HashMap<String, TableInfo.Column>(24);
         _columnsMembers.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("userId", new TableInfo.Column("userId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -363,15 +363,9 @@ public final class AjoDatabase_Impl extends AjoDatabase {
         _columnsMembers.put("ipfsHash", new TableInfo.Column("ipfsHash", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("lastSyncedAt", new TableInfo.Column("lastSyncedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("isDirty", new TableInfo.Column("isDirty", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsMembers.put("status", new TableInfo.Column("status", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMembers.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("multisigInfo", new TableInfo.Column("multisigInfo", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("hasReceived", new TableInfo.Column("hasReceived", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsMembers.put("nodeId", new TableInfo.Column("nodeId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsMembers.put("publicWalletAddress", new TableInfo.Column("publicWalletAddress", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsMembers.put("signingOrder", new TableInfo.Column("signingOrder", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsMembers.put("syncVersion", new TableInfo.Column("syncVersion", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsMembers.put("lastModifiedBy", new TableInfo.Column("lastModifiedBy", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsMembers.put("lastModifiedAt", new TableInfo.Column("lastModifiedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysMembers = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesMembers = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoMembers = new TableInfo("members", _columnsMembers, _foreignKeysMembers, _indicesMembers);
@@ -619,24 +613,23 @@ public final class AjoDatabase_Impl extends AjoDatabase {
                   + " Expected:\n" + _infoPenalties + "\n"
                   + " Found:\n" + _existingPenalties);
         }
-        final HashMap<String, TableInfo.Column> _columnsTransactions = new HashMap<String, TableInfo.Column>(18);
+        final HashMap<String, TableInfo.Column> _columnsTransactions = new HashMap<String, TableInfo.Column>(17);
         _columnsTransactions.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("txHash", new TableInfo.Column("txHash", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("confirmations", new TableInfo.Column("confirmations", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("confirmedAt", new TableInfo.Column("confirmedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("roscaId", new TableInfo.Column("roscaId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("type", new TableInfo.Column("type", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("roundNumber", new TableInfo.Column("roundNumber", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("txHash", new TableInfo.Column("txHash", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("amount", new TableInfo.Column("amount", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("fromAddress", new TableInfo.Column("fromAddress", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("toAddress", new TableInfo.Column("toAddress", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("blockHeight", new TableInfo.Column("blockHeight", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("timestamp", new TableInfo.Column("timestamp", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("fromAddress", new TableInfo.Column("fromAddress", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("requiredSignatures", new TableInfo.Column("requiredSignatures", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("currentSignatureCount", new TableInfo.Column("currentSignatureCount", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("confirmations", new TableInfo.Column("confirmations", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("broadcastAt", new TableInfo.Column("broadcastAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("confirmedAt", new TableInfo.Column("confirmedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("syncVersion", new TableInfo.Column("syncVersion", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTransactions.put("lastModifiedBy", new TableInfo.Column("lastModifiedBy", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTransactions.put("lastModifiedBy", new TableInfo.Column("lastModifiedBy", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTransactions.put("lastModifiedAt", new TableInfo.Column("lastModifiedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysTransactions = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesTransactions = new HashSet<TableInfo.Index>(0);
@@ -805,7 +798,7 @@ public final class AjoDatabase_Impl extends AjoDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "b980c38fe6742368ad65c918db6e6435", "2aa08acf960e510fd5099dbb6a55ae1f");
+    }, "093f5fe289436947f015d949bf97fbe7", "8814eddb60a9c04532bd21e9ea75de4f");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

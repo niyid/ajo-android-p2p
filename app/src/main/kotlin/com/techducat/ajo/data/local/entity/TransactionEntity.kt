@@ -2,78 +2,75 @@ package com.techducat.ajo.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.techducat.ajo.model.Transaction
 
 @Entity(tableName = "transactions")
 data class TransactionEntity(
     @PrimaryKey val id: String,
-    
-    // ========== EXISTING FIELDS (PRESERVED) ==========
+    val roscaId: String,
+    val roundNumber: Int,
     var txHash: String?,
+    val amount: Long,
+    val toAddress: String?,
+    val fromAddress: String?,
     var status: String,
+    val requiredSignatures: Int,
+    val currentSignatureCount: Int,
     var confirmations: Int = 0,
-    var confirmedAt: Long? = null,
     val createdAt: Long,
-    
-    // ========== BASIC TRANSACTION FIELDS ==========
-    val roscaId: String = "",
-    val type: String = "DISTRIBUTION",
-    val amount: Long = 0,
-    val fromAddress: String? = null,
-    val toAddress: String? = null,
-    val blockHeight: Long? = null,
-    val timestamp: Long = System.currentTimeMillis(),
-    
-    // ========== MULTISIG FIELDS ==========
-    val requiredSignatures: Int = 3,
-    val currentSignatureCount: Int = 0,
-    
-    // ========== P2P SYNC FIELDS ==========
-    val syncVersion: Long = 1,
-    val lastModifiedBy: String? = null,
-    val lastModifiedAt: Long = System.currentTimeMillis()
+    val broadcastAt: Long? = null,
+    var confirmedAt: Long? = null,
+    val syncVersion: Int,
+    val lastModifiedBy: String,
+    val lastModifiedAt: Long
 ) {
     companion object {
-        // Status constants
-        const val STATUS_PENDING_SIGNATURES = "PENDING_SIGNATURES"
-        const val STATUS_PENDING_CONFIRMATION = "PENDING_CONFIRMATION"
-        const val STATUS_BROADCAST = "BROADCAST"
+        const val STATUS_PENDING_SIGNATURES = "pending_signatures"
+        const val STATUS_BROADCAST = "broadcast"
         const val STATUS_CONFIRMED = "confirmed"
         const val STATUS_FAILED = "failed"
-        
-        // Transaction type constants
-        const val TYPE_CONTRIBUTION = "CONTRIBUTION"
-        const val TYPE_DISTRIBUTION = "DISTRIBUTION"
-        const val TYPE_PENALTY = "PENALTY"
-        const val TYPE_FEE = "FEE"
-    }
-    
-    /**
-     * Checks if transaction has enough signatures to broadcast
-     */
-    fun isReadyToBroadcast(): Boolean = 
-        currentSignatureCount >= requiredSignatures
-    
-    /**
-     * Checks if transaction is confirmed on blockchain
-     */
-    fun isComplete(): Boolean = 
-        status == STATUS_CONFIRMED
-    
-    /**
-     * Checks if more signatures are needed
-     */
-    fun needsMoreSignatures(): Boolean = 
-        currentSignatureCount < requiredSignatures
-    
-    /**
-     * Gets human-readable status description
-     */
-    fun getStatusDescription(): String = when {
-        needsMoreSignatures() -> "Collecting signatures ($currentSignatureCount/$requiredSignatures)"
-        status == STATUS_PENDING_CONFIRMATION -> "Waiting for blockchain confirmation"
-        status == STATUS_BROADCAST -> "Broadcast to network"
-        status == STATUS_CONFIRMED -> "Confirmed ($confirmations confirmations)"
-        status == STATUS_FAILED -> "Transaction failed"
-        else -> status
     }
 }
+
+// Extension functions for converting between Entity and Domain models
+fun TransactionEntity.toDomain() = Transaction(
+    id = id,
+    roscaId = roscaId,
+    roundNumber = roundNumber,
+    txHash = txHash,
+    amount = amount,
+    toAddress = toAddress,
+    fromAddress = fromAddress,
+    status = when (status) {
+        TransactionEntity.STATUS_PENDING_SIGNATURES -> Transaction.TransactionStatus.PENDING_SIGNATURES
+        TransactionEntity.STATUS_BROADCAST -> Transaction.TransactionStatus.BROADCAST
+        TransactionEntity.STATUS_CONFIRMED -> Transaction.TransactionStatus.CONFIRMED
+        else -> Transaction.TransactionStatus.FAILED
+    },
+    requiredSignatures = requiredSignatures,
+    currentSignatureCount = currentSignatureCount,
+    confirmations = confirmations,
+    createdAt = createdAt,
+    broadcastAt = broadcastAt,
+    confirmedAt = confirmedAt
+)
+
+fun Transaction.toEntity() = TransactionEntity(
+    id = id,
+    roscaId = roscaId,
+    roundNumber = roundNumber,
+    txHash = txHash,
+    amount = amount,
+    toAddress = toAddress,
+    fromAddress = fromAddress,
+    status = status.name,
+    requiredSignatures = requiredSignatures,
+    currentSignatureCount = currentSignatureCount,
+    confirmations = confirmations,
+    createdAt = createdAt,
+    broadcastAt = broadcastAt,
+    confirmedAt = confirmedAt,
+    syncVersion = 1,
+    lastModifiedBy = "",
+    lastModifiedAt = System.currentTimeMillis()
+)

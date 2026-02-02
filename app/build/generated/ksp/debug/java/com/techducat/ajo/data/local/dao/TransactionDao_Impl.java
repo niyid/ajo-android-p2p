@@ -50,54 +50,49 @@ public final class TransactionDao_Impl implements TransactionDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `transactions` (`id`,`txHash`,`status`,`confirmations`,`confirmedAt`,`createdAt`,`roscaId`,`type`,`amount`,`fromAddress`,`toAddress`,`blockHeight`,`timestamp`,`requiredSignatures`,`currentSignatureCount`,`syncVersion`,`lastModifiedBy`,`lastModifiedAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `transactions` (`id`,`roscaId`,`roundNumber`,`txHash`,`amount`,`toAddress`,`fromAddress`,`status`,`requiredSignatures`,`currentSignatureCount`,`confirmations`,`createdAt`,`broadcastAt`,`confirmedAt`,`syncVersion`,`lastModifiedBy`,`lastModifiedAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final TransactionEntity entity) {
         statement.bindString(1, entity.getId());
+        statement.bindString(2, entity.getRoscaId());
+        statement.bindLong(3, entity.getRoundNumber());
         if (entity.getTxHash() == null) {
-          statement.bindNull(2);
+          statement.bindNull(4);
         } else {
-          statement.bindString(2, entity.getTxHash());
+          statement.bindString(4, entity.getTxHash());
         }
-        statement.bindString(3, entity.getStatus());
-        statement.bindLong(4, entity.getConfirmations());
-        if (entity.getConfirmedAt() == null) {
-          statement.bindNull(5);
-        } else {
-          statement.bindLong(5, entity.getConfirmedAt());
-        }
-        statement.bindLong(6, entity.getCreatedAt());
-        statement.bindString(7, entity.getRoscaId());
-        statement.bindString(8, entity.getType());
-        statement.bindLong(9, entity.getAmount());
-        if (entity.getFromAddress() == null) {
-          statement.bindNull(10);
-        } else {
-          statement.bindString(10, entity.getFromAddress());
-        }
+        statement.bindLong(5, entity.getAmount());
         if (entity.getToAddress() == null) {
-          statement.bindNull(11);
+          statement.bindNull(6);
         } else {
-          statement.bindString(11, entity.getToAddress());
+          statement.bindString(6, entity.getToAddress());
         }
-        if (entity.getBlockHeight() == null) {
-          statement.bindNull(12);
+        if (entity.getFromAddress() == null) {
+          statement.bindNull(7);
         } else {
-          statement.bindLong(12, entity.getBlockHeight());
+          statement.bindString(7, entity.getFromAddress());
         }
-        statement.bindLong(13, entity.getTimestamp());
-        statement.bindLong(14, entity.getRequiredSignatures());
-        statement.bindLong(15, entity.getCurrentSignatureCount());
-        statement.bindLong(16, entity.getSyncVersion());
-        if (entity.getLastModifiedBy() == null) {
-          statement.bindNull(17);
+        statement.bindString(8, entity.getStatus());
+        statement.bindLong(9, entity.getRequiredSignatures());
+        statement.bindLong(10, entity.getCurrentSignatureCount());
+        statement.bindLong(11, entity.getConfirmations());
+        statement.bindLong(12, entity.getCreatedAt());
+        if (entity.getBroadcastAt() == null) {
+          statement.bindNull(13);
         } else {
-          statement.bindString(17, entity.getLastModifiedBy());
+          statement.bindLong(13, entity.getBroadcastAt());
         }
-        statement.bindLong(18, entity.getLastModifiedAt());
+        if (entity.getConfirmedAt() == null) {
+          statement.bindNull(14);
+        } else {
+          statement.bindLong(14, entity.getConfirmedAt());
+        }
+        statement.bindLong(15, entity.getSyncVersion());
+        statement.bindString(16, entity.getLastModifiedBy());
+        statement.bindLong(17, entity.getLastModifiedAt());
       }
     };
     this.__deletionAdapterOfTransactionEntity = new EntityDeletionOrUpdateAdapter<TransactionEntity>(__db) {
@@ -117,55 +112,50 @@ public final class TransactionDao_Impl implements TransactionDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `transactions` SET `id` = ?,`txHash` = ?,`status` = ?,`confirmations` = ?,`confirmedAt` = ?,`createdAt` = ?,`roscaId` = ?,`type` = ?,`amount` = ?,`fromAddress` = ?,`toAddress` = ?,`blockHeight` = ?,`timestamp` = ?,`requiredSignatures` = ?,`currentSignatureCount` = ?,`syncVersion` = ?,`lastModifiedBy` = ?,`lastModifiedAt` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `transactions` SET `id` = ?,`roscaId` = ?,`roundNumber` = ?,`txHash` = ?,`amount` = ?,`toAddress` = ?,`fromAddress` = ?,`status` = ?,`requiredSignatures` = ?,`currentSignatureCount` = ?,`confirmations` = ?,`createdAt` = ?,`broadcastAt` = ?,`confirmedAt` = ?,`syncVersion` = ?,`lastModifiedBy` = ?,`lastModifiedAt` = ? WHERE `id` = ?";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final TransactionEntity entity) {
         statement.bindString(1, entity.getId());
+        statement.bindString(2, entity.getRoscaId());
+        statement.bindLong(3, entity.getRoundNumber());
         if (entity.getTxHash() == null) {
-          statement.bindNull(2);
+          statement.bindNull(4);
         } else {
-          statement.bindString(2, entity.getTxHash());
+          statement.bindString(4, entity.getTxHash());
         }
-        statement.bindString(3, entity.getStatus());
-        statement.bindLong(4, entity.getConfirmations());
-        if (entity.getConfirmedAt() == null) {
-          statement.bindNull(5);
-        } else {
-          statement.bindLong(5, entity.getConfirmedAt());
-        }
-        statement.bindLong(6, entity.getCreatedAt());
-        statement.bindString(7, entity.getRoscaId());
-        statement.bindString(8, entity.getType());
-        statement.bindLong(9, entity.getAmount());
-        if (entity.getFromAddress() == null) {
-          statement.bindNull(10);
-        } else {
-          statement.bindString(10, entity.getFromAddress());
-        }
+        statement.bindLong(5, entity.getAmount());
         if (entity.getToAddress() == null) {
-          statement.bindNull(11);
+          statement.bindNull(6);
         } else {
-          statement.bindString(11, entity.getToAddress());
+          statement.bindString(6, entity.getToAddress());
         }
-        if (entity.getBlockHeight() == null) {
-          statement.bindNull(12);
+        if (entity.getFromAddress() == null) {
+          statement.bindNull(7);
         } else {
-          statement.bindLong(12, entity.getBlockHeight());
+          statement.bindString(7, entity.getFromAddress());
         }
-        statement.bindLong(13, entity.getTimestamp());
-        statement.bindLong(14, entity.getRequiredSignatures());
-        statement.bindLong(15, entity.getCurrentSignatureCount());
-        statement.bindLong(16, entity.getSyncVersion());
-        if (entity.getLastModifiedBy() == null) {
-          statement.bindNull(17);
+        statement.bindString(8, entity.getStatus());
+        statement.bindLong(9, entity.getRequiredSignatures());
+        statement.bindLong(10, entity.getCurrentSignatureCount());
+        statement.bindLong(11, entity.getConfirmations());
+        statement.bindLong(12, entity.getCreatedAt());
+        if (entity.getBroadcastAt() == null) {
+          statement.bindNull(13);
         } else {
-          statement.bindString(17, entity.getLastModifiedBy());
+          statement.bindLong(13, entity.getBroadcastAt());
         }
-        statement.bindLong(18, entity.getLastModifiedAt());
-        statement.bindString(19, entity.getId());
+        if (entity.getConfirmedAt() == null) {
+          statement.bindNull(14);
+        } else {
+          statement.bindLong(14, entity.getConfirmedAt());
+        }
+        statement.bindLong(15, entity.getSyncVersion());
+        statement.bindString(16, entity.getLastModifiedBy());
+        statement.bindLong(17, entity.getLastModifiedAt());
+        statement.bindString(18, entity.getId());
       }
     };
     this.__preparedStmtOfDeleteOldCompletedTransactions = new SharedSQLiteStatement(__db) {
@@ -275,20 +265,19 @@ public final class TransactionDao_Impl implements TransactionDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
-          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
-          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+          final int _cursorIndexOfRoundNumber = CursorUtil.getColumnIndexOrThrow(_cursor, "roundNumber");
+          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
           final int _cursorIndexOfAmount = CursorUtil.getColumnIndexOrThrow(_cursor, "amount");
-          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
           final int _cursorIndexOfToAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "toAddress");
-          final int _cursorIndexOfBlockHeight = CursorUtil.getColumnIndexOrThrow(_cursor, "blockHeight");
-          final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfRequiredSignatures = CursorUtil.getColumnIndexOrThrow(_cursor, "requiredSignatures");
           final int _cursorIndexOfCurrentSignatureCount = CursorUtil.getColumnIndexOrThrow(_cursor, "currentSignatureCount");
+          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfBroadcastAt = CursorUtil.getColumnIndexOrThrow(_cursor, "broadcastAt");
+          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
           final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
           final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
           final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
@@ -296,65 +285,59 @@ public final class TransactionDao_Impl implements TransactionDao {
           if (_cursor.moveToFirst()) {
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final int _tmpRoundNumber;
+            _tmpRoundNumber = _cursor.getInt(_cursorIndexOfRoundNumber);
             final String _tmpTxHash;
             if (_cursor.isNull(_cursorIndexOfTxHash)) {
               _tmpTxHash = null;
             } else {
               _tmpTxHash = _cursor.getString(_cursorIndexOfTxHash);
             }
-            final String _tmpStatus;
-            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            final int _tmpConfirmations;
-            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
-            final Long _tmpConfirmedAt;
-            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
-              _tmpConfirmedAt = null;
-            } else {
-              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
-            }
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final String _tmpRoscaId;
-            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
-            final String _tmpType;
-            _tmpType = _cursor.getString(_cursorIndexOfType);
             final long _tmpAmount;
             _tmpAmount = _cursor.getLong(_cursorIndexOfAmount);
-            final String _tmpFromAddress;
-            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
-              _tmpFromAddress = null;
-            } else {
-              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
-            }
             final String _tmpToAddress;
             if (_cursor.isNull(_cursorIndexOfToAddress)) {
               _tmpToAddress = null;
             } else {
               _tmpToAddress = _cursor.getString(_cursorIndexOfToAddress);
             }
-            final Long _tmpBlockHeight;
-            if (_cursor.isNull(_cursorIndexOfBlockHeight)) {
-              _tmpBlockHeight = null;
+            final String _tmpFromAddress;
+            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
+              _tmpFromAddress = null;
             } else {
-              _tmpBlockHeight = _cursor.getLong(_cursorIndexOfBlockHeight);
+              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
             }
-            final long _tmpTimestamp;
-            _tmpTimestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final int _tmpRequiredSignatures;
             _tmpRequiredSignatures = _cursor.getInt(_cursorIndexOfRequiredSignatures);
             final int _tmpCurrentSignatureCount;
             _tmpCurrentSignatureCount = _cursor.getInt(_cursorIndexOfCurrentSignatureCount);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
+            final int _tmpConfirmations;
+            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpBroadcastAt;
+            if (_cursor.isNull(_cursorIndexOfBroadcastAt)) {
+              _tmpBroadcastAt = null;
             } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
+              _tmpBroadcastAt = _cursor.getLong(_cursorIndexOfBroadcastAt);
             }
+            final Long _tmpConfirmedAt;
+            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
+              _tmpConfirmedAt = null;
+            } else {
+              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
+            }
+            final int _tmpSyncVersion;
+            _tmpSyncVersion = _cursor.getInt(_cursorIndexOfSyncVersion);
+            final String _tmpLastModifiedBy;
+            _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
             final long _tmpLastModifiedAt;
             _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _result = new TransactionEntity(_tmpId,_tmpTxHash,_tmpStatus,_tmpConfirmations,_tmpConfirmedAt,_tmpCreatedAt,_tmpRoscaId,_tmpType,_tmpAmount,_tmpFromAddress,_tmpToAddress,_tmpBlockHeight,_tmpTimestamp,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _result = new TransactionEntity(_tmpId,_tmpRoscaId,_tmpRoundNumber,_tmpTxHash,_tmpAmount,_tmpToAddress,_tmpFromAddress,_tmpStatus,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpConfirmations,_tmpCreatedAt,_tmpBroadcastAt,_tmpConfirmedAt,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
           } else {
             _result = null;
           }
@@ -382,20 +365,19 @@ public final class TransactionDao_Impl implements TransactionDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
-          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
-          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+          final int _cursorIndexOfRoundNumber = CursorUtil.getColumnIndexOrThrow(_cursor, "roundNumber");
+          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
           final int _cursorIndexOfAmount = CursorUtil.getColumnIndexOrThrow(_cursor, "amount");
-          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
           final int _cursorIndexOfToAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "toAddress");
-          final int _cursorIndexOfBlockHeight = CursorUtil.getColumnIndexOrThrow(_cursor, "blockHeight");
-          final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfRequiredSignatures = CursorUtil.getColumnIndexOrThrow(_cursor, "requiredSignatures");
           final int _cursorIndexOfCurrentSignatureCount = CursorUtil.getColumnIndexOrThrow(_cursor, "currentSignatureCount");
+          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfBroadcastAt = CursorUtil.getColumnIndexOrThrow(_cursor, "broadcastAt");
+          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
           final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
           final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
           final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
@@ -403,65 +385,59 @@ public final class TransactionDao_Impl implements TransactionDao {
           if (_cursor.moveToFirst()) {
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final int _tmpRoundNumber;
+            _tmpRoundNumber = _cursor.getInt(_cursorIndexOfRoundNumber);
             final String _tmpTxHash;
             if (_cursor.isNull(_cursorIndexOfTxHash)) {
               _tmpTxHash = null;
             } else {
               _tmpTxHash = _cursor.getString(_cursorIndexOfTxHash);
             }
-            final String _tmpStatus;
-            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            final int _tmpConfirmations;
-            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
-            final Long _tmpConfirmedAt;
-            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
-              _tmpConfirmedAt = null;
-            } else {
-              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
-            }
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final String _tmpRoscaId;
-            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
-            final String _tmpType;
-            _tmpType = _cursor.getString(_cursorIndexOfType);
             final long _tmpAmount;
             _tmpAmount = _cursor.getLong(_cursorIndexOfAmount);
-            final String _tmpFromAddress;
-            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
-              _tmpFromAddress = null;
-            } else {
-              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
-            }
             final String _tmpToAddress;
             if (_cursor.isNull(_cursorIndexOfToAddress)) {
               _tmpToAddress = null;
             } else {
               _tmpToAddress = _cursor.getString(_cursorIndexOfToAddress);
             }
-            final Long _tmpBlockHeight;
-            if (_cursor.isNull(_cursorIndexOfBlockHeight)) {
-              _tmpBlockHeight = null;
+            final String _tmpFromAddress;
+            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
+              _tmpFromAddress = null;
             } else {
-              _tmpBlockHeight = _cursor.getLong(_cursorIndexOfBlockHeight);
+              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
             }
-            final long _tmpTimestamp;
-            _tmpTimestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final int _tmpRequiredSignatures;
             _tmpRequiredSignatures = _cursor.getInt(_cursorIndexOfRequiredSignatures);
             final int _tmpCurrentSignatureCount;
             _tmpCurrentSignatureCount = _cursor.getInt(_cursorIndexOfCurrentSignatureCount);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
+            final int _tmpConfirmations;
+            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpBroadcastAt;
+            if (_cursor.isNull(_cursorIndexOfBroadcastAt)) {
+              _tmpBroadcastAt = null;
             } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
+              _tmpBroadcastAt = _cursor.getLong(_cursorIndexOfBroadcastAt);
             }
+            final Long _tmpConfirmedAt;
+            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
+              _tmpConfirmedAt = null;
+            } else {
+              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
+            }
+            final int _tmpSyncVersion;
+            _tmpSyncVersion = _cursor.getInt(_cursorIndexOfSyncVersion);
+            final String _tmpLastModifiedBy;
+            _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
             final long _tmpLastModifiedAt;
             _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _result = new TransactionEntity(_tmpId,_tmpTxHash,_tmpStatus,_tmpConfirmations,_tmpConfirmedAt,_tmpCreatedAt,_tmpRoscaId,_tmpType,_tmpAmount,_tmpFromAddress,_tmpToAddress,_tmpBlockHeight,_tmpTimestamp,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _result = new TransactionEntity(_tmpId,_tmpRoscaId,_tmpRoundNumber,_tmpTxHash,_tmpAmount,_tmpToAddress,_tmpFromAddress,_tmpStatus,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpConfirmations,_tmpCreatedAt,_tmpBroadcastAt,_tmpConfirmedAt,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
           } else {
             _result = null;
           }
@@ -489,20 +465,19 @@ public final class TransactionDao_Impl implements TransactionDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
-          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
-          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+          final int _cursorIndexOfRoundNumber = CursorUtil.getColumnIndexOrThrow(_cursor, "roundNumber");
+          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
           final int _cursorIndexOfAmount = CursorUtil.getColumnIndexOrThrow(_cursor, "amount");
-          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
           final int _cursorIndexOfToAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "toAddress");
-          final int _cursorIndexOfBlockHeight = CursorUtil.getColumnIndexOrThrow(_cursor, "blockHeight");
-          final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfRequiredSignatures = CursorUtil.getColumnIndexOrThrow(_cursor, "requiredSignatures");
           final int _cursorIndexOfCurrentSignatureCount = CursorUtil.getColumnIndexOrThrow(_cursor, "currentSignatureCount");
+          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfBroadcastAt = CursorUtil.getColumnIndexOrThrow(_cursor, "broadcastAt");
+          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
           final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
           final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
           final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
@@ -511,65 +486,59 @@ public final class TransactionDao_Impl implements TransactionDao {
             final TransactionEntity _item;
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final int _tmpRoundNumber;
+            _tmpRoundNumber = _cursor.getInt(_cursorIndexOfRoundNumber);
             final String _tmpTxHash;
             if (_cursor.isNull(_cursorIndexOfTxHash)) {
               _tmpTxHash = null;
             } else {
               _tmpTxHash = _cursor.getString(_cursorIndexOfTxHash);
             }
-            final String _tmpStatus;
-            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            final int _tmpConfirmations;
-            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
-            final Long _tmpConfirmedAt;
-            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
-              _tmpConfirmedAt = null;
-            } else {
-              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
-            }
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final String _tmpRoscaId;
-            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
-            final String _tmpType;
-            _tmpType = _cursor.getString(_cursorIndexOfType);
             final long _tmpAmount;
             _tmpAmount = _cursor.getLong(_cursorIndexOfAmount);
-            final String _tmpFromAddress;
-            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
-              _tmpFromAddress = null;
-            } else {
-              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
-            }
             final String _tmpToAddress;
             if (_cursor.isNull(_cursorIndexOfToAddress)) {
               _tmpToAddress = null;
             } else {
               _tmpToAddress = _cursor.getString(_cursorIndexOfToAddress);
             }
-            final Long _tmpBlockHeight;
-            if (_cursor.isNull(_cursorIndexOfBlockHeight)) {
-              _tmpBlockHeight = null;
+            final String _tmpFromAddress;
+            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
+              _tmpFromAddress = null;
             } else {
-              _tmpBlockHeight = _cursor.getLong(_cursorIndexOfBlockHeight);
+              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
             }
-            final long _tmpTimestamp;
-            _tmpTimestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final int _tmpRequiredSignatures;
             _tmpRequiredSignatures = _cursor.getInt(_cursorIndexOfRequiredSignatures);
             final int _tmpCurrentSignatureCount;
             _tmpCurrentSignatureCount = _cursor.getInt(_cursorIndexOfCurrentSignatureCount);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
+            final int _tmpConfirmations;
+            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpBroadcastAt;
+            if (_cursor.isNull(_cursorIndexOfBroadcastAt)) {
+              _tmpBroadcastAt = null;
             } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
+              _tmpBroadcastAt = _cursor.getLong(_cursorIndexOfBroadcastAt);
             }
+            final Long _tmpConfirmedAt;
+            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
+              _tmpConfirmedAt = null;
+            } else {
+              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
+            }
+            final int _tmpSyncVersion;
+            _tmpSyncVersion = _cursor.getInt(_cursorIndexOfSyncVersion);
+            final String _tmpLastModifiedBy;
+            _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
             final long _tmpLastModifiedAt;
             _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _item = new TransactionEntity(_tmpId,_tmpTxHash,_tmpStatus,_tmpConfirmations,_tmpConfirmedAt,_tmpCreatedAt,_tmpRoscaId,_tmpType,_tmpAmount,_tmpFromAddress,_tmpToAddress,_tmpBlockHeight,_tmpTimestamp,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _item = new TransactionEntity(_tmpId,_tmpRoscaId,_tmpRoundNumber,_tmpTxHash,_tmpAmount,_tmpToAddress,_tmpFromAddress,_tmpStatus,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpConfirmations,_tmpCreatedAt,_tmpBroadcastAt,_tmpConfirmedAt,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
             _result.add(_item);
           }
           return _result;
@@ -594,20 +563,19 @@ public final class TransactionDao_Impl implements TransactionDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
-          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
-          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+          final int _cursorIndexOfRoundNumber = CursorUtil.getColumnIndexOrThrow(_cursor, "roundNumber");
+          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
           final int _cursorIndexOfAmount = CursorUtil.getColumnIndexOrThrow(_cursor, "amount");
-          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
           final int _cursorIndexOfToAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "toAddress");
-          final int _cursorIndexOfBlockHeight = CursorUtil.getColumnIndexOrThrow(_cursor, "blockHeight");
-          final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfRequiredSignatures = CursorUtil.getColumnIndexOrThrow(_cursor, "requiredSignatures");
           final int _cursorIndexOfCurrentSignatureCount = CursorUtil.getColumnIndexOrThrow(_cursor, "currentSignatureCount");
+          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfBroadcastAt = CursorUtil.getColumnIndexOrThrow(_cursor, "broadcastAt");
+          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
           final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
           final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
           final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
@@ -616,65 +584,59 @@ public final class TransactionDao_Impl implements TransactionDao {
             final TransactionEntity _item;
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final int _tmpRoundNumber;
+            _tmpRoundNumber = _cursor.getInt(_cursorIndexOfRoundNumber);
             final String _tmpTxHash;
             if (_cursor.isNull(_cursorIndexOfTxHash)) {
               _tmpTxHash = null;
             } else {
               _tmpTxHash = _cursor.getString(_cursorIndexOfTxHash);
             }
-            final String _tmpStatus;
-            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            final int _tmpConfirmations;
-            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
-            final Long _tmpConfirmedAt;
-            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
-              _tmpConfirmedAt = null;
-            } else {
-              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
-            }
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final String _tmpRoscaId;
-            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
-            final String _tmpType;
-            _tmpType = _cursor.getString(_cursorIndexOfType);
             final long _tmpAmount;
             _tmpAmount = _cursor.getLong(_cursorIndexOfAmount);
-            final String _tmpFromAddress;
-            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
-              _tmpFromAddress = null;
-            } else {
-              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
-            }
             final String _tmpToAddress;
             if (_cursor.isNull(_cursorIndexOfToAddress)) {
               _tmpToAddress = null;
             } else {
               _tmpToAddress = _cursor.getString(_cursorIndexOfToAddress);
             }
-            final Long _tmpBlockHeight;
-            if (_cursor.isNull(_cursorIndexOfBlockHeight)) {
-              _tmpBlockHeight = null;
+            final String _tmpFromAddress;
+            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
+              _tmpFromAddress = null;
             } else {
-              _tmpBlockHeight = _cursor.getLong(_cursorIndexOfBlockHeight);
+              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
             }
-            final long _tmpTimestamp;
-            _tmpTimestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final int _tmpRequiredSignatures;
             _tmpRequiredSignatures = _cursor.getInt(_cursorIndexOfRequiredSignatures);
             final int _tmpCurrentSignatureCount;
             _tmpCurrentSignatureCount = _cursor.getInt(_cursorIndexOfCurrentSignatureCount);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
+            final int _tmpConfirmations;
+            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpBroadcastAt;
+            if (_cursor.isNull(_cursorIndexOfBroadcastAt)) {
+              _tmpBroadcastAt = null;
             } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
+              _tmpBroadcastAt = _cursor.getLong(_cursorIndexOfBroadcastAt);
             }
+            final Long _tmpConfirmedAt;
+            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
+              _tmpConfirmedAt = null;
+            } else {
+              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
+            }
+            final int _tmpSyncVersion;
+            _tmpSyncVersion = _cursor.getInt(_cursorIndexOfSyncVersion);
+            final String _tmpLastModifiedBy;
+            _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
             final long _tmpLastModifiedAt;
             _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _item = new TransactionEntity(_tmpId,_tmpTxHash,_tmpStatus,_tmpConfirmations,_tmpConfirmedAt,_tmpCreatedAt,_tmpRoscaId,_tmpType,_tmpAmount,_tmpFromAddress,_tmpToAddress,_tmpBlockHeight,_tmpTimestamp,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _item = new TransactionEntity(_tmpId,_tmpRoscaId,_tmpRoundNumber,_tmpTxHash,_tmpAmount,_tmpToAddress,_tmpFromAddress,_tmpStatus,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpConfirmations,_tmpCreatedAt,_tmpBroadcastAt,_tmpConfirmedAt,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
             _result.add(_item);
           }
           return _result;
@@ -703,20 +665,19 @@ public final class TransactionDao_Impl implements TransactionDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
-          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
-          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+          final int _cursorIndexOfRoundNumber = CursorUtil.getColumnIndexOrThrow(_cursor, "roundNumber");
+          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
           final int _cursorIndexOfAmount = CursorUtil.getColumnIndexOrThrow(_cursor, "amount");
-          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
           final int _cursorIndexOfToAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "toAddress");
-          final int _cursorIndexOfBlockHeight = CursorUtil.getColumnIndexOrThrow(_cursor, "blockHeight");
-          final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfRequiredSignatures = CursorUtil.getColumnIndexOrThrow(_cursor, "requiredSignatures");
           final int _cursorIndexOfCurrentSignatureCount = CursorUtil.getColumnIndexOrThrow(_cursor, "currentSignatureCount");
+          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfBroadcastAt = CursorUtil.getColumnIndexOrThrow(_cursor, "broadcastAt");
+          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
           final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
           final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
           final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
@@ -725,65 +686,59 @@ public final class TransactionDao_Impl implements TransactionDao {
             final TransactionEntity _item;
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final int _tmpRoundNumber;
+            _tmpRoundNumber = _cursor.getInt(_cursorIndexOfRoundNumber);
             final String _tmpTxHash;
             if (_cursor.isNull(_cursorIndexOfTxHash)) {
               _tmpTxHash = null;
             } else {
               _tmpTxHash = _cursor.getString(_cursorIndexOfTxHash);
             }
-            final String _tmpStatus;
-            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            final int _tmpConfirmations;
-            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
-            final Long _tmpConfirmedAt;
-            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
-              _tmpConfirmedAt = null;
-            } else {
-              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
-            }
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final String _tmpRoscaId;
-            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
-            final String _tmpType;
-            _tmpType = _cursor.getString(_cursorIndexOfType);
             final long _tmpAmount;
             _tmpAmount = _cursor.getLong(_cursorIndexOfAmount);
-            final String _tmpFromAddress;
-            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
-              _tmpFromAddress = null;
-            } else {
-              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
-            }
             final String _tmpToAddress;
             if (_cursor.isNull(_cursorIndexOfToAddress)) {
               _tmpToAddress = null;
             } else {
               _tmpToAddress = _cursor.getString(_cursorIndexOfToAddress);
             }
-            final Long _tmpBlockHeight;
-            if (_cursor.isNull(_cursorIndexOfBlockHeight)) {
-              _tmpBlockHeight = null;
+            final String _tmpFromAddress;
+            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
+              _tmpFromAddress = null;
             } else {
-              _tmpBlockHeight = _cursor.getLong(_cursorIndexOfBlockHeight);
+              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
             }
-            final long _tmpTimestamp;
-            _tmpTimestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final int _tmpRequiredSignatures;
             _tmpRequiredSignatures = _cursor.getInt(_cursorIndexOfRequiredSignatures);
             final int _tmpCurrentSignatureCount;
             _tmpCurrentSignatureCount = _cursor.getInt(_cursorIndexOfCurrentSignatureCount);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
+            final int _tmpConfirmations;
+            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpBroadcastAt;
+            if (_cursor.isNull(_cursorIndexOfBroadcastAt)) {
+              _tmpBroadcastAt = null;
             } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
+              _tmpBroadcastAt = _cursor.getLong(_cursorIndexOfBroadcastAt);
             }
+            final Long _tmpConfirmedAt;
+            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
+              _tmpConfirmedAt = null;
+            } else {
+              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
+            }
+            final int _tmpSyncVersion;
+            _tmpSyncVersion = _cursor.getInt(_cursorIndexOfSyncVersion);
+            final String _tmpLastModifiedBy;
+            _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
             final long _tmpLastModifiedAt;
             _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _item = new TransactionEntity(_tmpId,_tmpTxHash,_tmpStatus,_tmpConfirmations,_tmpConfirmedAt,_tmpCreatedAt,_tmpRoscaId,_tmpType,_tmpAmount,_tmpFromAddress,_tmpToAddress,_tmpBlockHeight,_tmpTimestamp,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _item = new TransactionEntity(_tmpId,_tmpRoscaId,_tmpRoundNumber,_tmpTxHash,_tmpAmount,_tmpToAddress,_tmpFromAddress,_tmpStatus,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpConfirmations,_tmpCreatedAt,_tmpBroadcastAt,_tmpConfirmedAt,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
             _result.add(_item);
           }
           return _result;
@@ -808,20 +763,19 @@ public final class TransactionDao_Impl implements TransactionDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
-          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
-          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+          final int _cursorIndexOfRoundNumber = CursorUtil.getColumnIndexOrThrow(_cursor, "roundNumber");
+          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
           final int _cursorIndexOfAmount = CursorUtil.getColumnIndexOrThrow(_cursor, "amount");
-          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
           final int _cursorIndexOfToAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "toAddress");
-          final int _cursorIndexOfBlockHeight = CursorUtil.getColumnIndexOrThrow(_cursor, "blockHeight");
-          final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfRequiredSignatures = CursorUtil.getColumnIndexOrThrow(_cursor, "requiredSignatures");
           final int _cursorIndexOfCurrentSignatureCount = CursorUtil.getColumnIndexOrThrow(_cursor, "currentSignatureCount");
+          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfBroadcastAt = CursorUtil.getColumnIndexOrThrow(_cursor, "broadcastAt");
+          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
           final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
           final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
           final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
@@ -830,65 +784,59 @@ public final class TransactionDao_Impl implements TransactionDao {
             final TransactionEntity _item;
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final int _tmpRoundNumber;
+            _tmpRoundNumber = _cursor.getInt(_cursorIndexOfRoundNumber);
             final String _tmpTxHash;
             if (_cursor.isNull(_cursorIndexOfTxHash)) {
               _tmpTxHash = null;
             } else {
               _tmpTxHash = _cursor.getString(_cursorIndexOfTxHash);
             }
-            final String _tmpStatus;
-            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            final int _tmpConfirmations;
-            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
-            final Long _tmpConfirmedAt;
-            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
-              _tmpConfirmedAt = null;
-            } else {
-              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
-            }
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final String _tmpRoscaId;
-            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
-            final String _tmpType;
-            _tmpType = _cursor.getString(_cursorIndexOfType);
             final long _tmpAmount;
             _tmpAmount = _cursor.getLong(_cursorIndexOfAmount);
-            final String _tmpFromAddress;
-            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
-              _tmpFromAddress = null;
-            } else {
-              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
-            }
             final String _tmpToAddress;
             if (_cursor.isNull(_cursorIndexOfToAddress)) {
               _tmpToAddress = null;
             } else {
               _tmpToAddress = _cursor.getString(_cursorIndexOfToAddress);
             }
-            final Long _tmpBlockHeight;
-            if (_cursor.isNull(_cursorIndexOfBlockHeight)) {
-              _tmpBlockHeight = null;
+            final String _tmpFromAddress;
+            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
+              _tmpFromAddress = null;
             } else {
-              _tmpBlockHeight = _cursor.getLong(_cursorIndexOfBlockHeight);
+              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
             }
-            final long _tmpTimestamp;
-            _tmpTimestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final int _tmpRequiredSignatures;
             _tmpRequiredSignatures = _cursor.getInt(_cursorIndexOfRequiredSignatures);
             final int _tmpCurrentSignatureCount;
             _tmpCurrentSignatureCount = _cursor.getInt(_cursorIndexOfCurrentSignatureCount);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
+            final int _tmpConfirmations;
+            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpBroadcastAt;
+            if (_cursor.isNull(_cursorIndexOfBroadcastAt)) {
+              _tmpBroadcastAt = null;
             } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
+              _tmpBroadcastAt = _cursor.getLong(_cursorIndexOfBroadcastAt);
             }
+            final Long _tmpConfirmedAt;
+            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
+              _tmpConfirmedAt = null;
+            } else {
+              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
+            }
+            final int _tmpSyncVersion;
+            _tmpSyncVersion = _cursor.getInt(_cursorIndexOfSyncVersion);
+            final String _tmpLastModifiedBy;
+            _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
             final long _tmpLastModifiedAt;
             _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _item = new TransactionEntity(_tmpId,_tmpTxHash,_tmpStatus,_tmpConfirmations,_tmpConfirmedAt,_tmpCreatedAt,_tmpRoscaId,_tmpType,_tmpAmount,_tmpFromAddress,_tmpToAddress,_tmpBlockHeight,_tmpTimestamp,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _item = new TransactionEntity(_tmpId,_tmpRoscaId,_tmpRoundNumber,_tmpTxHash,_tmpAmount,_tmpToAddress,_tmpFromAddress,_tmpStatus,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpConfirmations,_tmpCreatedAt,_tmpBroadcastAt,_tmpConfirmedAt,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
             _result.add(_item);
           }
           return _result;
@@ -913,20 +861,19 @@ public final class TransactionDao_Impl implements TransactionDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
-          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
-          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+          final int _cursorIndexOfRoundNumber = CursorUtil.getColumnIndexOrThrow(_cursor, "roundNumber");
+          final int _cursorIndexOfTxHash = CursorUtil.getColumnIndexOrThrow(_cursor, "txHash");
           final int _cursorIndexOfAmount = CursorUtil.getColumnIndexOrThrow(_cursor, "amount");
-          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
           final int _cursorIndexOfToAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "toAddress");
-          final int _cursorIndexOfBlockHeight = CursorUtil.getColumnIndexOrThrow(_cursor, "blockHeight");
-          final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+          final int _cursorIndexOfFromAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "fromAddress");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfRequiredSignatures = CursorUtil.getColumnIndexOrThrow(_cursor, "requiredSignatures");
           final int _cursorIndexOfCurrentSignatureCount = CursorUtil.getColumnIndexOrThrow(_cursor, "currentSignatureCount");
+          final int _cursorIndexOfConfirmations = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmations");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfBroadcastAt = CursorUtil.getColumnIndexOrThrow(_cursor, "broadcastAt");
+          final int _cursorIndexOfConfirmedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "confirmedAt");
           final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
           final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
           final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
@@ -935,65 +882,59 @@ public final class TransactionDao_Impl implements TransactionDao {
             final TransactionEntity _item;
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final int _tmpRoundNumber;
+            _tmpRoundNumber = _cursor.getInt(_cursorIndexOfRoundNumber);
             final String _tmpTxHash;
             if (_cursor.isNull(_cursorIndexOfTxHash)) {
               _tmpTxHash = null;
             } else {
               _tmpTxHash = _cursor.getString(_cursorIndexOfTxHash);
             }
-            final String _tmpStatus;
-            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            final int _tmpConfirmations;
-            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
-            final Long _tmpConfirmedAt;
-            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
-              _tmpConfirmedAt = null;
-            } else {
-              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
-            }
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final String _tmpRoscaId;
-            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
-            final String _tmpType;
-            _tmpType = _cursor.getString(_cursorIndexOfType);
             final long _tmpAmount;
             _tmpAmount = _cursor.getLong(_cursorIndexOfAmount);
-            final String _tmpFromAddress;
-            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
-              _tmpFromAddress = null;
-            } else {
-              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
-            }
             final String _tmpToAddress;
             if (_cursor.isNull(_cursorIndexOfToAddress)) {
               _tmpToAddress = null;
             } else {
               _tmpToAddress = _cursor.getString(_cursorIndexOfToAddress);
             }
-            final Long _tmpBlockHeight;
-            if (_cursor.isNull(_cursorIndexOfBlockHeight)) {
-              _tmpBlockHeight = null;
+            final String _tmpFromAddress;
+            if (_cursor.isNull(_cursorIndexOfFromAddress)) {
+              _tmpFromAddress = null;
             } else {
-              _tmpBlockHeight = _cursor.getLong(_cursorIndexOfBlockHeight);
+              _tmpFromAddress = _cursor.getString(_cursorIndexOfFromAddress);
             }
-            final long _tmpTimestamp;
-            _tmpTimestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final int _tmpRequiredSignatures;
             _tmpRequiredSignatures = _cursor.getInt(_cursorIndexOfRequiredSignatures);
             final int _tmpCurrentSignatureCount;
             _tmpCurrentSignatureCount = _cursor.getInt(_cursorIndexOfCurrentSignatureCount);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
+            final int _tmpConfirmations;
+            _tmpConfirmations = _cursor.getInt(_cursorIndexOfConfirmations);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpBroadcastAt;
+            if (_cursor.isNull(_cursorIndexOfBroadcastAt)) {
+              _tmpBroadcastAt = null;
             } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
+              _tmpBroadcastAt = _cursor.getLong(_cursorIndexOfBroadcastAt);
             }
+            final Long _tmpConfirmedAt;
+            if (_cursor.isNull(_cursorIndexOfConfirmedAt)) {
+              _tmpConfirmedAt = null;
+            } else {
+              _tmpConfirmedAt = _cursor.getLong(_cursorIndexOfConfirmedAt);
+            }
+            final int _tmpSyncVersion;
+            _tmpSyncVersion = _cursor.getInt(_cursorIndexOfSyncVersion);
+            final String _tmpLastModifiedBy;
+            _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
             final long _tmpLastModifiedAt;
             _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _item = new TransactionEntity(_tmpId,_tmpTxHash,_tmpStatus,_tmpConfirmations,_tmpConfirmedAt,_tmpCreatedAt,_tmpRoscaId,_tmpType,_tmpAmount,_tmpFromAddress,_tmpToAddress,_tmpBlockHeight,_tmpTimestamp,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _item = new TransactionEntity(_tmpId,_tmpRoscaId,_tmpRoundNumber,_tmpTxHash,_tmpAmount,_tmpToAddress,_tmpFromAddress,_tmpStatus,_tmpRequiredSignatures,_tmpCurrentSignatureCount,_tmpConfirmations,_tmpCreatedAt,_tmpBroadcastAt,_tmpConfirmedAt,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
             _result.add(_item);
           }
           return _result;

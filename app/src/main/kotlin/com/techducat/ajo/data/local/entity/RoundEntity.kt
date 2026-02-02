@@ -5,6 +5,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.techducat.ajo.model.Round
+import com.techducat.ajo.model.Round.RoundStatus
 
 @Entity(
     tableName = "rounds",
@@ -133,3 +135,63 @@ data class RoundEntity(
         } else 0f
     }
 }
+
+// Extension functions for converting between Entity and Domain models
+fun RoundEntity.toDomain() = Round(
+    id = id,
+    roscaId = roscaId,
+    roundNumber = roundNumber,
+    recipientId = recipientMemberId,
+    recipientAddress = recipientAddress,
+    targetAmount = targetAmount,
+    collectedAmount = collectedAmount,
+    bidAmount = null,
+    status = when (status.uppercase()) {
+        RoundEntity.STATUS_ACTIVE -> RoundStatus.CONTRIBUTION
+        RoundEntity.STATUS_PAYOUT -> RoundStatus.PAYOUT
+        RoundEntity.STATUS_COMPLETED -> RoundStatus.COMPLETED
+        RoundEntity.STATUS_FAILED -> RoundStatus.FAILED
+        RoundEntity.STATUS_CANCELLED -> RoundStatus.FAILED
+        else -> RoundStatus.CONTRIBUTION
+    },
+    biddingDeadline = null,
+    startedAt = startedAt,
+    contributionDeadline = dueDate,
+    payoutTransactionHash = payoutTxHash ?: payoutTxId,
+    completedAt = completedAt
+)
+
+fun Round.toEntity() = RoundEntity(
+    id = id,
+    roscaId = roscaId,
+    roundNumber = roundNumber,
+    recipientMemberId = recipientId ?: "",
+    recipientAddress = recipientAddress ?: "",
+    targetAmount = targetAmount,
+    collectedAmount = collectedAmount,
+    status = when (status) {
+        RoundStatus.BIDDING -> RoundEntity.STATUS_ACTIVE
+        RoundStatus.CONTRIBUTION -> RoundEntity.STATUS_ACTIVE
+        RoundStatus.PAYOUT -> RoundEntity.STATUS_PAYOUT
+        RoundStatus.COMPLETED -> RoundEntity.STATUS_COMPLETED
+        RoundStatus.FAILED -> RoundEntity.STATUS_FAILED
+    },
+    expectedContributors = 0,
+    actualContributors = 0,
+    payoutAmount = if (status == RoundStatus.COMPLETED) collectedAmount else null,
+    serviceFee = 0L,
+    penaltyAmount = 0L,
+    startedAt = startedAt,
+    dueDate = contributionDeadline ?: System.currentTimeMillis(),
+    payoutInitiatedAt = if (status == RoundStatus.PAYOUT) System.currentTimeMillis() else null,
+    completedAt = completedAt,
+    payoutTxHash = payoutTransactionHash,
+    payoutTxId = payoutTransactionHash,
+    payoutConfirmations = if (payoutTransactionHash != null) 1 else 0,
+    notes = null,
+    ipfsHash = null,
+    isDirty = true,
+    lastSyncedAt = null,
+    createdAt = System.currentTimeMillis(),
+    updatedAt = System.currentTimeMillis()
+)

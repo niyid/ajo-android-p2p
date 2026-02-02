@@ -30,8 +30,9 @@ interface MemberDao {
     @Query("SELECT * FROM members")
     suspend fun getAllMembers(): List<MemberEntity>
     
-    @Query("SELECT * FROM members WHERE nodeId = :nodeId AND roscaId = :roscaId LIMIT 1")
-    suspend fun getByNodeId(nodeId: String, roscaId: String): MemberEntity?
+    // ✅ FIX: Changed to use userId instead of non-existent nodeId
+    @Query("SELECT * FROM members WHERE userId = :userId AND roscaId = :roscaId LIMIT 1")
+    suspend fun getByUserId(userId: String, roscaId: String): MemberEntity?
     
     @Query("UPDATE members SET status = :status, updatedAt = :updatedAt WHERE id = :memberId")
     suspend fun updateStatus(memberId: String, status: String, updatedAt: Long)

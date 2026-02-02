@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
 import androidx.room.Index
+import com.techducat.ajo.model.Distribution
+import com.techducat.ajo.model.Distribution.DistributionStatus
 
 @Entity(
     tableName = "distributions",
@@ -45,4 +47,39 @@ data class DistributionEntity(
     val createdAt: Long = System.currentTimeMillis(),
     val confirmedAt: Long? = null,
     val updatedAt: Long = System.currentTimeMillis()
+)
+
+// Extension functions for converting between Entity and Domain models
+fun DistributionEntity.toDomain() = Distribution(
+    id = id,
+    roscaId = roscaId,
+    roundId = roundId,
+    roundNumber = roundNumber,
+    recipientId = recipientId,
+    recipientAddress = recipientAddress,
+    amount = amount,
+    txHash = txHash ?: txId,
+    status = try {
+        DistributionStatus.valueOf(status.uppercase())
+    } catch (e: Exception) {
+        DistributionStatus.PENDING
+    },
+    createdAt = createdAt,
+    confirmedAt = confirmedAt
+)
+
+fun Distribution.toEntity() = DistributionEntity(
+    id = id,
+    roscaId = roscaId,
+    roundId = roundId,
+    roundNumber = roundNumber,
+    recipientId = recipientId,
+    recipientAddress = recipientAddress,
+    amount = amount,
+    txHash = txHash,
+    txId = txHash,
+    status = status.name.lowercase(),
+    createdAt = createdAt,
+    confirmedAt = confirmedAt,
+    updatedAt = System.currentTimeMillis()
 )

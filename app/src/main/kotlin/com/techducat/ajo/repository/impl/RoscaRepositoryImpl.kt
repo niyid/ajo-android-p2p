@@ -7,23 +7,40 @@ import com.techducat.ajo.repository.RoscaRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import android.util.Log
-import com.techducat.ajo.model.Round.RoundStatus
-import com.techducat.ajo.model.Distribution.DistributionStatus
 import androidx.room.withTransaction
 
 /**
  * Room-backed implementation of RoscaRepository
  * 
- * ✅ NOW WITH TRANSACTION SUPPORT for data consistency!
+ * This class provides:
+ * - Database transaction support for atomic operations
+ * - Entity-to-domain model mapping (via extension functions in entity files)
+ * - Comprehensive error handling and logging
+ * - Observable flows for reactive UI updates
+ * 
+ * Key Features:
+ * ✅ Transaction support via withTransaction() for data consistency
+ * ✅ Flow-based observables for real-time updates
+ * ✅ Complete CRUD operations for all ROSCA entities
+ * ✅ Proper error handling with detailed logging
+ * 
+ * Note: All entity-to-domain mappings are in their respective entity files:
+ * - Member.toEntity() / MemberEntity.toDomain() in MemberEntity.kt
+ * - Bid.toEntity() / BidEntity.toDomain() in BidEntity.kt
+ * - Rosca.toEntity() / RoscaEntity.toDomain() in RoscaEntity.kt
+ * - etc.
+ * 
+ * @property database Room database instance
  */
 class RoscaRepositoryImpl(
-    private val database: AjoDatabase
+    internal val database: AjoDatabase
 ) : RoscaRepository {
     
     companion object {
-        private const val TAG = "com.techducat.ajo.repository.impl.RoscaRepositoryImpl"
+        private const val TAG = "RoscaRepositoryImpl"
     }
     
+    // DAO references for database access
     private val roscaDao = database.roscaDao()
     private val memberDao = database.memberDao()
     private val contributionDao = database.contributionDao()
@@ -32,12 +49,21 @@ class RoscaRepositoryImpl(
     private val dividendDao = database.dividendDao()
     private val distributionDao = database.distributionDao()
     private val multisigSignatureDao = database.multisigSignatureDao()
+    private val transactionDao = database.transactionDao()
+    private val inviteDao = database.inviteDao()
     
-    // Observable flows
+    // ============================================================================
+    // OBSERVABLE FLOWS
+    // ============================================================================
+    
+    /**
+     * Observable flow of all ROSCAs
+     * Emits updated list whenever any ROSCA changes
+     */
     override val roscasFlow: Flow<List<Rosca>> = 
         try {
             roscaDao.observeAllRoscas().map { entities ->
-                entities.map { it.toDomain() }
+                entities.map { it.toRosca() }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error creating roscas flow", e)
@@ -45,37 +71,18 @@ class RoscaRepositoryImpl(
         }
     
     // ============================================================================
-    // TRANSACTION OPERATIONS - THE KEY FIX!
+    // TRANSACTION OPERATIONS
     // ============================================================================
     
-    /**
-     * Execute operations within a database transaction.
-     * 
-     * Room's withTransaction ensures:
-     * 1. All operations succeed together, or
-     * 2. All operations are rolled back on any failure
-     * 
-     * This is CRITICAL for maintaining data consistency in joinRosca()!
-     * 
-     * Example usage:
-     * ```
-     * repository.withTransaction {
-     *     insertMember(member)
-     *     updateRosca(rosca)
-     *     // If updateRosca fails, insertMember is rolled back!
-     * }
-     * ```
-     */
     override suspend fun <R> withTransaction(block: suspend () -> R): R {
         return try {
             Log.d(TAG, "⚙️ Starting database transaction...")
             
-            // Room's withTransaction provides automatic rollback on exception
             val result = database.withTransaction {
                 block()
             }
             
-            Log.d(TAG, "✅ Transaction completed successfully and committed")
+            Log.d(TAG, "✅ Transaction completed successfully")
             result
             
         } catch (e: Exception) {
@@ -93,9 +100,9 @@ class RoscaRepositoryImpl(
             Log.d(TAG, "Inserting ROSCA: ${rosca.id}, name: ${rosca.name}")
             val entity = rosca.toEntity()
             roscaDao.insert(entity)
-            Log.d(TAG, "✓ ROSCA inserted successfully to database")
+            Log.d(TAG, "✓ ROSCA inserted successfully")
         } catch (e: Exception) {
-            Log.e(TAG, "✗ Failed to insert ROSCA to database", e)
+            Log.e(TAG, "✗ Failed to insert ROSCA", e)
             throw e
         }
     }
@@ -114,7 +121,7 @@ class RoscaRepositoryImpl(
     
     override suspend fun getRoscaById(id: String): Rosca? {
         return try {
-            roscaDao.getById(id)?.toDomain()
+            roscaDao.getById(id)?.toRosca()
         } catch (e: Exception) {
             Log.e(TAG, "Error getting ROSCA by ID: $id", e)
             null
@@ -125,7 +132,7 @@ class RoscaRepositoryImpl(
         return try {
             val entities = roscaDao.getAllRoscas()
             Log.d(TAG, "Retrieved ${entities.size} ROSCAs from database")
-            entities.map { it.toDomain() }
+            entities.map { it.toRosca() }
         } catch (e: Exception) {
             Log.e(TAG, "Error getting all ROSCAs", e)
             emptyList()
@@ -145,20 +152,19 @@ class RoscaRepositoryImpl(
     
     override suspend fun getRoscasByStatus(status: Rosca.RoscaState): List<Rosca> {
         return try {
-            roscaDao.getRoscasByStatus(status.name).map { it.toDomain() }
+            roscaDao.getRoscasByStatus(status.name).map { it.toRosca() }
         } catch (e: Exception) {
             Log.e(TAG, "Error getting ROSCAs by status: $status", e)
             emptyList()
         }
     }
     
-    // NEW METHOD: Get ROSCAs by user using the DAO query
     suspend fun getRoscasByUser(userId: String): List<Rosca> {
         return try {
             Log.d(TAG, "Getting ROSCAs for user: $userId")
             val entities = roscaDao.getRoscasByUser(userId)
-            Log.d(TAG, "Found ${entities.size} ROSCAs for user via DAO")
-            entities.map { it.toDomain() }
+            Log.d(TAG, "Found ${entities.size} ROSCAs for user")
+            entities.map { it.toRosca() }
         } catch (e: Exception) {
             Log.e(TAG, "Error getting ROSCAs by user: $userId", e)
             emptyList()
@@ -171,25 +177,24 @@ class RoscaRepositoryImpl(
     
     override suspend fun insertMember(member: Member) {
         try {
-            Log.d(TAG, "Inserting member: ${member.id}, wallet: ${member.walletAddress?.take(15)}...")
+            Log.d(TAG, "Inserting member: ${member.id}")
             Log.d(TAG, "  ROSCA ID: ${member.roscaId}")
             Log.d(TAG, "  User ID: ${member.userId}")
+            Log.d(TAG, "  Wallet: ${member.walletAddress?.take(15)}...")
+            
             val entity = member.toEntity()
             memberDao.insert(entity)
-            Log.d(TAG, "✓ Member inserted successfully to database")
+            Log.d(TAG, "✓ Member inserted successfully")
             
             // Verify insertion
             val inserted = memberDao.getById(member.id)
             if (inserted != null) {
                 Log.d(TAG, "✓ Member verified in database")
-                Log.d(TAG, "  Wallet: ${inserted.walletAddress}")
-                Log.d(TAG, "  User ID: ${inserted.userId}")
-                Log.d(TAG, "  ROSCA ID: ${inserted.roscaId}")
             } else {
                 Log.e(TAG, "✗ Member NOT found after insertion!")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "✗ Failed to insert member to database", e)
+            Log.e(TAG, "✗ Failed to insert member", e)
             throw e
         }
     }
@@ -215,26 +220,16 @@ class RoscaRepositoryImpl(
     
     override suspend fun getMembersByRoscaId(roscaId: String): List<Member> {
         return try {
-            Log.d(TAG, "getMembersByRoscaId: Querying for ROSCA: $roscaId")
+            Log.d(TAG, "Getting members for ROSCA: $roscaId")
             
             val entities = memberDao.getMembersByGroupSync(roscaId)
-            Log.d(TAG, "getMembersByRoscaId: Retrieved ${entities.size} member entities")
+            Log.d(TAG, "Retrieved ${entities.size} member entities")
             
-            val members = entities.mapIndexed { index, entity ->
-                Log.d(TAG, "  Member $index:")
-                Log.d(TAG, "    ID: ${entity.id}")
-                Log.d(TAG, "    User ID: ${entity.userId}")
-                Log.d(TAG, "    Name: ${entity.name}")
-                Log.d(TAG, "    MultisigInfo: ${if (entity.multisigInfo != null) "present" else "NULL"}")
-                
-                entity.toDomain()
-            }
+            val members = entities.map { it.toDomain() }
             
-            Log.d(TAG, "getMembersByRoscaId: Converted to ${members.size} domain members")
-            
-            // Count members with multisig info
+            // Log multisig info status
             val withMultisig = members.count { it.multisigInfo != null }
-            Log.d(TAG, "getMembersByRoscaId: $withMultisig/${members.size} members have multisig info")
+            Log.d(TAG, "$withMultisig/${members.size} members have multisig info")
             
             members
         } catch (e: Exception) {
@@ -476,7 +471,7 @@ class RoscaRepositoryImpl(
 
     override suspend fun getInviteByReferralCode(referralCode: String): Invite? {
         return try {
-            database.inviteDao().getInviteByReferralCode(referralCode.uppercase())?.toDomain()
+            inviteDao.getInviteByReferralCode(referralCode.uppercase())?.toDomain()
         } catch (e: Exception) {
             Log.e(TAG, "Error getting invite by code: $referralCode", e)
             null
@@ -486,7 +481,7 @@ class RoscaRepositoryImpl(
     override suspend fun updateInvite(invite: Invite) {
         try {
             Log.d(TAG, "Updating invite: ${invite.id}")
-            database.inviteDao().updateInvite(invite.toEntity())
+            inviteDao.updateInvite(invite.toEntity())
             Log.d(TAG, "✓ Invite updated successfully")
         } catch (e: Exception) {
             Log.e(TAG, "✗ Failed to update invite", e)
@@ -638,254 +633,74 @@ class RoscaRepositoryImpl(
         }
     }
     
-}
-
-// ============================================================================
-// ENTITY MAPPING EXTENSIONS (unchanged from original)
-// ============================================================================
-
-private fun Rosca.toEntity() = RoscaEntity(
-    id = id,
-    name = name,
-    description = description,
-    creatorId = creatorId,
-    totalMembers = totalMembers,
-    currentMembers = currentMembers,
-    contributionAmount = contributionAmount,
-    contributionFrequency = when (frequencyDays) {
-        1 -> "daily"
-        7 -> "weekly"
-        14 -> "biweekly"
-        30 -> "monthly"
-        else -> "weekly"
-    },
-    frequencyDays = frequencyDays,
-    distributionMethod = distributionMethod.name,
-    payoutOrder = distributionMethod.name.lowercase(),
-    multisigAddress = multisigAddress,
-    walletAddress = multisigAddress,
-    roscaWalletPath = roscaWalletPath,
-    status = status.name,
-    cycleNumber = currentRound,
-    currentRound = currentRound,
-    totalCycles = totalMembers,
-    startDate = startedAt,
-    startedAt = startedAt,
-    completedAt = completedAt,
-    createdAt = createdAt,
-    updatedAt = System.currentTimeMillis(),
-    lastSyncedAt = null,
-    ipfsHash = null,
-    ipfsCid = null,
-    isDirty = true
-)
-
-private fun Contribution.toEntity() = ContributionEntity(
-    id = id,
-    roscaId = roundId ?: "",
-    memberId = memberId,
-    amount = amount,
-    cycleNumber = 0,
-    status = status.name.lowercase(),
-    dueDate = createdAt,
-    txHash = transactionHash,
-    txId = transactionHash ?: "",
-    proofOfPayment = null,
-    verifiedAt = if (status == Contribution.ContributionStatus.CONFIRMED) createdAt else null,
-    notes = null,
-    createdAt = createdAt,
-    updatedAt = System.currentTimeMillis(),
-    isDirty = false,
-    lastSyncedAt = null,
-    ipfsHash = null
-)
-
-private fun RoscaEntity.toDomain() = Rosca(
-    id = id,
-    name = name,
-    description = description,
-    creatorId = creatorId ?: "",
-    totalMembers = totalMembers,
-    currentMembers = currentMembers,
-    contributionAmount = contributionAmount,
-    frequencyDays = frequencyDays,
-    distributionMethod = try {
-        Rosca.DistributionMethod.valueOf(distributionMethod.uppercase())
-    } catch (e: Exception) {
-        Rosca.DistributionMethod.PREDETERMINED
-    },
-    multisigAddress = multisigAddress,
-    roscaWalletPath = roscaWalletPath,
-    status = try {
-        Rosca.RoscaState.valueOf(status.uppercase())
-    } catch (e: Exception) {
-        Rosca.RoscaState.SETUP
-    },
-    currentRound = currentRound.coerceAtLeast(cycleNumber),
-    startedAt = startedAt ?: startDate,
-    completedAt = completedAt,
-    createdAt = createdAt
-)
-
-private fun ContributionEntity.toDomain() = Contribution(
-    id = id,
-    roundId = roscaId,
-    memberId = memberId,
-    amount = amount,
-    txHash = txHash ?: txId ?: "",
-    status = try {
-        when (status.uppercase()) {
-            "PENDING" -> Contribution.ContributionStatus.PENDING
-            "CONFIRMED" -> Contribution.ContributionStatus.CONFIRMED
-            "FAILED" -> Contribution.ContributionStatus.FAILED
-            else -> Contribution.ContributionStatus.PENDING
+    override suspend fun getSignaturesForTransaction(txHash: String): List<MultisigSignature> {
+        return try {
+            multisigSignatureDao.getByTransaction(txHash).map { it.toDomain() }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting signatures for transaction: $txHash", e)
+            emptyList()
         }
-    } catch (e: Exception) {
-        Contribution.ContributionStatus.PENDING
-    },
-    createdAt = createdAt
-)
+    }
 
-private fun Invite.toEntity() = InviteEntity(
-    id = id,
-    roscaId = roscaId,
-    inviterUserId = inviterUserId,
-    inviteeEmail = inviteeEmail,
-    referralCode = referralCode,
-    status = status.name.lowercase(),
-    createdAt = createdAt,
-    acceptedAt = acceptedAt,
-    expiresAt = expiresAt,
-    acceptedByUserId = acceptedByUserId
-)
+    override fun observeSignatures(roscaId: String): Flow<List<MultisigSignature>> {
+        return try {
+            multisigSignatureDao.getByRoscaFlow(roscaId).map { entities ->
+                entities.map { it.toDomain() }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error creating signatures flow", e)
+            kotlinx.coroutines.flow.flowOf(emptyList())
+        }
+    }
+    
+    // ============================================================================
+    // TRANSACTION OPERATIONS
+    // ============================================================================
+    
+    override suspend fun getTransactionById(txId: String): Transaction? {
+        return try {
+            transactionDao.getByTxHash(txId)?.toDomain()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting transaction by ID: $txId", e)
+            null
+        }
+    }
 
-private fun InviteEntity.toDomain() = Invite(
-    id = id,
-    roscaId = roscaId,
-    inviterUserId = inviterUserId,
-    inviteeEmail = inviteeEmail,
-    referralCode = referralCode,
-    status = when (status.uppercase()) {
-        "PENDING" -> Invite.InviteStatus.PENDING
-        "ACCEPTED" -> Invite.InviteStatus.ACCEPTED
-        "EXPIRED" -> Invite.InviteStatus.EXPIRED
-        "DECLINED" -> Invite.InviteStatus.DECLINED
-        else -> Invite.InviteStatus.PENDING
-    },
-    createdAt = createdAt,
-    acceptedAt = acceptedAt,
-    expiresAt = expiresAt,
-    acceptedByUserId = acceptedByUserId
-)
+    override suspend fun updateTransaction(transaction: Transaction) {
+        try {
+            Log.d(TAG, "Updating transaction: ${transaction.id}")
+            val entity = transaction.toEntity()
+            transactionDao.update(entity)
+            Log.d(TAG, "✓ Transaction updated successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "✗ Failed to update transaction", e)
+            throw e
+        }
+    }
 
-private fun Round.toEntity() = RoundEntity(
-    id = id,
-    roscaId = roscaId,
-    roundNumber = roundNumber,
-    recipientMemberId = recipientId ?: "",
-    recipientAddress = recipientAddress ?: "",
-    targetAmount = targetAmount,
-    collectedAmount = collectedAmount,
-    status = when (status) {
-        RoundStatus.BIDDING -> RoundEntity.STATUS_ACTIVE
-        RoundStatus.CONTRIBUTION -> RoundEntity.STATUS_ACTIVE
-        RoundStatus.PAYOUT -> RoundEntity.STATUS_PAYOUT
-        RoundStatus.COMPLETED -> RoundEntity.STATUS_COMPLETED
-        RoundStatus.FAILED -> RoundEntity.STATUS_FAILED
-    },
-    expectedContributors = 0,
-    actualContributors = 0,
-    payoutAmount = if (status == RoundStatus.COMPLETED) collectedAmount else null,
-    serviceFee = 0L,
-    penaltyAmount = 0L,
-    startedAt = startedAt,
-    dueDate = contributionDeadline ?: System.currentTimeMillis(),
-    payoutInitiatedAt = if (status == RoundStatus.PAYOUT) System.currentTimeMillis() else null,
-    completedAt = completedAt,
-    payoutTxHash = payoutTransactionHash,
-    payoutTxId = payoutTransactionHash,
-    payoutConfirmations = if (payoutTransactionHash != null) 1 else 0,
-    notes = null,
-    ipfsHash = null,
-    isDirty = true,
-    lastSyncedAt = null,
-    createdAt = System.currentTimeMillis(),
-    updatedAt = System.currentTimeMillis()
-)
+    override suspend fun getPendingTransactions(roscaId: String): List<Transaction> {
+        return try {
+            transactionDao.getPendingSignatures()
+                .filter { it.roscaId == roscaId }
+                .map { it.toDomain() }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting pending transactions for ROSCA: $roscaId", e)
+            emptyList()
+        }
+    }
 
-private fun RoundEntity.toDomain() = Round(
-    id = id,
-    roscaId = roscaId,
-    roundNumber = roundNumber,
-    recipientId = recipientMemberId,
-    recipientAddress = recipientAddress,
-    targetAmount = targetAmount,
-    collectedAmount = collectedAmount,
-    bidAmount = null,
-    status = when (status.uppercase()) {
-        RoundEntity.STATUS_ACTIVE -> RoundStatus.CONTRIBUTION
-        RoundEntity.STATUS_PAYOUT -> RoundStatus.PAYOUT
-        RoundEntity.STATUS_COMPLETED -> RoundStatus.COMPLETED
-        RoundEntity.STATUS_FAILED -> RoundStatus.FAILED
-        RoundEntity.STATUS_CANCELLED -> RoundStatus.FAILED
-        else -> RoundStatus.CONTRIBUTION
-    },
-    biddingDeadline = null,
-    startedAt = startedAt,
-    contributionDeadline = dueDate,
-    payoutTransactionHash = payoutTxHash ?: payoutTxId,
-    completedAt = completedAt
-)
-
-private fun Dividend.toEntity() = DividendEntity(
-    id = id,
-    roundId = roundId,
-    memberId = memberId,
-    amount = amount,
-    transactionHash = transactionHash,
-    createdAt = createdAt,
-    updatedAt = System.currentTimeMillis()
-)
-
-private fun DividendEntity.toDomain() = Dividend(
-    id = id,
-    roundId = roundId,
-    memberId = memberId,
-    amount = amount,
-    transactionHash = transactionHash,
-    createdAt = createdAt
-)
-
-private fun Distribution.toEntity() = DistributionEntity(
-    id = id,
-    roscaId = roscaId,
-    roundId = roundId,
-    roundNumber = roundNumber,
-    recipientId = recipientId,
-    recipientAddress = recipientAddress,
-    amount = amount,
-    txHash = txHash,
-    txId = txHash,
-    status = status.name.lowercase(),
-    createdAt = createdAt,
-    confirmedAt = confirmedAt,
-    updatedAt = System.currentTimeMillis()
-)
-
-private fun DistributionEntity.toDomain() = Distribution(
-    id = id,
-    roscaId = roscaId,
-    roundId = roundId,
-    roundNumber = roundNumber,
-    recipientId = recipientId,
-    recipientAddress = recipientAddress,
-    amount = amount,
-    txHash = txHash ?: txId,
-    status = try {
-        DistributionStatus.valueOf(status.uppercase())
-    } catch (e: Exception) {
-        DistributionStatus.PENDING
-    },
-    createdAt = createdAt,
-    confirmedAt = confirmedAt
-)
+    override fun observePendingTransactions(roscaId: String): Flow<List<Transaction>> {
+        return try {
+            // Create a flow that emits pending transactions
+            kotlinx.coroutines.flow.flow {
+                val pending = transactionDao.getPendingSignatures()
+                    .filter { it.roscaId == roscaId }
+                    .map { it.toDomain() }
+                emit(pending)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error creating pending transactions flow", e)
+            kotlinx.coroutines.flow.flowOf(emptyList())
+        }
+    }
+}

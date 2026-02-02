@@ -28,17 +28,11 @@ data class MemberEntity(
     val ipfsHash: String? = null,
     val lastSyncedAt: Long? = null,
     val isDirty: Boolean = false,
-    val status: String? = "active",
-    val multisigInfo: Member.MultisigInfo? = null,
-    val hasReceived: Boolean = false,
+    val status: String = "active", // ✅ FIX: Changed from nullable to non-nullable with default value
     
-    // ========== P2P FIELDS (ADD THESE) ==========
-    val nodeId: String? = null,                    // P2P node identifier
-    val publicWalletAddress: String? = null,       // Public address (syncs)
-    val signingOrder: Int = 0,                     // Order for multisig signing
-    val syncVersion: Long = 1,                     // For conflict resolution
-    val lastModifiedBy: String? = null,            // Which node made last change
-    val lastModifiedAt: Long = 0                   // When last modified
+    // The critical field for multisig functionality
+    val multisigInfo: Member.MultisigInfo? = null,
+    val hasReceived: Boolean = false
 ) {
     companion object {
         private const val TAG = "MemberEntity"
@@ -62,14 +56,20 @@ fun MemberEntity.toDomain(): Member {
     Log.d("MemberEntity", "  Name: $name")
     Log.d("MemberEntity", "  MultisigInfo before conversion: ${multisigInfo != null}")
     
+    // ✅ FIX: Determine correct wallet address (now returns non-null String)
     val resolvedWalletAddress: String = when {
+        // Priority 1: Use multisig address if available (most reliable)
         multisigInfo?.address?.isNotBlank() == true -> multisigInfo.address!!
+        // Priority 2: Use stored wallet address
         walletAddress?.isNotBlank() == true -> walletAddress!!
+        // Priority 3: Fall back to monero address
         moneroAddress?.isNotBlank() == true -> moneroAddress!!
+        // Priority 4: Use userId as temporary placeholder (for display purposes only)
         else -> userId
     }
     
-    val memberStatus = when (status?.lowercase()) {
+    // ✅ FIX: Handle status safely (now non-nullable, no need for ?.)
+    val memberStatus = when (status.lowercase()) {
         "active" -> Member.MemberStatus.ACTIVE
         "pending" -> Member.MemberStatus.PENDING
         "inactive" -> Member.MemberStatus.INACTIVE
@@ -114,6 +114,7 @@ fun Member.toEntity(): MemberEntity {
         Log.d("Member", "    IsReady: ${multisigInfo?.isReady}")
     }
     
+    // ✅ FIX: Handle nullable walletAddress safely with safe call operator
     val fallbackMoneroAddress = if (!walletAddress.isNullOrEmpty()) walletAddress else null
     
     val entity = MemberEntity(
@@ -128,22 +129,14 @@ fun Member.toEntity(): MemberEntity {
         leftAt = 0L,
         leftReason = "",
         isActive = isActive,
-        multisigInfo = multisigInfo,
+        multisigInfo = multisigInfo,  // TypeConverter handles JSON serialization automatically
         hasReceivedPayout = hasReceived,
         hasReceived = hasReceived,
         totalContributed = totalContributed,
         lastContributionAt = lastContributionAt,
-        status = status.name.lowercase(),
+        status = status.name.lowercase(), // ✅ FIX: Now always returns non-null String
         updatedAt = System.currentTimeMillis(),
-        isDirty = false,
-        
-        // P2P fields (set to defaults for now)
-        nodeId = userId,  // Initially map to userId
-        publicWalletAddress = walletAddress,
-        signingOrder = position,  // Use position as signing order initially
-        syncVersion = 1,
-        lastModifiedBy = null,
-        lastModifiedAt = System.currentTimeMillis()
+        isDirty = false
     )
     
     Log.d("Member", "  MultisigInfo after conversion: ${entity.multisigInfo != null}")

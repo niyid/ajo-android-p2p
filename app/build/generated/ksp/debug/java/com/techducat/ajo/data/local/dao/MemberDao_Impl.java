@@ -52,7 +52,7 @@ public final class MemberDao_Impl implements MemberDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `members` (`id`,`roscaId`,`userId`,`name`,`moneroAddress`,`joinedAt`,`position`,`leftAt`,`leftReason`,`isActive`,`walletAddress`,`payoutOrderPosition`,`hasReceivedPayout`,`totalContributed`,`missedPayments`,`lastContributionAt`,`exitedAt`,`updatedAt`,`ipfsHash`,`lastSyncedAt`,`isDirty`,`status`,`multisigInfo`,`hasReceived`,`nodeId`,`publicWalletAddress`,`signingOrder`,`syncVersion`,`lastModifiedBy`,`lastModifiedAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `members` (`id`,`roscaId`,`userId`,`name`,`moneroAddress`,`joinedAt`,`position`,`leftAt`,`leftReason`,`isActive`,`walletAddress`,`payoutOrderPosition`,`hasReceivedPayout`,`totalContributed`,`missedPayments`,`lastContributionAt`,`exitedAt`,`updatedAt`,`ipfsHash`,`lastSyncedAt`,`isDirty`,`status`,`multisigInfo`,`hasReceived`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -114,11 +114,7 @@ public final class MemberDao_Impl implements MemberDao {
         }
         final int _tmp_2 = entity.isDirty() ? 1 : 0;
         statement.bindLong(21, _tmp_2);
-        if (entity.getStatus() == null) {
-          statement.bindNull(22);
-        } else {
-          statement.bindString(22, entity.getStatus());
-        }
+        statement.bindString(22, entity.getStatus());
         final String _tmp_3 = __databaseConverters.fromMultisigInfo(entity.getMultisigInfo());
         if (_tmp_3 == null) {
           statement.bindNull(23);
@@ -127,31 +123,13 @@ public final class MemberDao_Impl implements MemberDao {
         }
         final int _tmp_4 = entity.getHasReceived() ? 1 : 0;
         statement.bindLong(24, _tmp_4);
-        if (entity.getNodeId() == null) {
-          statement.bindNull(25);
-        } else {
-          statement.bindString(25, entity.getNodeId());
-        }
-        if (entity.getPublicWalletAddress() == null) {
-          statement.bindNull(26);
-        } else {
-          statement.bindString(26, entity.getPublicWalletAddress());
-        }
-        statement.bindLong(27, entity.getSigningOrder());
-        statement.bindLong(28, entity.getSyncVersion());
-        if (entity.getLastModifiedBy() == null) {
-          statement.bindNull(29);
-        } else {
-          statement.bindString(29, entity.getLastModifiedBy());
-        }
-        statement.bindLong(30, entity.getLastModifiedAt());
       }
     };
     this.__updateAdapterOfMemberEntity = new EntityDeletionOrUpdateAdapter<MemberEntity>(__db) {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `members` SET `id` = ?,`roscaId` = ?,`userId` = ?,`name` = ?,`moneroAddress` = ?,`joinedAt` = ?,`position` = ?,`leftAt` = ?,`leftReason` = ?,`isActive` = ?,`walletAddress` = ?,`payoutOrderPosition` = ?,`hasReceivedPayout` = ?,`totalContributed` = ?,`missedPayments` = ?,`lastContributionAt` = ?,`exitedAt` = ?,`updatedAt` = ?,`ipfsHash` = ?,`lastSyncedAt` = ?,`isDirty` = ?,`status` = ?,`multisigInfo` = ?,`hasReceived` = ?,`nodeId` = ?,`publicWalletAddress` = ?,`signingOrder` = ?,`syncVersion` = ?,`lastModifiedBy` = ?,`lastModifiedAt` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `members` SET `id` = ?,`roscaId` = ?,`userId` = ?,`name` = ?,`moneroAddress` = ?,`joinedAt` = ?,`position` = ?,`leftAt` = ?,`leftReason` = ?,`isActive` = ?,`walletAddress` = ?,`payoutOrderPosition` = ?,`hasReceivedPayout` = ?,`totalContributed` = ?,`missedPayments` = ?,`lastContributionAt` = ?,`exitedAt` = ?,`updatedAt` = ?,`ipfsHash` = ?,`lastSyncedAt` = ?,`isDirty` = ?,`status` = ?,`multisigInfo` = ?,`hasReceived` = ? WHERE `id` = ?";
       }
 
       @Override
@@ -213,11 +191,7 @@ public final class MemberDao_Impl implements MemberDao {
         }
         final int _tmp_2 = entity.isDirty() ? 1 : 0;
         statement.bindLong(21, _tmp_2);
-        if (entity.getStatus() == null) {
-          statement.bindNull(22);
-        } else {
-          statement.bindString(22, entity.getStatus());
-        }
+        statement.bindString(22, entity.getStatus());
         final String _tmp_3 = __databaseConverters.fromMultisigInfo(entity.getMultisigInfo());
         if (_tmp_3 == null) {
           statement.bindNull(23);
@@ -226,25 +200,7 @@ public final class MemberDao_Impl implements MemberDao {
         }
         final int _tmp_4 = entity.getHasReceived() ? 1 : 0;
         statement.bindLong(24, _tmp_4);
-        if (entity.getNodeId() == null) {
-          statement.bindNull(25);
-        } else {
-          statement.bindString(25, entity.getNodeId());
-        }
-        if (entity.getPublicWalletAddress() == null) {
-          statement.bindNull(26);
-        } else {
-          statement.bindString(26, entity.getPublicWalletAddress());
-        }
-        statement.bindLong(27, entity.getSigningOrder());
-        statement.bindLong(28, entity.getSyncVersion());
-        if (entity.getLastModifiedBy() == null) {
-          statement.bindNull(29);
-        } else {
-          statement.bindString(29, entity.getLastModifiedBy());
-        }
-        statement.bindLong(30, entity.getLastModifiedAt());
-        statement.bindString(31, entity.getId());
+        statement.bindString(25, entity.getId());
       }
     };
     this.__preparedStmtOfUpdateStatus = new SharedSQLiteStatement(__db) {
@@ -361,12 +317,6 @@ public final class MemberDao_Impl implements MemberDao {
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfMultisigInfo = CursorUtil.getColumnIndexOrThrow(_cursor, "multisigInfo");
           final int _cursorIndexOfHasReceived = CursorUtil.getColumnIndexOrThrow(_cursor, "hasReceived");
-          final int _cursorIndexOfNodeId = CursorUtil.getColumnIndexOrThrow(_cursor, "nodeId");
-          final int _cursorIndexOfPublicWalletAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "publicWalletAddress");
-          final int _cursorIndexOfSigningOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "signingOrder");
-          final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
-          final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
-          final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
           final MemberEntity _result;
           if (_cursor.moveToFirst()) {
             final String _tmpId;
@@ -450,11 +400,7 @@ public final class MemberDao_Impl implements MemberDao {
             _tmp_2 = _cursor.getInt(_cursorIndexOfIsDirty);
             _tmpIsDirty = _tmp_2 != 0;
             final String _tmpStatus;
-            if (_cursor.isNull(_cursorIndexOfStatus)) {
-              _tmpStatus = null;
-            } else {
-              _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            }
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final Member.MultisigInfo _tmpMultisigInfo;
             final String _tmp_3;
             if (_cursor.isNull(_cursorIndexOfMultisigInfo)) {
@@ -467,31 +413,7 @@ public final class MemberDao_Impl implements MemberDao {
             final int _tmp_4;
             _tmp_4 = _cursor.getInt(_cursorIndexOfHasReceived);
             _tmpHasReceived = _tmp_4 != 0;
-            final String _tmpNodeId;
-            if (_cursor.isNull(_cursorIndexOfNodeId)) {
-              _tmpNodeId = null;
-            } else {
-              _tmpNodeId = _cursor.getString(_cursorIndexOfNodeId);
-            }
-            final String _tmpPublicWalletAddress;
-            if (_cursor.isNull(_cursorIndexOfPublicWalletAddress)) {
-              _tmpPublicWalletAddress = null;
-            } else {
-              _tmpPublicWalletAddress = _cursor.getString(_cursorIndexOfPublicWalletAddress);
-            }
-            final int _tmpSigningOrder;
-            _tmpSigningOrder = _cursor.getInt(_cursorIndexOfSigningOrder);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
-            } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
-            }
-            final long _tmpLastModifiedAt;
-            _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _result = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived,_tmpNodeId,_tmpPublicWalletAddress,_tmpSigningOrder,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _result = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived);
           } else {
             _result = null;
           }
@@ -541,12 +463,6 @@ public final class MemberDao_Impl implements MemberDao {
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfMultisigInfo = CursorUtil.getColumnIndexOrThrow(_cursor, "multisigInfo");
           final int _cursorIndexOfHasReceived = CursorUtil.getColumnIndexOrThrow(_cursor, "hasReceived");
-          final int _cursorIndexOfNodeId = CursorUtil.getColumnIndexOrThrow(_cursor, "nodeId");
-          final int _cursorIndexOfPublicWalletAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "publicWalletAddress");
-          final int _cursorIndexOfSigningOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "signingOrder");
-          final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
-          final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
-          final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
           final MemberEntity _result;
           if (_cursor.moveToFirst()) {
             final String _tmpId;
@@ -630,11 +546,7 @@ public final class MemberDao_Impl implements MemberDao {
             _tmp_2 = _cursor.getInt(_cursorIndexOfIsDirty);
             _tmpIsDirty = _tmp_2 != 0;
             final String _tmpStatus;
-            if (_cursor.isNull(_cursorIndexOfStatus)) {
-              _tmpStatus = null;
-            } else {
-              _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            }
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final Member.MultisigInfo _tmpMultisigInfo;
             final String _tmp_3;
             if (_cursor.isNull(_cursorIndexOfMultisigInfo)) {
@@ -647,31 +559,7 @@ public final class MemberDao_Impl implements MemberDao {
             final int _tmp_4;
             _tmp_4 = _cursor.getInt(_cursorIndexOfHasReceived);
             _tmpHasReceived = _tmp_4 != 0;
-            final String _tmpNodeId;
-            if (_cursor.isNull(_cursorIndexOfNodeId)) {
-              _tmpNodeId = null;
-            } else {
-              _tmpNodeId = _cursor.getString(_cursorIndexOfNodeId);
-            }
-            final String _tmpPublicWalletAddress;
-            if (_cursor.isNull(_cursorIndexOfPublicWalletAddress)) {
-              _tmpPublicWalletAddress = null;
-            } else {
-              _tmpPublicWalletAddress = _cursor.getString(_cursorIndexOfPublicWalletAddress);
-            }
-            final int _tmpSigningOrder;
-            _tmpSigningOrder = _cursor.getInt(_cursorIndexOfSigningOrder);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
-            } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
-            }
-            final long _tmpLastModifiedAt;
-            _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _result = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived,_tmpNodeId,_tmpPublicWalletAddress,_tmpSigningOrder,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _result = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived);
           } else {
             _result = null;
           }
@@ -717,12 +605,6 @@ public final class MemberDao_Impl implements MemberDao {
       final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
       final int _cursorIndexOfMultisigInfo = CursorUtil.getColumnIndexOrThrow(_cursor, "multisigInfo");
       final int _cursorIndexOfHasReceived = CursorUtil.getColumnIndexOrThrow(_cursor, "hasReceived");
-      final int _cursorIndexOfNodeId = CursorUtil.getColumnIndexOrThrow(_cursor, "nodeId");
-      final int _cursorIndexOfPublicWalletAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "publicWalletAddress");
-      final int _cursorIndexOfSigningOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "signingOrder");
-      final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
-      final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
-      final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
       final List<MemberEntity> _result = new ArrayList<MemberEntity>(_cursor.getCount());
       while (_cursor.moveToNext()) {
         final MemberEntity _item;
@@ -807,11 +689,7 @@ public final class MemberDao_Impl implements MemberDao {
         _tmp_2 = _cursor.getInt(_cursorIndexOfIsDirty);
         _tmpIsDirty = _tmp_2 != 0;
         final String _tmpStatus;
-        if (_cursor.isNull(_cursorIndexOfStatus)) {
-          _tmpStatus = null;
-        } else {
-          _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-        }
+        _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
         final Member.MultisigInfo _tmpMultisigInfo;
         final String _tmp_3;
         if (_cursor.isNull(_cursorIndexOfMultisigInfo)) {
@@ -824,31 +702,7 @@ public final class MemberDao_Impl implements MemberDao {
         final int _tmp_4;
         _tmp_4 = _cursor.getInt(_cursorIndexOfHasReceived);
         _tmpHasReceived = _tmp_4 != 0;
-        final String _tmpNodeId;
-        if (_cursor.isNull(_cursorIndexOfNodeId)) {
-          _tmpNodeId = null;
-        } else {
-          _tmpNodeId = _cursor.getString(_cursorIndexOfNodeId);
-        }
-        final String _tmpPublicWalletAddress;
-        if (_cursor.isNull(_cursorIndexOfPublicWalletAddress)) {
-          _tmpPublicWalletAddress = null;
-        } else {
-          _tmpPublicWalletAddress = _cursor.getString(_cursorIndexOfPublicWalletAddress);
-        }
-        final int _tmpSigningOrder;
-        _tmpSigningOrder = _cursor.getInt(_cursorIndexOfSigningOrder);
-        final long _tmpSyncVersion;
-        _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-        final String _tmpLastModifiedBy;
-        if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-          _tmpLastModifiedBy = null;
-        } else {
-          _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
-        }
-        final long _tmpLastModifiedAt;
-        _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-        _item = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived,_tmpNodeId,_tmpPublicWalletAddress,_tmpSigningOrder,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+        _item = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived);
         _result.add(_item);
       }
       return _result;
@@ -894,12 +748,6 @@ public final class MemberDao_Impl implements MemberDao {
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfMultisigInfo = CursorUtil.getColumnIndexOrThrow(_cursor, "multisigInfo");
           final int _cursorIndexOfHasReceived = CursorUtil.getColumnIndexOrThrow(_cursor, "hasReceived");
-          final int _cursorIndexOfNodeId = CursorUtil.getColumnIndexOrThrow(_cursor, "nodeId");
-          final int _cursorIndexOfPublicWalletAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "publicWalletAddress");
-          final int _cursorIndexOfSigningOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "signingOrder");
-          final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
-          final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
-          final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
           final List<MemberEntity> _result = new ArrayList<MemberEntity>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final MemberEntity _item;
@@ -984,11 +832,7 @@ public final class MemberDao_Impl implements MemberDao {
             _tmp_2 = _cursor.getInt(_cursorIndexOfIsDirty);
             _tmpIsDirty = _tmp_2 != 0;
             final String _tmpStatus;
-            if (_cursor.isNull(_cursorIndexOfStatus)) {
-              _tmpStatus = null;
-            } else {
-              _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            }
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final Member.MultisigInfo _tmpMultisigInfo;
             final String _tmp_3;
             if (_cursor.isNull(_cursorIndexOfMultisigInfo)) {
@@ -1001,31 +845,7 @@ public final class MemberDao_Impl implements MemberDao {
             final int _tmp_4;
             _tmp_4 = _cursor.getInt(_cursorIndexOfHasReceived);
             _tmpHasReceived = _tmp_4 != 0;
-            final String _tmpNodeId;
-            if (_cursor.isNull(_cursorIndexOfNodeId)) {
-              _tmpNodeId = null;
-            } else {
-              _tmpNodeId = _cursor.getString(_cursorIndexOfNodeId);
-            }
-            final String _tmpPublicWalletAddress;
-            if (_cursor.isNull(_cursorIndexOfPublicWalletAddress)) {
-              _tmpPublicWalletAddress = null;
-            } else {
-              _tmpPublicWalletAddress = _cursor.getString(_cursorIndexOfPublicWalletAddress);
-            }
-            final int _tmpSigningOrder;
-            _tmpSigningOrder = _cursor.getInt(_cursorIndexOfSigningOrder);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
-            } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
-            }
-            final long _tmpLastModifiedAt;
-            _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _item = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived,_tmpNodeId,_tmpPublicWalletAddress,_tmpSigningOrder,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _item = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived);
             _result.add(_item);
           }
           return _result;
@@ -1074,12 +894,6 @@ public final class MemberDao_Impl implements MemberDao {
       final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
       final int _cursorIndexOfMultisigInfo = CursorUtil.getColumnIndexOrThrow(_cursor, "multisigInfo");
       final int _cursorIndexOfHasReceived = CursorUtil.getColumnIndexOrThrow(_cursor, "hasReceived");
-      final int _cursorIndexOfNodeId = CursorUtil.getColumnIndexOrThrow(_cursor, "nodeId");
-      final int _cursorIndexOfPublicWalletAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "publicWalletAddress");
-      final int _cursorIndexOfSigningOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "signingOrder");
-      final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
-      final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
-      final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
       final List<MemberEntity> _result = new ArrayList<MemberEntity>(_cursor.getCount());
       while (_cursor.moveToNext()) {
         final MemberEntity _item;
@@ -1164,11 +978,7 @@ public final class MemberDao_Impl implements MemberDao {
         _tmp_2 = _cursor.getInt(_cursorIndexOfIsDirty);
         _tmpIsDirty = _tmp_2 != 0;
         final String _tmpStatus;
-        if (_cursor.isNull(_cursorIndexOfStatus)) {
-          _tmpStatus = null;
-        } else {
-          _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-        }
+        _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
         final Member.MultisigInfo _tmpMultisigInfo;
         final String _tmp_3;
         if (_cursor.isNull(_cursorIndexOfMultisigInfo)) {
@@ -1181,31 +991,7 @@ public final class MemberDao_Impl implements MemberDao {
         final int _tmp_4;
         _tmp_4 = _cursor.getInt(_cursorIndexOfHasReceived);
         _tmpHasReceived = _tmp_4 != 0;
-        final String _tmpNodeId;
-        if (_cursor.isNull(_cursorIndexOfNodeId)) {
-          _tmpNodeId = null;
-        } else {
-          _tmpNodeId = _cursor.getString(_cursorIndexOfNodeId);
-        }
-        final String _tmpPublicWalletAddress;
-        if (_cursor.isNull(_cursorIndexOfPublicWalletAddress)) {
-          _tmpPublicWalletAddress = null;
-        } else {
-          _tmpPublicWalletAddress = _cursor.getString(_cursorIndexOfPublicWalletAddress);
-        }
-        final int _tmpSigningOrder;
-        _tmpSigningOrder = _cursor.getInt(_cursorIndexOfSigningOrder);
-        final long _tmpSyncVersion;
-        _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-        final String _tmpLastModifiedBy;
-        if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-          _tmpLastModifiedBy = null;
-        } else {
-          _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
-        }
-        final long _tmpLastModifiedAt;
-        _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-        _item = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived,_tmpNodeId,_tmpPublicWalletAddress,_tmpSigningOrder,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+        _item = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived);
         _result.add(_item);
       }
       return _result;
@@ -1250,12 +1036,6 @@ public final class MemberDao_Impl implements MemberDao {
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfMultisigInfo = CursorUtil.getColumnIndexOrThrow(_cursor, "multisigInfo");
           final int _cursorIndexOfHasReceived = CursorUtil.getColumnIndexOrThrow(_cursor, "hasReceived");
-          final int _cursorIndexOfNodeId = CursorUtil.getColumnIndexOrThrow(_cursor, "nodeId");
-          final int _cursorIndexOfPublicWalletAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "publicWalletAddress");
-          final int _cursorIndexOfSigningOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "signingOrder");
-          final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
-          final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
-          final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
           final List<MemberEntity> _result = new ArrayList<MemberEntity>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final MemberEntity _item;
@@ -1340,11 +1120,7 @@ public final class MemberDao_Impl implements MemberDao {
             _tmp_2 = _cursor.getInt(_cursorIndexOfIsDirty);
             _tmpIsDirty = _tmp_2 != 0;
             final String _tmpStatus;
-            if (_cursor.isNull(_cursorIndexOfStatus)) {
-              _tmpStatus = null;
-            } else {
-              _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            }
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final Member.MultisigInfo _tmpMultisigInfo;
             final String _tmp_3;
             if (_cursor.isNull(_cursorIndexOfMultisigInfo)) {
@@ -1357,31 +1133,7 @@ public final class MemberDao_Impl implements MemberDao {
             final int _tmp_4;
             _tmp_4 = _cursor.getInt(_cursorIndexOfHasReceived);
             _tmpHasReceived = _tmp_4 != 0;
-            final String _tmpNodeId;
-            if (_cursor.isNull(_cursorIndexOfNodeId)) {
-              _tmpNodeId = null;
-            } else {
-              _tmpNodeId = _cursor.getString(_cursorIndexOfNodeId);
-            }
-            final String _tmpPublicWalletAddress;
-            if (_cursor.isNull(_cursorIndexOfPublicWalletAddress)) {
-              _tmpPublicWalletAddress = null;
-            } else {
-              _tmpPublicWalletAddress = _cursor.getString(_cursorIndexOfPublicWalletAddress);
-            }
-            final int _tmpSigningOrder;
-            _tmpSigningOrder = _cursor.getInt(_cursorIndexOfSigningOrder);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
-            } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
-            }
-            final long _tmpLastModifiedAt;
-            _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _item = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived,_tmpNodeId,_tmpPublicWalletAddress,_tmpSigningOrder,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _item = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived);
             _result.add(_item);
           }
           return _result;
@@ -1394,12 +1146,12 @@ public final class MemberDao_Impl implements MemberDao {
   }
 
   @Override
-  public Object getByNodeId(final String nodeId, final String roscaId,
+  public Object getByUserId(final String userId, final String roscaId,
       final Continuation<? super MemberEntity> $completion) {
-    final String _sql = "SELECT * FROM members WHERE nodeId = ? AND roscaId = ? LIMIT 1";
+    final String _sql = "SELECT * FROM members WHERE userId = ? AND roscaId = ? LIMIT 1";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
     int _argIndex = 1;
-    _statement.bindString(_argIndex, nodeId);
+    _statement.bindString(_argIndex, userId);
     _argIndex = 2;
     _statement.bindString(_argIndex, roscaId);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
@@ -1433,12 +1185,6 @@ public final class MemberDao_Impl implements MemberDao {
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfMultisigInfo = CursorUtil.getColumnIndexOrThrow(_cursor, "multisigInfo");
           final int _cursorIndexOfHasReceived = CursorUtil.getColumnIndexOrThrow(_cursor, "hasReceived");
-          final int _cursorIndexOfNodeId = CursorUtil.getColumnIndexOrThrow(_cursor, "nodeId");
-          final int _cursorIndexOfPublicWalletAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "publicWalletAddress");
-          final int _cursorIndexOfSigningOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "signingOrder");
-          final int _cursorIndexOfSyncVersion = CursorUtil.getColumnIndexOrThrow(_cursor, "syncVersion");
-          final int _cursorIndexOfLastModifiedBy = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedBy");
-          final int _cursorIndexOfLastModifiedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastModifiedAt");
           final MemberEntity _result;
           if (_cursor.moveToFirst()) {
             final String _tmpId;
@@ -1522,11 +1268,7 @@ public final class MemberDao_Impl implements MemberDao {
             _tmp_2 = _cursor.getInt(_cursorIndexOfIsDirty);
             _tmpIsDirty = _tmp_2 != 0;
             final String _tmpStatus;
-            if (_cursor.isNull(_cursorIndexOfStatus)) {
-              _tmpStatus = null;
-            } else {
-              _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
-            }
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final Member.MultisigInfo _tmpMultisigInfo;
             final String _tmp_3;
             if (_cursor.isNull(_cursorIndexOfMultisigInfo)) {
@@ -1539,31 +1281,7 @@ public final class MemberDao_Impl implements MemberDao {
             final int _tmp_4;
             _tmp_4 = _cursor.getInt(_cursorIndexOfHasReceived);
             _tmpHasReceived = _tmp_4 != 0;
-            final String _tmpNodeId;
-            if (_cursor.isNull(_cursorIndexOfNodeId)) {
-              _tmpNodeId = null;
-            } else {
-              _tmpNodeId = _cursor.getString(_cursorIndexOfNodeId);
-            }
-            final String _tmpPublicWalletAddress;
-            if (_cursor.isNull(_cursorIndexOfPublicWalletAddress)) {
-              _tmpPublicWalletAddress = null;
-            } else {
-              _tmpPublicWalletAddress = _cursor.getString(_cursorIndexOfPublicWalletAddress);
-            }
-            final int _tmpSigningOrder;
-            _tmpSigningOrder = _cursor.getInt(_cursorIndexOfSigningOrder);
-            final long _tmpSyncVersion;
-            _tmpSyncVersion = _cursor.getLong(_cursorIndexOfSyncVersion);
-            final String _tmpLastModifiedBy;
-            if (_cursor.isNull(_cursorIndexOfLastModifiedBy)) {
-              _tmpLastModifiedBy = null;
-            } else {
-              _tmpLastModifiedBy = _cursor.getString(_cursorIndexOfLastModifiedBy);
-            }
-            final long _tmpLastModifiedAt;
-            _tmpLastModifiedAt = _cursor.getLong(_cursorIndexOfLastModifiedAt);
-            _result = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived,_tmpNodeId,_tmpPublicWalletAddress,_tmpSigningOrder,_tmpSyncVersion,_tmpLastModifiedBy,_tmpLastModifiedAt);
+            _result = new MemberEntity(_tmpId,_tmpRoscaId,_tmpUserId,_tmpName,_tmpMoneroAddress,_tmpJoinedAt,_tmpPosition,_tmpLeftAt,_tmpLeftReason,_tmpIsActive,_tmpWalletAddress,_tmpPayoutOrderPosition,_tmpHasReceivedPayout,_tmpTotalContributed,_tmpMissedPayments,_tmpLastContributionAt,_tmpExitedAt,_tmpUpdatedAt,_tmpIpfsHash,_tmpLastSyncedAt,_tmpIsDirty,_tmpStatus,_tmpMultisigInfo,_tmpHasReceived);
           } else {
             _result = null;
           }

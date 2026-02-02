@@ -45,7 +45,15 @@ class RoscaManager(
     private val context: Context,
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 ) {
-    private val TAG = "RoscaManager"
+    private val TAG = "com.techducat.ajo.service.RoscaManager"
+    
+    // MultisigCoordinator for handling all multisig operations
+    private val multisigCoordinator: com.techducat.ajo.sync.MultisigCoordinator by lazy {
+        com.techducat.ajo.sync.MultisigCoordinator(
+            context = context,
+            db = (repository as com.techducat.ajo.repository.impl.RoscaRepositoryImpl).database
+        )
+    }
     
     init {
         contributionHandler.roscaManager = this
@@ -1863,6 +1871,7 @@ class RoscaManager(
                 return@withContext Result.failure(Exception("User not logged in"))
             }
             
+            // Switch to ROSCA wallet for transaction operations
             val switchResult = WalletSelectionManager.switchToRoscaWallet(
                 context = context,
                 userId = userId,
@@ -1878,238 +1887,209 @@ class RoscaManager(
                 )
             }
             
-            val updatingRound = round.copy(status = RoundStatus.PAYOUT)
-            repository.updateRound(updatingRound)
-            
             WalletSelectionManager.selectRoscaWallet(
                 roscaId = roscaId,
                 roscaName = rosca.name,
                 multisigAddress = rosca.multisigAddress
             )
             
-            val txHash = withTimeout(60000L) {
-                suspendCoroutine<String> { continuation ->
-                    walletSuite.createMultisigTransaction(
-                        roscaId,
-                        round.recipientAddress,
-                        round.collectedAmount,
-                        object : WalletSuite.MultisigTxCallback {
-                            override fun onSuccess(txData: String) {
-                                Log.d(TAG, "Multisig transaction created")
-                                scope.launch {
-                                    storeUnsignedTransaction(roscaId, roundNumber, txData, txData)
-                                }
-                                continuation.resume(txData)
-                            }
-                            
-                            override fun onError(error: String) {
-                                Log.e(TAG, "Failed to create multisig transaction: $error")
-                                continuation.resumeWithException(Exception(error))
-                            }
-                        }
-                    )
-                }
-            }
+            // Update round status to PAYOUT
+            val updatingRound = round.copy(status = RoundStatus.PAYOUT)
+            repository.updateRound(updatingRound)
             
+            // Create TransactionEntity for the payout
+            val localNode = (repository as com.techducat.ajo.repository.impl.RoscaRepositoryImpl)
+                .database.localNodeDao().getLocalNode()
+                ?: return@withContext Result.failure(Exception("Local node not found"))
+
+            val txId = "tx_payout_${roscaId}_r${roundNumber}_${System.currentTimeMillis()}"
+            val transaction = com.techducat.ajo.data.local.entity.TransactionEntity(
+                id = txId,
+                txHash = null, // Will be set after first signature
+                roscaId = roscaId,
+                roundNumber = roundNumber,  // ✅ ADDED
+                status = com.techducat.ajo.data.local.entity.TransactionEntity.STATUS_PENDING_SIGNATURES,
+                amount = round.collectedAmount,
+                fromAddress = rosca.multisigAddress,
+                toAddress = round.recipientAddress,
+                requiredSignatures = rosca.totalMembers - 1, // n-1 multisig
+                currentSignatureCount = 0,
+                syncVersion = 1,
+                lastModifiedBy = localNode.nodeId,
+                lastModifiedAt = System.currentTimeMillis(),
+                createdAt = System.currentTimeMillis(),  // ✅ ADDED
+                confirmations = 0,  // ✅ ADDED
+                confirmedAt = null  // ✅ ADDED
+            )
+            
+            // Store transaction in database
+            (repository as com.techducat.ajo.repository.impl.RoscaRepositoryImpl)
+                .database.transactionDao().insert(transaction)
+            
+            Log.d(TAG, "Created payout transaction entity: $txId")
+            
+            // Update round with transaction reference
             val updatedRound = updatingRound.copy(
-                payoutTransactionHash = txHash,
+                payoutTransactionHash = txId, // Using txId as reference initially
                 status = RoundStatus.PAYOUT
             )
             repository.updateRound(updatedRound)
             
-            coordinateSigningThroughDatabase(roscaId, roundNumber, txHash)
+            // Start monitoring signing progress
+            monitorMultisigProgress(roscaId, roundNumber, txId)
             
-            Log.d(TAG, "Payout transaction created: $txHash")
-            Log.d(TAG, "Remaining on ROSCA wallet for signing")
-            Result.success(txHash)
+            Log.d(TAG, "Payout transaction initiated: $txId")
+            Result.success(txId)
             
-        } catch (e: TimeoutCancellationException) {
-            Log.e(TAG, "Payout timeout")
-            Result.failure(Exception("Payout timeout - transaction creation took too long"))
         } catch (e: Exception) {
             Log.e(TAG, "Error processing payout", e)
             Result.failure(e)
         }
     }
 
+    /**
+     * Monitor multisig signing progress using MultisigCoordinator
+     */
+    private fun monitorMultisigProgress(
+        roscaId: String,
+        roundNumber: Int,
+        txId: String
+    ) {
+        scope.launch {
+            try {
+                Log.d(TAG, "Starting multisig progress monitoring for tx: $txId")
+                
+                // Collect pending signatures from MultisigCoordinator
+                multisigCoordinator.observePendingSignatures(roscaId).collect { pendingSignatures ->
+                    val ourTransaction = pendingSignatures.find { it.transactionId == txId }
+                    
+                    if (ourTransaction != null) {
+                        Log.d(TAG, "Transaction needs signing: ${ourTransaction.currentSignatures}/${ourTransaction.requiredSignatures}")
+                        
+                        // Auto-sign if it's our turn
+                        val result = multisigCoordinator.signTransaction(txId)
+                        when (result) {
+                            is com.techducat.ajo.sync.SigningResult.Success -> {
+                                Log.d(TAG, "Successfully signed: ${result.currentSigs}/${result.requiredSigs}")
+                                
+                                // Check if all signatures collected
+                                if (result.currentSigs >= result.requiredSigs) {
+                                    Log.d(TAG, "All signatures collected! Transaction will be broadcast.")
+                                    handleTransactionBroadcast(roscaId, roundNumber, txId)
+                                }
+                            }
+                            is com.techducat.ajo.sync.SigningResult.Error -> {
+                                if (result.message != "Already signed") {
+                                    Log.e(TAG, "Signing error: ${result.message}")
+                                }
+                            }
+                        }
+                    } else {
+                        // Check if transaction has been broadcast
+                        val db = (repository as com.techducat.ajo.repository.impl.RoscaRepositoryImpl).database
+                        val tx = db.transactionDao().get(txId)
+                        if (tx?.status == com.techducat.ajo.data.local.entity.TransactionEntity.STATUS_BROADCAST ||
+                            tx?.status == com.techducat.ajo.data.local.entity.TransactionEntity.STATUS_CONFIRMED) {
+                            Log.d(TAG, "Transaction broadcast complete, stopping monitoring")
+                            handleTransactionBroadcast(roscaId, roundNumber, txId)
+                            return@collect // Stop collecting
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in multisig monitoring", e)
+            }
+        }
+    }
+    
+    /**
+     * Handle transaction broadcast completion
+     */
+    private suspend fun handleTransactionBroadcast(
+        roscaId: String,
+        roundNumber: Int,
+        txId: String
+    ) = withContext(Dispatchers.IO) {
+        try {
+            val db = (repository as com.techducat.ajo.repository.impl.RoscaRepositoryImpl).database
+            val tx = db.transactionDao().get(txId)
+            
+            if (tx?.status == com.techducat.ajo.data.local.entity.TransactionEntity.STATUS_BROADCAST ||
+                tx?.status == com.techducat.ajo.data.local.entity.TransactionEntity.STATUS_CONFIRMED) {
+                
+                Log.d(TAG, "Transaction broadcast confirmed: ${tx.txHash}")
+                
+                // Update round status
+                val round = repository.getRoundByNumber(roscaId, roundNumber)
+                if (round != null) {
+                    val updatedRound = round.copy(
+                        status = RoundStatus.COMPLETED,
+                        distributedAmount = round.collectedAmount,
+                        completedAt = System.currentTimeMillis(),
+                        payoutTransactionHash = tx.txHash ?: txId
+                    )
+                    repository.updateRound(updatedRound)
+                    
+                    // Check if ROSCA should move to next round or complete
+                    val rosca = repository.getRoscaById(roscaId)
+                    if (rosca != null) {
+                        if (roundNumber < rosca.totalMembers) {
+                            delay(1000)
+                            startNewRound(roscaId)
+                        } else if (roundNumber == rosca.totalMembers) {
+                            repository.updateRosca(
+                                rosca.copy(
+                                    status = RoscaState.COMPLETED,
+                                    completedAt = System.currentTimeMillis()
+                                )
+                            )
+                            Log.d(TAG, "ROSCA completed: $roscaId")
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error handling transaction broadcast", e)
+        }
+    }
+
+    @Deprecated("Use MultisigCoordinator instead")
     private suspend fun storeUnsignedTransaction(
         roscaId: String,
         roundNumber: Int,
         txHash: String,
         unsignedTx: String
     ) {
-        try {
-            val sharedPrefs = context.getSharedPreferences("rosca_transactions", Context.MODE_PRIVATE)
-            sharedPrefs.edit().putString("${roscaId}_${roundNumber}_unsigned", unsignedTx).apply()
-            Log.d(TAG, "Stored unsigned transaction for coordination")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error storing unsigned transaction", e)
-        }
+        // Kept for backward compatibility but no longer used
     }
 
+    @Deprecated("Use MultisigCoordinator instead")
     private suspend fun coordinateSigningThroughDatabase(
         roscaId: String,
         roundNumber: Int,
         txHash: String
     ) = withContext(Dispatchers.IO) {
-        try {
-            Log.d(TAG, "Coordinating signing through database for tx: $txHash")
-            
-            val members = repository.getMembersByRoscaId(roscaId)
-            val rosca = repository.getRoscaById(roscaId) ?: return@withContext
-            val threshold = rosca.totalMembers - 1
-            
-            members.forEach { member ->
-                val signature = MultisigSignature(
-                    id = UUID.randomUUID().toString(),
-                    roscaId = roscaId,
-                    roundNumber = roundNumber,
-                    txHash = txHash,
-                    memberId = member.id,
-                    hasSigned = false,
-                    signature = null,
-                    timestamp = System.currentTimeMillis()
-                )
-                repository.insertMultisigSignature(signature)
-            }
-            
-            monitorSigningProgress(roscaId, roundNumber, txHash, threshold)
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Error coordinating signing", e)
-        }
+        // Kept for backward compatibility but no longer used
     }
 
+    @Deprecated("Use MultisigCoordinator instead")
     private suspend fun monitorSigningProgress(
         roscaId: String,
         roundNumber: Int,
         txHash: String,
         threshold: Int
     ) = withContext(Dispatchers.IO) {
-        var signedCount = 0
-        try {
-            var attempts = 0
-            val maxAttempts = 120
-            
-            while (attempts < maxAttempts) {
-                delay(5000)
-                attempts++
-                
-                val signatures = repository.getMultisigSignatures(roscaId, roundNumber)
-                signedCount = signatures.count { it.hasSigned }
-                
-                Log.d(TAG, "Signing progress: $signedCount/$threshold signatures (attempt $attempts/$maxAttempts)")
-                
-                if (signedCount >= threshold) {
-                    Log.d(TAG, "Threshold reached! Finalizing transaction...")
-                    finalizeTransaction(roscaId, roundNumber, txHash, signatures)
-                    return@withContext
-                }
-            }
-            
-            Log.e(TAG, "Signing timeout: Only got $signedCount/$threshold signatures")
-            val round = repository.getRoundByNumber(roscaId, roundNumber)
-            if (round != null) {
-                repository.updateRound(round.copy(status = RoundStatus.FAILED))
-            }
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Error monitoring signing progress", e)
-        }
+        // Kept for backward compatibility but no longer used
     }
 
+    @Deprecated("Use MultisigCoordinator instead")
     private suspend fun finalizeTransaction(
         roscaId: String,
         roundNumber: Int,
         txHash: String,
         signatures: List<MultisigSignature>
     ) = withContext(Dispatchers.IO) {
-        try {
-            Log.d(TAG, "Finalizing transaction: $txHash")
-            
-            val signatureStrings = signatures
-                .filter { it.hasSigned && it.signature != null }
-                .map { it.signature!! }
-            
-            val rosca = repository.getRoscaById(roscaId)
-            val sharedPrefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-            val userId = sharedPrefs.getString("user_id", null)
-            
-            if (userId == null || rosca == null) {
-                Log.e(TAG, "Cannot finalize: missing user or ROSCA data")
-                return@withContext
-            }
-            
-            val switchResult = WalletSelectionManager.switchToRoscaWallet(
-                context = context,
-                userId = userId,
-                roscaId = roscaId,
-                roscaName = rosca.name,
-                multisigAddress = rosca.multisigAddress,
-                walletSuite = walletSuite
-            )
-            
-            if (switchResult.isFailure) {
-                Log.e(TAG, "Failed to switch to ROSCA wallet for finalization")
-                return@withContext
-            }
-            
-            WalletSelectionManager.selectRoscaWallet(
-                roscaId = roscaId,
-                roscaName = rosca.name,
-                multisigAddress = rosca.multisigAddress
-            )
-            
-            val result = withTimeout(60000L) {
-                suspendCoroutine<Boolean> { continuation ->
-                    walletSuite.submitMultisigTransaction(
-                        roscaId,
-                        txHash,
-                        object : WalletSuite.MultisigSubmitCallback {
-                            override fun onSuccess(finalTxHash: String) {
-                                Log.d(TAG, "Transaction submitted successfully: $finalTxHash")
-                                continuation.resume(true)
-                            }
-                            
-                            override fun onError(error: String) {
-                                Log.e(TAG, "Failed to submit transaction: $error")
-                                continuation.resumeWithException(Exception(error))
-                            }
-                        }
-                    )
-                }
-            }
-            
-            if (result) {
-                val round = repository.getRoundByNumber(roscaId, roundNumber)
-                if (round != null) {
-                    val updatedRound = round.copy(
-                        status = RoundStatus.COMPLETED,
-                        distributedAmount = round.collectedAmount,
-                        completedAt = System.currentTimeMillis()
-                    )
-                    repository.updateRound(updatedRound)
-                    
-                    if (roundNumber < rosca.totalMembers) {
-                        delay(1000)
-                        startNewRound(roscaId)
-                    } else if (roundNumber == rosca.totalMembers) {
-                        repository.updateRosca(
-                            rosca.copy(
-                                status = RoscaState.COMPLETED,
-                                completedAt = System.currentTimeMillis()
-                            )
-                        )
-                        Log.d(TAG, "ROSCA completed: $roscaId")
-                    }
-                }
-            }
-            
-            Log.d(TAG, "Remaining on ROSCA wallet after finalization")
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Error finalizing transaction", e)
-        }
+        // Kept for backward compatibility but no longer used
     }
 
     suspend fun signPayout(roscaId: String, roundNumber: Int): Result<Unit> = 
@@ -2124,24 +2104,18 @@ class RoscaManager(
                 return@withContext Result.failure(Exception("Round not in payout phase"))
             }
             
-            val txHash = round.payoutTransactionHash
+            val txId = round.payoutTransactionHash
                 ?: return@withContext Result.failure(Exception("No transaction to sign"))
             
-            val sharedPrefs = context.getSharedPreferences("rosca_transactions", Context.MODE_PRIVATE)
-            val unsignedTx = sharedPrefs.getString("${roscaId}_${roundNumber}_unsigned", null)
-                ?: return@withContext Result.failure(Exception("Unsigned transaction not found"))
+            // Switch to ROSCA wallet
+            val rosca = repository.getRoscaById(roscaId)
+                ?: return@withContext Result.failure(Exception("ROSCA not found"))
             
             val sharedPrefsApp = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
             val userId = sharedPrefsApp.getString("user_id", null)
             
             if (userId == null) {
                 return@withContext Result.failure(Exception("User not logged in"))
-            }
-            
-            val rosca = repository.getRoscaById(roscaId)
-            
-            if (rosca == null) {
-                return@withContext Result.failure(Exception("ROSCA not found"))
             }
             
             val switchResult = WalletSelectionManager.switchToRoscaWallet(
@@ -2165,62 +2139,50 @@ class RoscaManager(
                 multisigAddress = rosca.multisigAddress
             )
             
-            val signatureString = withTimeout(30000L) {
-                suspendCoroutine<String> { continuation ->
-                    walletSuite.signMultisigTransaction(
-                        roscaId,
-                        unsignedTx,
-                        object : WalletSuite.MultisigSignCallback {
-                            override fun onSuccess(signedData: String) {
-                                Log.d(TAG, "Transaction signed successfully")
-                                continuation.resume(signedData)
-                            }
-                            
-                            override fun onError(error: String) {
-                                Log.e(TAG, "Signing failed: $error")
-                                continuation.resumeWithException(Exception(error))
-                            }
-                        }
-                    )
+            // Use MultisigCoordinator to sign the transaction
+            when (val result = multisigCoordinator.signTransaction(txId)) {
+                is com.techducat.ajo.sync.SigningResult.Success -> {
+                    Log.d(TAG, "Successfully signed transaction: ${result.currentSigs}/${result.requiredSigs}")
+                    
+                    // Check if transaction is now ready to broadcast
+                    if (result.currentSigs >= result.requiredSigs) {
+                        Log.d(TAG, "All signatures collected! Transaction will be broadcast automatically.")
+                    }
+                    
+                    Result.success(Unit)
+                }
+                is com.techducat.ajo.sync.SigningResult.Error -> {
+                    Log.e(TAG, "Failed to sign: ${result.message}")
+                    Result.failure(Exception(result.message))
                 }
             }
             
-            val members = repository.getMembersByRoscaId(roscaId)
-            val member = members.find { it.userId == userId }
-            
-            if (member != null) {
-                val existingRecord = repository.getMultisigSignature(roscaId, roundNumber, member.id)
-                val multisigSignature = existingRecord?.copy(
-                    hasSigned = true,
-                    signature = signatureString,
-                    timestamp = System.currentTimeMillis()
-                ) ?: MultisigSignature(
-                    id = UUID.randomUUID().toString(),
-                    roscaId = roscaId,
-                    roundNumber = roundNumber,
-                    txHash = txHash,
-                    memberId = member.id,
-                    hasSigned = true,
-                    signature = signatureString,
-                    timestamp = System.currentTimeMillis()
-                )
-                
-                repository.upsertMultisigSignature(multisigSignature)
-                Log.d(TAG, "Signature stored in database")
-            }
-            
-            Log.d(TAG, "Remaining on ROSCA wallet after signing")
-            Result.success(Unit)
-            
-        } catch (e: TimeoutCancellationException) {
-            Log.e(TAG, "Signing timeout")
-            Result.failure(Exception("Signing timeout"))
         } catch (e: Exception) {
             Log.e(TAG, "Error signing payout", e)
             Result.failure(e)
         }
     }
 
+    // ============================================================================
+    // MULTISIG TRANSACTION MONITORING
+    // ============================================================================
+    
+    /**
+     * Observe pending signatures for a specific ROSCA
+     * This allows UI to show which transactions need signing
+     */
+    fun observePendingSignatures(roscaId: String): Flow<List<com.techducat.ajo.sync.PendingSignature>> {
+        return multisigCoordinator.observePendingSignatures(roscaId)
+    }
+    
+    /**
+     * Manually trigger signing of a specific transaction
+     * Usually called from UI when user explicitly wants to sign
+     */
+    suspend fun signTransaction(txId: String): com.techducat.ajo.sync.SigningResult {
+        return multisigCoordinator.signTransaction(txId)
+    }
+    
     // ============================================================================
     // QUERY METHODS
     // ============================================================================
