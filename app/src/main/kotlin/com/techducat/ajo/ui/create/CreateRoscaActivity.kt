@@ -18,6 +18,9 @@ import com.techducat.ajo.ui.auth.LoginViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class CreateRoscaActivity : AppCompatActivity() {
     
@@ -117,6 +120,77 @@ class CreateRoscaActivity : AppCompatActivity() {
             return
         }
 
+        // ✅ FIX BUG #11: Check balance before creating ROSCA
+        lifecycleScope.launch {
+            try {
+                showLoading(true)
+                
+                // Get personal wallet balance
+                val (_, unlockedBalance) = suspendCoroutine<Pair<Long, Long>> { continuation ->
+                    walletSuite.getBalance(object : WalletSuite.BalanceCallback {
+                        override fun onSuccess(balance: Long, unlocked: Long) {
+                            continuation.resume(Pair(balance, unlocked))
+                        }
+                        
+                        override fun onError(error: String) {
+                            continuation.resumeWithException(Exception(error))
+                        }
+                    })
+                }
+                
+                if (unlockedBalance < contributionAmount) {
+                    showLoading(false)
+                    
+                    // Show dialog asking if user wants to create anyway
+                    val dialog = androidx.appcompat.app.AlertDialog.Builder(this@CreateRoscaActivity)
+                        .setTitle("Insufficient Funds")
+                        .setMessage(
+                            "You need ${formatXMR(contributionAmount)} XMR to participate in this ROSCA, " +
+                            "but you only have ${formatXMR(unlockedBalance)} XMR unlocked. " +
+                            "\n\nWould you like to create the ROSCA anyway? " +
+                            "You won't be able to contribute until you have sufficient funds."
+                        )
+                        .setPositiveButton("Create Anyway") { _, _ ->
+                            proceedWithCreation(name, description, members, contributionAmount, frequencyDays, distributionMethod)
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .create()
+                    
+                    dialog.show()
+                    return@launch
+                }
+                
+                // User has sufficient funds, proceed
+                showLoading(false)
+                proceedWithCreation(name, description, members, contributionAmount, frequencyDays, distributionMethod)
+                
+            } catch (e: Exception) {
+                showLoading(false)
+                Log.e(TAG, "Error checking balance", e)
+                Toast.makeText(
+                    this@CreateRoscaActivity,
+                    "Could not check balance: ${e.message}. Proceeding with creation...",
+                    Toast.LENGTH_LONG
+                ).show()
+                
+                // Proceed anyway if balance check fails
+                proceedWithCreation(name, description, members, contributionAmount, frequencyDays, distributionMethod)
+            }
+        }
+    }
+    
+    private fun formatXMR(atomicUnits: Long): String {
+        return "%.12f".format(atomicUnits / 1_000_000_000_000.0)
+    }
+    
+    private fun proceedWithCreation(
+        name: String,
+        description: String,
+        members: Int,
+        contributionAmount: Long,
+        frequencyDays: Int,
+        distributionMethod: DistributionMethod
+    ) {
         lifecycleScope.launch {
             try {
                 isCreatingRosca = true

@@ -1012,7 +1012,30 @@ class RoscaManager(
                 )
             }
             
+            // ✅ FIX BUG #1: Verify wallet switch was successful
+            val currentWalletAddress = getCurrentWalletAddress().getOrNull()
+            val expectedRoscaAddress = member.walletAddress
+            
+            if (currentWalletAddress != expectedRoscaAddress) {
+                Log.e(TAG, "❌ CRITICAL: Wallet switch verification failed!")
+                Log.e(TAG, "Expected: $expectedRoscaAddress")
+                Log.e(TAG, "Got: $currentWalletAddress")
+                return@withContext Result.failure(Exception(
+                    "Wallet context mismatch. Cannot proceed with contribution for safety."
+                ))
+            }
+            
+            Log.d(TAG, "✓ Wallet context verified: ${currentWalletAddress?.take(15)}...")
             Log.d(TAG, "Checking ROSCA wallet balance...")
+            
+            // ✅ FIX BUG #1: Double-check balance is from ROSCA wallet
+            val verifyAddress = getCurrentWalletAddress().getOrNull()
+            if (verifyAddress != member.walletAddress) {
+                return@withContext Result.failure(Exception(
+                    "SAFETY CHECK FAILED: Wrong wallet active before balance check"
+                ))
+            }
+            
             val (balance, unlocked) = suspendCoroutine<Pair<Long, Long>> { continuation ->
                 walletSuite.getBalance(object : WalletSuite.BalanceCallback {
                     override fun onSuccess(balance: Long, unlocked: Long) {
@@ -1232,6 +1255,26 @@ class RoscaManager(
             }
             
             Log.d(TAG, "✓ Switched to ROSCA wallet")
+            
+            // ✅ FIX BUG #6: Verify wallet identity before finalization
+            val members = repository.getMembersByRoscaId(roscaId)
+            val ourMember = members.find { it.userId == userId }
+                ?: return@withContext Result.failure(Exception("Member not found for user $userId"))
+            
+            val currentWalletAddress = getCurrentWalletAddress().getOrNull()
+            val expectedRoscaAddress = ourMember.walletAddress
+            
+            if (currentWalletAddress != expectedRoscaAddress) {
+                Log.e(TAG, "❌ CRITICAL: Wallet verification failed before finalization!")
+                Log.e(TAG, "Expected: $expectedRoscaAddress")
+                Log.e(TAG, "Got: $currentWalletAddress")
+                return@withContext Result.failure(Exception(
+                    "Wallet identity mismatch. Cannot proceed with finalization for safety. " +
+                    "Please restart the app and try again."
+                ))
+            }
+            
+            Log.d(TAG, "✓ Wallet identity verified: ${currentWalletAddress?.take(15)}...")
             
             // ════════════════════════════════════════════════════════════
             // STEP 5: CALL makeMultisig (ROUND 1)

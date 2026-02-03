@@ -89,13 +89,50 @@ object WalletSelectionManager {
     // ============================================================================
     
     fun getPersonalWalletPath(context: Context, userId: String): String {
+        // ✅ FIX BUG #7: Sanitize userId to prevent path traversal
+        val sanitizedUserId = sanitizePathComponent(userId)
+        if (sanitizedUserId != userId) {
+            Log.w(TAG, "⚠️ User ID was sanitized for security: $userId -> $sanitizedUserId")
+        }
+        
         val dir = context.getDir("wallets", Context.MODE_PRIVATE)
-        return File(dir, "wallet_$userId").absolutePath
+        return File(dir, "wallet_$sanitizedUserId").absolutePath
     }
     
     fun getRoscaWalletPath(context: Context, userId: String, roscaId: String): String {
+        // ✅ FIX BUG #7: Sanitize both userId and roscaId to prevent path traversal
+        val sanitizedUserId = sanitizePathComponent(userId)
+        val sanitizedRoscaId = sanitizePathComponent(roscaId)
+        
+        if (sanitizedUserId != userId) {
+            Log.w(TAG, "⚠️ User ID was sanitized for security: $userId -> $sanitizedUserId")
+        }
+        if (sanitizedRoscaId != roscaId) {
+            Log.w(TAG, "⚠️ ROSCA ID was sanitized for security: $roscaId -> $sanitizedRoscaId")
+        }
+        
         val dir = context.getDir("wallets", Context.MODE_PRIVATE)
-        return File(dir, "rosca_${roscaId}_$userId").absolutePath
+        return File(dir, "rosca_${sanitizedRoscaId}_$sanitizedUserId").absolutePath
+    }
+    
+    /**
+     * ✅ FIX BUG #7: Sanitize path components to prevent directory traversal
+     * Removes dangerous characters like ../, ..\, /, \, etc.
+     */
+    private fun sanitizePathComponent(component: String): String {
+        // Remove any path separators and parent directory references
+        return component
+            .replace("/", "_")
+            .replace("\\", "_")
+            .replace("..", "_")
+            .replace(":", "_")
+            .replace("*", "_")
+            .replace("?", "_")
+            .replace("\"", "_")
+            .replace("<", "_")
+            .replace(">", "_")
+            .replace("|", "_")
+            .trim()
     }
     
     fun walletExists(walletPath: String): Boolean {
@@ -467,14 +504,44 @@ object WalletSelectionManager {
                 Log.d(TAG, "✓ ROSCA wallet file closed")
                 
                 // ✅ CRITICAL - ALWAYS restore previous wallet
+                // ✅ FIX BUG #3: Restore previous wallet with verification
                 if (previousWalletPath != null) {
                     Log.d(TAG, "Restoring previous wallet: $previousWalletPath")
                     val restored = reopenWallet(previousWalletPath, walletManager, walletSuite, context)
                     
-                    if (restored) {
-                        Log.i(TAG, "✓ Previous wallet restored successfully")
+                    if (!restored) {
+                        // ✅ CRITICAL: Restoration failed even in success path!
+                        Log.e(TAG, "❌❌❌ CRITICAL: Failed to restore previous wallet in success path!")
+                        Log.e(TAG, "Wallet path: $previousWalletPath")
+                        
+                        // This is serious - ROSCA wallet created but can't restore personal wallet
+                        // Try emergency recovery
+                        val emergencyRestored = try {
+                            val freshManager = WalletManager.getInstance()
+                            val password = getWalletPassword(context)
+                            val wallet = freshManager.openWallet(previousWalletPath, password)
+                            
+                            if (wallet != null && wallet.getStatus() == Wallet.Status.Status_Ok.ordinal) {
+                                walletSuite.setUserWallet(wallet)
+                                currentWalletPath.set(previousWalletPath)
+                                true
+                            } else {
+                                wallet?.close()
+                                false
+                            }
+                        } catch (emergencyError: Exception) {
+                            Log.e(TAG, "Emergency recovery failed", emergencyError)
+                            false
+                        }
+                        
+                        if (!emergencyRestored) {
+                            Log.e(TAG, "❌ Could not restore previous wallet even with emergency recovery")
+                            Log.w(TAG, "⚠️ ROSCA wallet created successfully but personal wallet inaccessible")
+                        } else {
+                            Log.i(TAG, "✓ Previous wallet restored via emergency recovery")
+                        }
                     } else {
-                        Log.w(TAG, "⚠️ Failed to restore previous wallet")
+                        Log.i(TAG, "✓ Previous wallet restored successfully")
                     }
                 } else {
                     Log.w(TAG, "⚠️ No previous wallet to restore")
@@ -490,7 +557,7 @@ object WalletSelectionManager {
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Exception creating fresh ROSCA wallet", e)
                 
-                // ✅ Cleanup and restore on ANY exception
+                // ✅ FIX BUG #3: Enhanced restoration with verification
                 if (roscaWallet != null) {
                     try {
                         roscaWallet.close()
@@ -503,7 +570,48 @@ object WalletSelectionManager {
                 if (previousWalletPath != null) {
                     Log.d(TAG, "Restoring previous wallet after exception...")
                     val walletManager = WalletManager.getInstance()
-                    reopenWallet(previousWalletPath, walletManager, walletSuite, context)
+                    
+                    val restored = reopenWallet(previousWalletPath, walletManager, walletSuite, context)
+                    
+                    if (!restored) {
+                        // ✅ CRITICAL: Restoration failed!
+                        Log.e(TAG, "❌❌❌ CRITICAL: Failed to restore previous wallet!")
+                        Log.e(TAG, "Wallet path: $previousWalletPath")
+                        
+                        // Try emergency recovery
+                        val emergencyRestored = try {
+                            // Attempt to reopen wallet with fresh WalletManager instance
+                            val freshManager = WalletManager.getInstance()
+                            val password = getWalletPassword(context)
+                            val wallet = freshManager.openWallet(previousWalletPath, password)
+                            
+                            if (wallet != null && wallet.getStatus() == Wallet.Status.Status_Ok.ordinal) {
+                                walletSuite.setUserWallet(wallet)
+                                currentWalletPath.set(previousWalletPath)
+                                true
+                            } else {
+                                wallet?.close()
+                                false
+                            }
+                        } catch (emergencyError: Exception) {
+                            Log.e(TAG, "Emergency recovery failed", emergencyError)
+                            false
+                        }
+                        
+                        if (!emergencyRestored) {
+                            // ✅ This is a critical failure - alert user immediately
+                            return@withContext Result.failure(Exception(
+                                "CRITICAL: Failed to restore wallet after error. " +
+                                "Your funds are safe but wallet is inaccessible. " +
+                                "Please restart app and contact support if issue persists. " +
+                                "Original error: ${e.message}"
+                            ))
+                        } else {
+                            Log.i(TAG, "✓ Emergency wallet recovery succeeded")
+                        }
+                    } else {
+                        Log.i(TAG, "✓ Previous wallet restored successfully")
+                    }
                 }
                 
                 Result.failure(e)

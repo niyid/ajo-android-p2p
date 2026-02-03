@@ -5,7 +5,7 @@ import androidx.work.*
 import com.techducat.ajo.sync.SyncEngine
 import com.techducat.ajo.sync.MessageHandler
 import com.techducat.ajo.core.network.NetworkTransport
-import com.techducat.ajo.core.network.MockTransport
+import com.techducat.ajo.core.network.I2PTransport  // ✅ Fixed: removed 's'
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -16,7 +16,7 @@ class P2PSyncWorker(
 ) : CoroutineWorker(context, params) {
     
     private val transport: NetworkTransport by lazy {
-        MockTransport()
+        I2PTransport(applicationContext)  // ✅ Fixed: added context parameter
     }
     
     private val syncEngine: SyncEngine by lazy {
@@ -52,10 +52,9 @@ class P2PSyncWorker(
             // Process outbound sync queue
             syncEngine.processSyncQueue()
             
-            // For mock transport, manually deliver messages
-            if (transport is MockTransport) {
-                (transport as MockTransport).deliverMessages()
-            }
+            // ✅ Fixed: Removed I2PTransport-specific call
+            // I2P transport handles message delivery automatically
+            // No manual deliverMessages() needed
             
             Result.success()
             
