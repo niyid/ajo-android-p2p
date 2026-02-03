@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.techducat.ajo.app-mergeDebugResources-79:/values-zh-rCN/values-zh-rCN.xml",
+            "outputFile": "com.techducat.ajo.app-mergeDebugResources-81:/values-zh-rCN/values-zh-rCN.xml",
             "map": [
                 {
                     "source": "/home/niyid/.gradle/caches/8.11.1/transforms/20cbc905900fe9dc3cce91343bfc63af/transformed/browser-1.4.0/res/values-zh-rCN/values-zh-rCN.xml",

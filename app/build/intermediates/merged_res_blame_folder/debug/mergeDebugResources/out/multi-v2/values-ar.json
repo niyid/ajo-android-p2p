@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.techducat.ajo.app-mergeDebugResources-79:/values-ar/values-ar.xml",
+            "outputFile": "com.techducat.ajo.app-mergeDebugResources-81:/values-ar/values-ar.xml",
             "map": [
                 {
                     "source": "/home/niyid/.gradle/caches/8.11.1/transforms/96984a2f61c55bfbd4cf352f59dede85/transformed/biometric-1.2.0-alpha05/res/values-ar/values-ar.xml",

@@ -99,6 +99,7 @@
     <string name="icon_content_description">Icône de la boîte de dialogue</string>
     <string msgid="6827826412747255547" name="in_progress">"En cours"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Partiellement coché"</string>
+    <string name="install_i2p_android">Installer I2P pour Android ?</string>
     <string name="item_view_role_description">Tabulation</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Réduire la bottom sheet"</string>
     <string msgid="1555567894577437024" name="m3c_bottom_sheet_dismiss_description">"Fermer la bottom sheet"</string>
@@ -219,6 +220,7 @@
     <string msgid="6301633601645100427" name="nav_app_bar_navigate_up_description">"Remonter"</string>
     <string msgid="7456070600745802113" name="nav_app_bar_open_drawer_description">"Ouvrir le panneau de navigation"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Menu de navigation"</string>
+    <string name="no">Non</string>
     <string msgid="6610465462668679431" name="not_selected">"Non sélectionné"</string>
     <string name="password_toggle_content_description">Afficher le mot de passe</string>
     <string msgid="5941395253238309765" name="range_end">"Fin de plage"</string>
@@ -230,6 +232,7 @@
     <string msgid="6043586758067023" name="selected">"Sélectionné"</string>
     <string name="side_sheet_accessibility_pane_title">Feuille latérale</string>
     <string msgid="2792228137354697160" name="snackbar_pane_title">"Alerte"</string>
+    <string name="start_i2p_android">Démarrer I2P pour Android ?</string>
     <string msgid="4139871816613051306" name="state_empty">"Vide"</string>
     <string msgid="5834637030682409883" name="state_off">"Désactivé"</string>
     <string msgid="1490883874751719580" name="state_on">"Activé"</string>
@@ -246,6 +249,9 @@
     <string msgid="6961788485681412417" name="use_fingerprint_label">"Utiliser votre empreinte digitale"</string>
     <string msgid="7577690399303139443" name="use_fingerprint_or_screen_lock_label">"Utiliser votre empreinte digitale ou le verrouillage de l\'écran"</string>
     <string msgid="5459869335976243512" name="use_screen_lock_label">"Utiliser le verrouillage de l\'écran"</string>
+    <string name="would_you_like_to_start_i2p_android">Il semblerait qu’I2P pour Android ne soit pas en fonction. Souhaitez-vous le démarrer ?</string>
+    <string name="yes">Oui</string>
+    <string name="you_must_have_i2p_android">I2P pour Android doit être installé et en fonction. Souhaitez-vous l’installer ?</string>
     <string name="zxing_app_name">Barcode Scanner</string>
     <string name="zxing_button_ok">OK</string>
     <string name="zxing_msg_camera_framework_bug">Désolé, la caméra Android a rencontré un problème. Un redémarrage de l\'appareil est peut-être nécessaire.</string>

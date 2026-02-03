@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.techducat.ajo.app-mergeDebugResources-79:/values-my/values-my.xml",
+            "outputFile": "com.techducat.ajo.app-mergeDebugResources-81:/values-my/values-my.xml",
             "map": [
                 {
                     "source": "/home/niyid/.gradle/caches/8.11.1/transforms/9372728114cef3c9fbee1d5c97575eb7/transformed/navigation-ui-2.8.5/res/values-my/values-my.xml",

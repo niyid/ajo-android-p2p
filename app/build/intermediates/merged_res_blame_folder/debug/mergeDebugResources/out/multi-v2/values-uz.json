@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.techducat.ajo.app-mergeDebugResources-79:/values-uz/values-uz.xml",
+            "outputFile": "com.techducat.ajo.app-mergeDebugResources-81:/values-uz/values-uz.xml",
             "map": [
                 {
                     "source": "/home/niyid/.gradle/caches/8.11.1/transforms/9a2d17f189fb591177bbbe1dbb3365f2/transformed/jetified-foundation-release/res/values-uz/values-uz.xml",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.techducat.ajo.app-mergeDebugResources-79:/values-id/values-id.xml",
+            "outputFile": "com.techducat.ajo.app-mergeDebugResources-81:/values-id/values-id.xml",
             "map": [
                 {
                     "source": "/home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/res/values-id/values-id.xml",

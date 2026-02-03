@@ -99,6 +99,7 @@
     <string name="icon_content_description">İletişim kutusu simgesi</string>
     <string msgid="6827826412747255547" name="in_progress">"Devam ediyor"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Kısmi olarak kontrol edildi"</string>
+    <string name="install_i2p_android">I2P Android Yüklensin</string>
     <string name="item_view_role_description">Sekme</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Alt sayfayı daralt"</string>
     <string msgid="1555567894577437024" name="m3c_bottom_sheet_dismiss_description">"Alt sayfayı kapat"</string>
@@ -219,6 +220,7 @@
     <string msgid="6301633601645100427" name="nav_app_bar_navigate_up_description">"Yukarı git"</string>
     <string msgid="7456070600745802113" name="nav_app_bar_open_drawer_description">"Gezinme çekmecesini aç"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Gezinme menüsü"</string>
+    <string name="no">Hayır</string>
     <string msgid="6610465462668679431" name="not_selected">"Seçili değil"</string>
     <string name="password_toggle_content_description">Şifreyi göster</string>
     <string msgid="5941395253238309765" name="range_end">"Aralık sonu"</string>
@@ -230,6 +232,7 @@
     <string msgid="6043586758067023" name="selected">"Seçili"</string>
     <string name="side_sheet_accessibility_pane_title">Yan Sayfa</string>
     <string msgid="2792228137354697160" name="snackbar_pane_title">"Uyarı"</string>
+    <string name="start_i2p_android">I2P Android Başlatılsın</string>
     <string msgid="4139871816613051306" name="state_empty">"Boş"</string>
     <string msgid="5834637030682409883" name="state_off">"Kapalı"</string>
     <string msgid="1490883874751719580" name="state_on">"Açık"</string>
@@ -246,6 +249,9 @@
     <string msgid="6961788485681412417" name="use_fingerprint_label">"Parmak izi kullan"</string>
     <string msgid="7577690399303139443" name="use_fingerprint_or_screen_lock_label">"Parmak izi veya ekran kilidi kullan"</string>
     <string msgid="5459869335976243512" name="use_screen_lock_label">"Ekran kilidi kullan"</string>
+    <string name="would_you_like_to_start_i2p_android">I2P Android yazılımı çalışmıyor gibi görünüyor. Başlatmak ister misiniz?</string>
+    <string name="yes">Evet</string>
+    <string name="you_must_have_i2p_android">I2P Android yazılımı yüklenmiş ve çalışıyor olmalıdır. Yüklemek ister misiniz?</string>
     <string name="zxing_app_name">Barkod Tarayıcısı</string>
     <string name="zxing_button_ok">Tamam</string>
     <string name="zxing_msg_camera_framework_bug">Üzgünüz, Android kamera bir sorunla karşılaştı. Cihazı yeniden başlatmanız gerekebilir.</string>

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.techducat.ajo.app-mergeDebugResources-79:/values-zh-rHK/values-zh-rHK.xml",
+            "outputFile": "com.techducat.ajo.app-mergeDebugResources-81:/values-zh-rHK/values-zh-rHK.xml",
             "map": [
                 {
                     "source": "/home/niyid/.gradle/caches/8.11.1/transforms/aa920a1fab27e7c4ca1acec35822ab47/transformed/jetified-material3-release/res/values-zh-rHK/values-zh-rHK.xml",

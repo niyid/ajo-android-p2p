@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:2:1-128:12
-INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:2:1-128:12
-INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:2:1-128:12
-INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:2:1-128:12
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-132:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-132:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-132:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-132:12
 MERGED from [androidx.databinding:databinding-adapters:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/f184bc78f044538664eae423f298557b/transformed/databinding-adapters-8.7.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.databinding:databinding-ktx:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/9c15d66753b8425032ecdf15ffe70424/transformed/jetified-databinding-ktx-8.7.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.databinding:databinding-runtime:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/4f525cc029daa713d4fc9952d235a884/transformed/databinding-runtime-8.7.3/AndroidManifest.xml:2:1-7:12
@@ -24,6 +24,8 @@ MERGED from [androidx.biometric:biometric:1.2.0-alpha05] /home/niyid/.gradle/cac
 MERGED from [androidx.appcompat:appcompat-resources:1.7.0] /home/niyid/.gradle/caches/8.11.1/transforms/64b0576c8e9bb9cb2fe3104ffd9e2def/transformed/jetified-appcompat-resources-1.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.appcompat:appcompat:1.7.0] /home/niyid/.gradle/caches/8.11.1/transforms/76aa02540f803cbc2b4b61ccefbbaf82/transformed/appcompat-1.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-auth:20.7.0] /home/niyid/.gradle/caches/8.11.1/transforms/2267c299de73a139ff79612a78cdffd9/transformed/jetified-play-services-auth-20.7.0/AndroidManifest.xml:17:1-40:12
+MERGED from [net.i2p.android:helper:0.9.5] /home/niyid/.gradle/caches/8.11.1/transforms/22daaffd8d4249639904d2b597cd2ba4/transformed/jetified-helper-0.9.5/AndroidManifest.xml:2:1-14:12
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/a70c5478965c2febc84ef47c3b1f3d76/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/ccc0af0fad415f3354e65de88ddc15ea/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:firebase-auth-ktx:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/8a499246b2ebbe69daace31f57a62ca5/transformed/jetified-firebase-auth-ktx-22.3.1/AndroidManifest.xml:2:1-17:12
 MERGED from [com.google.firebase:firebase-auth:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/cef7053957498c4af948f5cddb40f84c/transformed/jetified-firebase-auth-22.3.1/AndroidManifest.xml:17:1-75:12
@@ -61,6 +63,7 @@ MERGED from [androidx.activity:activity:1.9.3] /home/niyid/.gradle/caches/8.11.1
 MERGED from [androidx.activity:activity-compose:1.9.3] /home/niyid/.gradle/caches/8.11.1/transforms/7b1fe2be8baa6559d9289d53c44c49aa/transformed/jetified-activity-compose-1.9.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.activity:activity-ktx:1.9.3] /home/niyid/.gradle/caches/8.11.1/transforms/9129498e7f3deab40884669d18a64dbb/transformed/jetified-activity-ktx-1.9.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/02dd52ad37b6d488d3e5a7a4750f78cf/transformed/jetified-customview-poolingcontainer-1.0.0/AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/694d3c8f81bdd49105978e30cb304b3c/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /home/niyid/.gradle/caches/8.11.1/transforms/7274668e7c6e3e0aca87516f32304999/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.transition:transition:1.5.0] /home/niyid/.gradle/caches/8.11.1/transforms/74a52392adb52349e46eb242a5f6432a/transformed/transition-1.5.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/4c438069d98b53f6e34b97bfca2f722b/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -83,12 +86,14 @@ MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /home/niyid/.gradle/cache
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/aa50756167f7960fcf5144ed0a02f4b0/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/5990f497b4eccec7c87d4e0d540f57ed/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/6c6ed98a957da0a356cbbe345a368e31/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media:media:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/2cd9bcf9edd63b16783f3fadc36fc339/transformed/media-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/b59740e42e59ab7959d5902147f36f41/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/d71ea8bfd234f50be34bed7ab54a5cb3/transformed/recyclerview-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.customview:customview:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/2bfb18735ca25e0da8eb7151413dd093/transformed/customview-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.autofill:autofill:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/c90883a173fd2ef199782bb9d912bd03/transformed/jetified-autofill-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.graphics:graphics-path:1.0.1] /home/niyid/.gradle/caches/8.11.1/transforms/ce1c3d2ff082b2bd61a86d01f26cbfb8/transformed/jetified-graphics-path-1.0.1/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.browser:browser:1.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/20cbc905900fe9dc3cce91343bfc63af/transformed/browser-1.4.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/fe8f16e44ecd9e486f7138c0b957e4bf/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.window:window:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/4bffc6737f6148124f29cd75d082e93e/transformed/jetified-window-1.0.0/AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.emoji2:emoji2-views-helper:1.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/43f959553348d4b6771bfe39e9a215cb/transformed/jetified-emoji2-views-helper-1.4.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.emoji2:emoji2:1.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/7de49749913a470040d87bf7802f9630/transformed/jetified-emoji2-1.4.0/AndroidManifest.xml:17:1-35:12
@@ -128,25 +133,25 @@ MERGED from [androidx.documentfile:documentfile:1.0.0] /home/niyid/.gradle/cache
 MERGED from [androidx.print:print:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/490f1a65dfe6df52b4dfcd4171d9e6f6/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:17:1-56:12
 	package
-		INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
 	android:versionName
-		INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
 	xmlns:tools
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:3:5-51
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:3:5-51
 	android:versionCode
-		INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:2:11-69
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:6:5-67
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:6:5-67
 MERGED from [com.google.firebase:firebase-auth:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/cef7053957498c4af948f5cddb40f84c/transformed/jetified-firebase-auth-22.3.1/AndroidManifest.xml:25:5-67
 MERGED from [com.google.firebase:firebase-auth:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/cef7053957498c4af948f5cddb40f84c/transformed/jetified-firebase-auth-22.3.1/AndroidManifest.xml:25:5-67
 MERGED from [com.google.android.recaptcha:recaptcha:18.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/458545a32b3451a4b9ac2740fda8b418/transformed/jetified-recaptcha-18.4.0/AndroidManifest.xml:7:5-67
 MERGED from [com.google.android.recaptcha:recaptcha:18.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/458545a32b3451a4b9ac2740fda8b418/transformed/jetified-recaptcha-18.4.0/AndroidManifest.xml:7:5-67
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:6:22-64
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:6:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:7:5-79
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:7:5-79
 MERGED from [com.google.firebase:firebase-auth:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/cef7053957498c4af948f5cddb40f84c/transformed/jetified-firebase-auth-22.3.1/AndroidManifest.xml:26:5-79
 MERGED from [com.google.firebase:firebase-auth:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/cef7053957498c4af948f5cddb40f84c/transformed/jetified-firebase-auth-22.3.1/AndroidManifest.xml:26:5-79
 MERGED from [androidx.work:work-runtime:2.8.1] /home/niyid/.gradle/caches/8.11.1/transforms/9d2931f60b61d8d213ae87bc51b71156/transformed/work-runtime-2.8.1/AndroidManifest.xml:24:5-79
@@ -154,10 +159,16 @@ MERGED from [androidx.work:work-runtime:2.8.1] /home/niyid/.gradle/caches/8.11.1
 MERGED from [com.google.android.recaptcha:recaptcha:18.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/458545a32b3451a4b9ac2740fda8b418/transformed/jetified-recaptcha-18.4.0/AndroidManifest.xml:8:5-79
 MERGED from [com.google.android.recaptcha:recaptcha:18.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/458545a32b3451a4b9ac2740fda8b418/transformed/jetified-recaptcha-18.4.0/AndroidManifest.xml:8:5-79
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:7:22-76
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:7:22-76
+queries
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:9:5-11:15
+package#org.torproject.android
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:10:9-58
+	android:name
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:10:18-55
 application
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:9:5-127:19
-INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:9:5-127:19
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:13:5-131:19
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:13:5-131:19
 MERGED from [io.insert-koin:koin-androidx-navigation:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/e0ad31bdb64d007d9c1770fa7fc86ba5/transformed/jetified-koin-androidx-navigation-4.0.0/AndroidManifest.xml:7:5-20
 MERGED from [io.insert-koin:koin-androidx-navigation:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/e0ad31bdb64d007d9c1770fa7fc86ba5/transformed/jetified-koin-androidx-navigation-4.0.0/AndroidManifest.xml:7:5-20
 MERGED from [io.insert-koin:koin-android:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/0787df89bbed5db0a7e81a5cff2112d5/transformed/jetified-koin-android-4.0.0/AndroidManifest.xml:7:5-20
@@ -168,6 +179,8 @@ MERGED from [androidx.constraintlayout:constraintlayout:2.2.0] /home/niyid/.grad
 MERGED from [androidx.constraintlayout:constraintlayout:2.2.0] /home/niyid/.gradle/caches/8.11.1/transforms/d03546334b35d2793e7cae5054beabfb/transformed/constraintlayout-2.2.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-auth:20.7.0] /home/niyid/.gradle/caches/8.11.1/transforms/2267c299de73a139ff79612a78cdffd9/transformed/jetified-play-services-auth-20.7.0/AndroidManifest.xml:22:5-38:19
 MERGED from [com.google.android.gms:play-services-auth:20.7.0] /home/niyid/.gradle/caches/8.11.1/transforms/2267c299de73a139ff79612a78cdffd9/transformed/jetified-play-services-auth-20.7.0/AndroidManifest.xml:22:5-38:19
+MERGED from [net.i2p.android:helper:0.9.5] /home/niyid/.gradle/caches/8.11.1/transforms/22daaffd8d4249639904d2b597cd2ba4/transformed/jetified-helper-0.9.5/AndroidManifest.xml:9:5-12:19
+MERGED from [net.i2p.android:helper:0.9.5] /home/niyid/.gradle/caches/8.11.1/transforms/22daaffd8d4249639904d2b597cd2ba4/transformed/jetified-helper-0.9.5/AndroidManifest.xml:9:5-12:19
 MERGED from [com.google.firebase:firebase-auth-ktx:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/8a499246b2ebbe69daace31f57a62ca5/transformed/jetified-firebase-auth-ktx-22.3.1/AndroidManifest.xml:7:5-15:19
 MERGED from [com.google.firebase:firebase-auth-ktx:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/8a499246b2ebbe69daace31f57a62ca5/transformed/jetified-firebase-auth-ktx-22.3.1/AndroidManifest.xml:7:5-15:19
 MERGED from [com.google.firebase:firebase-auth:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/cef7053957498c4af948f5cddb40f84c/transformed/jetified-firebase-auth-22.3.1/AndroidManifest.xml:28:5-73:19
@@ -217,153 +230,153 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /home/niyid/.gradle/caches/
 MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:46:5-54:19
 MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:46:5-54:19
 	android:extractNativeLibs
-		INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.15.0] /home/niyid/.gradle/caches/8.11.1/transforms/3d45dea60af6301b01f2c5515c48051e/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:17:9-35
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:21:9-35
 	android:label
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:15:9-41
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:19:9-41
 	android:fullBackupContent
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:13:9-54
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:17:9-54
 	android:roundIcon
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:16:9-54
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:20:9-54
 	tools:targetApi
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:20:9-29
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:24:9-29
 	android:icon
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:14:9-43
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:18:9-43
 	android:allowBackup
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:11:9-35
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:15:9-35
 	android:theme
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:18:9-41
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:22:9-41
 	android:dataExtractionRules
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:12:9-65
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:16:9-65
 	android:usesCleartextTraffic
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:19:9-44
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:23:9-44
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:10:9-39
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:14:9-39
 activity#com.techducat.ajo.ui.splash.SplashActivity
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:23:9-78:20
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:27:9-82:20
 	android:launchMode
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:27:13-44
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:31:13-44
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:25:13-36
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:29:13-36
 	android:theme
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:26:13-52
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:30:13-52
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:24:13-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:28:13-53
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:28:13-31:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:32:13-35:29
 action#android.intent.action.MAIN
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:29:17-69
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:33:17-69
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:29:25-66
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:33:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:30:17-77
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:34:17-77
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:30:27-74
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:34:27-74
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:join+data:scheme:ajo
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:34:13-42:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:38:13-46:29
 	android:autoVerify
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:34:28-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:38:28-53
 action#android.intent.action.VIEW
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:35:17-69
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:39:17-69
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:35:25-66
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:39:25-66
 category#android.intent.category.DEFAULT
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:36:17-76
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:40:17-76
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:36:27-73
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:40:27-73
 category#android.intent.category.BROWSABLE
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:37:17-78
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:41:17-78
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:37:27-75
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:41:27-75
 data
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:39:17-41:43
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:43:17-45:43
 	android:host
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:41:21-40
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:45:21-40
 	android:scheme
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:40:21-41
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:44:21-41
 	android:pathPrefix
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:53:21-47
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:57:21-47
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:ajo.app+data:pathPrefix:/join+data:scheme:https
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:45:13-54:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:49:13-58:29
 	android:autoVerify
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:45:28-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:49:28-53
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:www.ajo.app+data:pathPrefix:/join+data:scheme:https
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:57:13-66:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:61:13-70:29
 	android:autoVerify
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:57:28-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:61:28-53
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:invite+data:scheme:ajo
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:69:13-77:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:73:13-81:29
 activity#com.techducat.ajo.ui.MainActivity
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:81:9-84:46
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:85:9-88:46
 	android:launchMode
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:84:13-43
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:88:13-43
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:83:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:87:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:82:13-44
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:86:13-44
 activity#com.techducat.ajo.ui.create.CreateRoscaActivity
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:87:9-91:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:91:9-95:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:91:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:95:13-58
 	android:windowSoftInputMode
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:90:13-55
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:94:13-55
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:89:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:93:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:88:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:92:13-58
 activity#com.techducat.ajo.ui.detail.RoscaDetailActivity
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:94:9-97:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:98:9-101:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:97:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:101:13-58
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:96:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:100:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:95:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:99:13-58
 activity#com.techducat.ajo.ui.invite.InviteActivity
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:100:9-104:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:104:9-108:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:104:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:108:13-58
 	android:windowSoftInputMode
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:103:13-55
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:107:13-55
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:102:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:106:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:101:13-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:105:13-53
 activity#com.techducat.ajo.ui.contributions.GroupContributionsActivity
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:107:9-110:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:111:9-114:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:110:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:114:13-58
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:109:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:113:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:108:13-72
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:112:13-72
 activity#com.techducat.ajo.ui.exchange.ExchangeActivity
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:113:9-116:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:117:9-120:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:116:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:120:13-58
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:115:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:119:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:114:13-57
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:118:13-57
 service#com.techducat.ajo.service.NotificationService
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:119:9-121:40
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:123:9-125:40
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:121:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:125:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:120:13-56
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:124:13-56
 service#com.techducat.ajo.service.SyncService
-ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:124:9-126:40
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:128:9-130:40
 	android:exported
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:126:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:130:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml:125:13-48
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:129:13-48
 uses-sdk
-INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml
-INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
 MERGED from [androidx.databinding:databinding-adapters:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/f184bc78f044538664eae423f298557b/transformed/databinding-adapters-8.7.3/AndroidManifest.xml:5:5-44
 MERGED from [androidx.databinding:databinding-adapters:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/f184bc78f044538664eae423f298557b/transformed/databinding-adapters-8.7.3/AndroidManifest.xml:5:5-44
 MERGED from [androidx.databinding:databinding-ktx:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/9c15d66753b8425032ecdf15ffe70424/transformed/jetified-databinding-ktx-8.7.3/AndroidManifest.xml:5:5-44
@@ -404,6 +417,10 @@ MERGED from [androidx.appcompat:appcompat:1.7.0] /home/niyid/.gradle/caches/8.11
 MERGED from [androidx.appcompat:appcompat:1.7.0] /home/niyid/.gradle/caches/8.11.1/transforms/76aa02540f803cbc2b4b61ccefbbaf82/transformed/appcompat-1.7.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-auth:20.7.0] /home/niyid/.gradle/caches/8.11.1/transforms/2267c299de73a139ff79612a78cdffd9/transformed/jetified-play-services-auth-20.7.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-auth:20.7.0] /home/niyid/.gradle/caches/8.11.1/transforms/2267c299de73a139ff79612a78cdffd9/transformed/jetified-play-services-auth-20.7.0/AndroidManifest.xml:20:5-44
+MERGED from [net.i2p.android:helper:0.9.5] /home/niyid/.gradle/caches/8.11.1/transforms/22daaffd8d4249639904d2b597cd2ba4/transformed/jetified-helper-0.9.5/AndroidManifest.xml:5:5-7:41
+MERGED from [net.i2p.android:helper:0.9.5] /home/niyid/.gradle/caches/8.11.1/transforms/22daaffd8d4249639904d2b597cd2ba4/transformed/jetified-helper-0.9.5/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/a70c5478965c2febc84ef47c3b1f3d76/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/a70c5478965c2febc84ef47c3b1f3d76/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/ccc0af0fad415f3354e65de88ddc15ea/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/ccc0af0fad415f3354e65de88ddc15ea/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.firebase:firebase-auth-ktx:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/8a499246b2ebbe69daace31f57a62ca5/transformed/jetified-firebase-auth-ktx-22.3.1/AndroidManifest.xml:5:5-44
@@ -478,6 +495,8 @@ MERGED from [androidx.activity:activity-ktx:1.9.3] /home/niyid/.gradle/caches/8.
 MERGED from [androidx.activity:activity-ktx:1.9.3] /home/niyid/.gradle/caches/8.11.1/transforms/9129498e7f3deab40884669d18a64dbb/transformed/jetified-activity-ktx-1.9.3/AndroidManifest.xml:5:5-44
 MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/02dd52ad37b6d488d3e5a7a4750f78cf/transformed/jetified-customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
 MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/02dd52ad37b6d488d3e5a7a4750f78cf/transformed/jetified-customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/694d3c8f81bdd49105978e30cb304b3c/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/694d3c8f81bdd49105978e30cb304b3c/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /home/niyid/.gradle/caches/8.11.1/transforms/7274668e7c6e3e0aca87516f32304999/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /home/niyid/.gradle/caches/8.11.1/transforms/7274668e7c6e3e0aca87516f32304999/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.transition:transition:1.5.0] /home/niyid/.gradle/caches/8.11.1/transforms/74a52392adb52349e46eb242a5f6432a/transformed/transition-1.5.0/AndroidManifest.xml:5:5-44
@@ -522,6 +541,8 @@ MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/niyid/
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/5990f497b4eccec7c87d4e0d540f57ed/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/6c6ed98a957da0a356cbbe345a368e31/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/6c6ed98a957da0a356cbbe345a368e31/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/2cd9bcf9edd63b16783f3fadc36fc339/transformed/media-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/2cd9bcf9edd63b16783f3fadc36fc339/transformed/media-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/b59740e42e59ab7959d5902147f36f41/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/b59740e42e59ab7959d5902147f36f41/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/niyid/.gradle/caches/8.11.1/transforms/d71ea8bfd234f50be34bed7ab54a5cb3/transformed/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
@@ -534,6 +555,8 @@ MERGED from [androidx.graphics:graphics-path:1.0.1] /home/niyid/.gradle/caches/8
 MERGED from [androidx.graphics:graphics-path:1.0.1] /home/niyid/.gradle/caches/8.11.1/transforms/ce1c3d2ff082b2bd61a86d01f26cbfb8/transformed/jetified-graphics-path-1.0.1/AndroidManifest.xml:5:5-44
 MERGED from [androidx.browser:browser:1.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/20cbc905900fe9dc3cce91343bfc63af/transformed/browser-1.4.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.browser:browser:1.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/20cbc905900fe9dc3cce91343bfc63af/transformed/browser-1.4.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/fe8f16e44ecd9e486f7138c0b957e4bf/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/fe8f16e44ecd9e486f7138c0b957e4bf/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.window:window:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/4bffc6737f6148124f29cd75d082e93e/transformed/jetified-window-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.window:window:1.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/4bffc6737f6148124f29cd75d082e93e/transformed/jetified-window-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.emoji2:emoji2-views-helper:1.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/43f959553348d4b6771bfe39e9a215cb/transformed/jetified-emoji2-views-helper-1.4.0/AndroidManifest.xml:5:5-44
@@ -613,9 +636,9 @@ MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/c
 	tools:overrideLibrary
 		ADDED from [com.google.firebase:firebase-auth:22.3.1] /home/niyid/.gradle/caches/8.11.1/transforms/cef7053957498c4af948f5cddb40f84c/transformed/jetified-firebase-auth-22.3.1/AndroidManifest.xml:23:9-61
 	android:targetSdkVersion
-		INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /home/niyid/git/ajo-android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
 uses-permission#android.permission.USE_BIOMETRIC
 ADDED from [androidx.biometric:biometric:1.2.0-alpha05] /home/niyid/.gradle/caches/8.11.1/transforms/96984a2f61c55bfbd4cf352f59dede85/transformed/biometric-1.2.0-alpha05/AndroidManifest.xml:22:5-72
 	android:name

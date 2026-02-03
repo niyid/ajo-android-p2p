@@ -100,6 +100,7 @@
     <string name="icon_content_description">Pictogramă de dialog</string>
     <string msgid="6827826412747255547" name="in_progress">"În curs"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Bifată parțial"</string>
+    <string name="install_i2p_android">Instalați I2P Android?</string>
     <string name="item_view_role_description">Filă</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Restrânge foaia din partea de jos"</string>
     <string msgid="1555567894577437024" name="m3c_bottom_sheet_dismiss_description">"Închide foaia din partea de jos"</string>
@@ -220,6 +221,7 @@
     <string msgid="6301633601645100427" name="nav_app_bar_navigate_up_description">"Navigați în sus"</string>
     <string msgid="7456070600745802113" name="nav_app_bar_open_drawer_description">"Deschideți panoul de navigare"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Meniu de navigare"</string>
+    <string name="no">Nu</string>
     <string msgid="6610465462668679431" name="not_selected">"Neselectat"</string>
     <string name="password_toggle_content_description">Afișați parola</string>
     <string msgid="5941395253238309765" name="range_end">"Sfârșit de interval"</string>
@@ -231,6 +233,7 @@
     <string msgid="6043586758067023" name="selected">"Selectat"</string>
     <string name="side_sheet_accessibility_pane_title">Foaie laterală</string>
     <string msgid="2792228137354697160" name="snackbar_pane_title">"Alertă"</string>
+    <string name="start_i2p_android">Porniți I2P Android?</string>
     <string msgid="4139871816613051306" name="state_empty">"Gol"</string>
     <string msgid="5834637030682409883" name="state_off">"Dezactivat"</string>
     <string msgid="1490883874751719580" name="state_on">"Activat"</string>
@@ -247,6 +250,9 @@
     <string msgid="6961788485681412417" name="use_fingerprint_label">"Folosiți amprenta"</string>
     <string msgid="7577690399303139443" name="use_fingerprint_or_screen_lock_label">"Folosiți amprenta sau blocarea ecranului"</string>
     <string msgid="5459869335976243512" name="use_screen_lock_label">"Folosiți blocarea ecranului"</string>
+    <string name="would_you_like_to_start_i2p_android">Apare că I2P Android nu rulează. Doriți să îl porniți?</string>
+    <string name="yes">Da</string>
+    <string name="you_must_have_i2p_android">Trebuie să aveți instalat și să ruleze I2P Android. Doriți să îl instalați?</string>
     <string name="zxing_app_name">Barcode Scanner</string>
     <string name="zxing_button_ok">Acceptă</string>
     <string name="zxing_msg_camera_framework_bug">Probleme cu camera foto. Repornește dispozitivul.</string>

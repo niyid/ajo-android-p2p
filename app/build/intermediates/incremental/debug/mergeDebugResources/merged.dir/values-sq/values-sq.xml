@@ -219,6 +219,7 @@
     <string msgid="6301633601645100427" name="nav_app_bar_navigate_up_description">"Ngjitu lart"</string>
     <string msgid="7456070600745802113" name="nav_app_bar_open_drawer_description">"Hap sirtarin e navigimit"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Menyja e navigimit"</string>
+    <string name="no">Jo</string>
     <string msgid="6610465462668679431" name="not_selected">"Nuk është zgjedhur"</string>
     <string name="password_toggle_content_description">Shfaq fjalëkalimin</string>
     <string msgid="5941395253238309765" name="range_end">"Fundi i diapazonit"</string>
@@ -246,4 +247,6 @@
     <string msgid="6961788485681412417" name="use_fingerprint_label">"Përdor gjurmën e gishtit"</string>
     <string msgid="7577690399303139443" name="use_fingerprint_or_screen_lock_label">"Përdor gjurmën e gishtit ose kyçjen e ekranit"</string>
     <string msgid="5459869335976243512" name="use_screen_lock_label">"Përdor kyçjen e ekranit"</string>
+    <string name="would_you_like_to_start_i2p_android">Po duket që I2P Android nuk është në funksionim, Doni ta filloni atë?</string>
+    <string name="yes">Po</string>
 </resources>

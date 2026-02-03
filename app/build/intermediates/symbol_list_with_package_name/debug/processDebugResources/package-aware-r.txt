@@ -2216,6 +2216,7 @@ color mtrl_textinput_focused_box_stroke_color
 color mtrl_textinput_hovered_box_stroke_color
 color notification_action_color_filter
 color notification_icon_bg_color
+color notification_material_background_media_default_color
 color overlay_dark
 color overlay_light
 color overlay_medium
@@ -3082,6 +3083,10 @@ dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
 dimen sliding_pane_detail_pane_width
+dimen subtitle_corner_radius
+dimen subtitle_outline_width
+dimen subtitle_shadow_offset
+dimen subtitle_shadow_radius
 dimen tooltip_corner_radius
 dimen tooltip_horizontal_padding
 dimen tooltip_margin
@@ -3389,6 +3394,7 @@ id accessibility_custom_action_6
 id accessibility_custom_action_7
 id accessibility_custom_action_8
 id accessibility_custom_action_9
+id action0
 id actionButtonsLayout
 id actionDown
 id actionDownUp
@@ -3525,6 +3531,7 @@ id buttonsContainer
 id cache_measures
 id calculatedContainer
 id callMeasure
+id cancel_action
 id cancel_button
 id cardBackupStatus
 id cardBalance
@@ -3632,6 +3639,7 @@ id emptyStateMessage
 id emptyStateTitle
 id end
 id endToStart
+id end_padder
 id enterAlways
 id enterAlwaysCollapsed
 id errorContainer
@@ -3784,6 +3792,7 @@ id material_timepicker_ok_button
 id material_timepicker_view
 id material_value_index
 id matrix
+id media_actions
 id message
 id middle
 id mini
@@ -4004,6 +4013,7 @@ id startVertical
 id staticLayout
 id staticPostLayout
 id statusIndicator
+id status_bar_latest_event_content
 id stop
 id stretch
 id submenuarrow
@@ -4463,8 +4473,17 @@ layout mtrl_search_bar
 layout mtrl_search_view
 layout notification_action
 layout notification_action_tombstone
+layout notification_media_action
+layout notification_media_cancel_action
+layout notification_template_big_media
+layout notification_template_big_media_custom
+layout notification_template_big_media_narrow
+layout notification_template_big_media_narrow_custom
 layout notification_template_custom_big
 layout notification_template_icon_group
+layout notification_template_lines_media
+layout notification_template_media
+layout notification_template_media_custom
 layout notification_template_part_chronometer
 layout notification_template_part_time
 layout select_dialog_item_material
@@ -5075,6 +5094,7 @@ string info_loading_transactions
 string info_no_wallet_history
 string info_refresh_in_progress
 string info_refreshing_wallet
+string install_i2p_android
 string insufficient_balance_title
 string item_view_role_description
 string language
@@ -5181,6 +5201,7 @@ string m3c_time_picker_period_toggle_description
 string m3c_time_picker_pm
 string m3c_tooltip_long_press_label
 string m3c_tooltip_pane_description
+string market_i2p_android
 string material_clock_display_divider
 string material_clock_toggle_content_description
 string material_hour_24h_suffix
@@ -5279,6 +5300,7 @@ string nav_dashboard
 string nav_profile
 string nav_wallet
 string navigation_menu
+string no
 string no_biometric_hardware
 string no_confirmed_transactions
 string no_rosca_groups_joined
@@ -5339,6 +5361,7 @@ string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string sign_in_to_wallet
 string snackbar_pane_title
+string start_i2p_android
 string state_empty
 string state_off
 string state_on
@@ -5404,6 +5427,9 @@ string wallet_initialized_successfully
 string wallet_not_synced_title
 string wallet_refreshed
 string wallet_title
+string would_you_like_to_start_i2p_android
+string yes
+string you_must_have_i2p_android
 string your_contribution_balance
 string your_monero_address
 string your_monero_address_1
@@ -5888,9 +5914,14 @@ style TextAppearance_AppCompat_Widget_Switch
 style TextAppearance_AppCompat_Widget_TextView_SpinnerItem
 style TextAppearance_Compat_Notification
 style TextAppearance_Compat_Notification_Info
+style TextAppearance_Compat_Notification_Info_Media
 style TextAppearance_Compat_Notification_Line2
+style TextAppearance_Compat_Notification_Line2_Media
+style TextAppearance_Compat_Notification_Media
 style TextAppearance_Compat_Notification_Time
+style TextAppearance_Compat_Notification_Time_Media
 style TextAppearance_Compat_Notification_Title
+style TextAppearance_Compat_Notification_Title_Media
 style TextAppearance_Design_CollapsingToolbar_Expanded
 style TextAppearance_Design_Counter
 style TextAppearance_Design_Counter_Overflow

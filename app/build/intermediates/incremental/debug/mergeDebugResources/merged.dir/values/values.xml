@@ -1029,6 +1029,7 @@
     <color name="mtrl_textinput_hovered_box_stroke_color">#DE000000</color>
     <color name="notification_action_color_filter">#ffffffff</color>
     <color name="notification_icon_bg_color">#ff9e9e9e</color>
+    <color name="notification_material_background_media_default_color">#ff424242</color>
     <color name="overlay_dark">#1A000000</color>
     <color name="overlay_light">#1AFFFFFF</color>
     <color name="overlay_medium">#33FFFFFF</color>
@@ -1891,6 +1892,10 @@
     <dimen name="notification_top_pad">10dp</dimen>
     <dimen name="notification_top_pad_large_text">5dp</dimen>
     <dimen name="sliding_pane_detail_pane_width">300dp</dimen>
+    <dimen name="subtitle_corner_radius">2dp</dimen>
+    <dimen name="subtitle_outline_width">2dp</dimen>
+    <dimen name="subtitle_shadow_offset">2dp</dimen>
+    <dimen name="subtitle_shadow_radius">2dp</dimen>
     <dimen name="tooltip_corner_radius">2dp</dimen>
     <dimen name="tooltip_horizontal_padding">16dp</dimen>
     <dimen name="tooltip_margin">8dp</dimen>
@@ -2713,6 +2718,7 @@
     <string name="info_no_wallet_history">No wallet history found</string>
     <string name="info_refresh_in_progress">Refresh in progress</string>
     <string name="info_refreshing_wallet">Refreshing wallet...</string>
+    <string name="install_i2p_android">Install I2P Android?</string>
     <string name="insufficient_balance_title">Insufficient Balance</string>
     <string name="item_view_role_description">Tab</string>
     <string name="language">Language</string>
@@ -2823,6 +2829,7 @@
     <string name="m3c_time_picker_pm">PM</string>
     <string name="m3c_tooltip_long_press_label">Show tooltip</string>
     <string name="m3c_tooltip_pane_description">Tooltip</string>
+    <string name="market_i2p_android" translatable="false">market://search?q=pname:net.i2p.android</string>
     <string name="material_clock_display_divider" translatable="false">:</string>
     <string description="Description for the toggle to choose between AM and PM [CHAR_LIMIT=NONE]" name="material_clock_toggle_content_description">Select AM or PM</string>
     <string description="Spoken suffix for an hour in the 24-hour clock [CHAR_LIMIT=10]" name="material_hour_24h_suffix"><ns2:g id="number">%1$s</ns2:g> hours</string>
@@ -2927,6 +2934,7 @@
     <string name="nav_profile">Profile</string>
     <string name="nav_wallet">Wallet</string>
     <string name="navigation_menu">"Navigation menu"</string>
+    <string name="no">No</string>
     <string name="no_biometric_hardware">No biometric hardware available</string>
     <string name="no_confirmed_transactions">No confirmed transactions found. You have %d unconfirmed transaction(s).</string>
     <string name="no_rosca_groups_joined">No ROSCAs available. Go to Dashboard to join or create a ROSCA, then select it to view wallet details here.</string>
@@ -2989,6 +2997,7 @@
     <string name="side_sheet_behavior" translatable="false">com.google.android.material.sidesheet.SideSheetBehavior</string>
     <string name="sign_in_to_wallet">Sign in to wallet</string>
     <string name="snackbar_pane_title">Alert</string>
+    <string name="start_i2p_android">Start I2P Android?</string>
     <string name="state_empty">Empty</string>
     <string name="state_off">Off</string>
     <string name="state_on">On</string>
@@ -3054,6 +3063,9 @@
     <string name="wallet_not_synced_title">Wallet Not Synced</string>
     <string name="wallet_refreshed">Wallet refreshed</string>
     <string name="wallet_title">Wallet</string>
+    <string name="would_you_like_to_start_i2p_android">It appears that I2P Android is not running. Would you like to start it?</string>
+    <string name="yes">Yes</string>
+    <string name="you_must_have_i2p_android">You must have I2P Android installed and running. Would you like to install it?</string>
     <string name="your_contribution_balance">Your Contribution Balance</string>
     <string name="your_monero_address">Your Monero address:\n\n%s</string>
     <string name="your_monero_address_1">Your Monero Address</string>
@@ -7105,12 +7117,17 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
+    <style name="TextAppearance.Compat.Notification.Info.Media"/>
     <style name="TextAppearance.Compat.Notification.Line2" parent="TextAppearance.Compat.Notification.Info"/>
+    <style name="TextAppearance.Compat.Notification.Line2.Media" parent="TextAppearance.Compat.Notification.Info.Media"/>
+    <style name="TextAppearance.Compat.Notification.Media"/>
     <style name="TextAppearance.Compat.Notification.Time">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
+    <style name="TextAppearance.Compat.Notification.Time.Media"/>
     <style name="TextAppearance.Compat.Notification.Title" parent="@android:style/TextAppearance.StatusBar.EventContent.Title"/>
+    <style name="TextAppearance.Compat.Notification.Title.Media"/>
     <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Display1">
     <item name="android:textColor">?android:attr/textColorPrimary</item>
   </style>

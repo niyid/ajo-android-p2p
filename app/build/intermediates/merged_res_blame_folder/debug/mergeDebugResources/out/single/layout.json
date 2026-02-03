@@ -1,114 +1,114 @@
 [
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_main.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_main.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_payout_history.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_payout_history.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/item_payout.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_payout.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/item_group_contribution.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_group_contribution.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_profile.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_profile.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_dashboard.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_dashboard.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_bidding.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_bidding.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/item_rosca_wallet.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_rosca_wallet.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_wallet.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_wallet.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/item_rosca_member.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_rosca_member.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_notification_settings.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_notification_settings.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_exit_confirmation.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_exit_confirmation.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_exit_confirmation.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_exit_confirmation.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/item_rosca.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_rosca.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_login.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_login.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/item_payout.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_payout.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_pin_verification.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_pin_verification.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_wallet_multi.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_wallet_multi.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_exchange.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_exchange.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_profile.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_profile.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_wallet_multi.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_wallet_multi.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_notification_settings.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_notification_settings.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_join_rosca.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_join_rosca.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/item_contribution.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_contribution.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_splash.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_splash.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_join_rosca.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_join_rosca.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_payout_history.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_payout_history.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_backup_restore.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_backup_restore.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/item_rosca_member.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_rosca_member.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_pin_verification.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_pin_verification.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_backup_restore.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_backup_restore.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_main.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_main.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/item_rosca_wallet.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_rosca_wallet.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_wallet.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_wallet.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/item_contribution.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_contribution.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_group_contributions.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_group_contributions.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_group_contributions.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_group_contributions.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_invite.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_invite.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_dashboard.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_dashboard.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_rosca_detail.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_rosca_detail.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_rosca_detail.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_rosca_detail.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_splash.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_splash.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_invite.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_invite.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_bidding.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_bidding.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_my_contributions.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_my_contributions.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_login.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_login.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/item_rosca.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_rosca.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_pin_setup.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_pin_setup.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/item_group_contribution.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_group_contribution.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_exchange.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_exchange.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/activity_create_rosca.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_create_rosca.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/fragment_my_contributions.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_my_contributions.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/fragment_pin_setup.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_pin_setup.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/activity_create_rosca.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_create_rosca.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-mergeDebugResources-80:/layout/item_contribution_header.xml",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_contribution_header.xml"
+        "merged": "com.techducat.ajo.app-mergeDebugResources-82:/layout/item_contribution_header.xml",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_contribution_header.xml"
     }
 ]

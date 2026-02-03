@@ -1,358 +1,358 @@
 [
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-mdpi/ic_launcher.png"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_item_rosca_member.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_rosca_member.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_item_contribution_header.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_contribution_header.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_wallet.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_wallet.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_my_contributions.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_my_contributions.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_pin_verification.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_pin_verification.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_backup.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_backup.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_info.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_info.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_bg_badge_primary.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/bg_badge_primary.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_qr_code.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_qr_code.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_circle_background.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/circle_background.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-xxxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_group.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_group.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_payout_history.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_payout_history.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_item_contribution.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_contribution.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_badge_background.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/badge_background.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_arrow_back.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_arrow_back.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_wallet_multi.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_wallet_multi.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_circle_background.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/circle_background.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_payout_history.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_payout_history.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/menu_bottom_nav_menu.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/menu/bottom_nav_menu.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-mdpi/ic_launcher_round.png"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-hdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_copy.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_copy.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-xxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_refresh.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_refresh.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_back.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_back.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_chevron_right.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_chevron_right.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_verified.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_verified.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_notification.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_notification.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_dashboard.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_dashboard.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_close.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_close.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_login.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_login.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_send.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_send.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-hdpi/ic_launcher_round.png"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_privacy.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_privacy.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_pin_setup.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_pin_setup.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_login.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_login.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_account.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_account.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_group_contributions.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_group_contributions.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_exchange.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_exchange.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_back.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_back.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/anim_slide_in_left.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/anim/slide_in_left.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_backup_restore.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_backup_restore.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-xhdpi/ic_launcher.png"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_create_rosca.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_create_rosca.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/menu_dashboard_menu.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/menu/dashboard_menu.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_backup_restore.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_backup_restore.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_anonymous.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_anonymous.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_invite.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_invite.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_profile.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_profile.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_badge_background.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/badge_background.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/anim_slide_out_right.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/anim/slide_out_right.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_notifications.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_notifications.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_item_contribution_header.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_contribution_header.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_contribute.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_contribute.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_anonymous.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_anonymous.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_bg_badge_primary.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/bg_badge_primary.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_status_badge_background.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/status_badge_background.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_item_rosca.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_rosca.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-xxxhdpi/ic_launcher.png"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_fingerprint.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_fingerprint.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_qr_code.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_qr_code.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_dashboard.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_dashboard.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_profile.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_profile.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_bidding.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_bidding.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_wallet.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_wallet.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_item_contribution.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_contribution.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-xxhdpi/ic_launcher.png"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_item_rosca_wallet.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_rosca_wallet.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_notification.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_notification.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-xhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-xhdpi/ic_launcher_round.png"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_arrow_back.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_arrow_back.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_dashboard.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_dashboard.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_backup.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_backup.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_send.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_send.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_profile.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_profile.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_lock.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_lock.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_rosca_detail.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_rosca_detail.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/menu_bottom_nav_menu.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/menu/bottom_nav_menu.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_notification_settings.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_notification_settings.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_item_rosca.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_rosca.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_exchange.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_exchange.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_google.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_google.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/anim_slide_in_right.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/anim/slide_in_right.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/navigation_nav_graph.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/navigation/nav_graph.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_account.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_account.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_splash.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_splash.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_item_payout.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_payout.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/color_bottom_nav_color_selector.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/color/bottom_nav_color_selector.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-xxxhdpi/ic_launcher_round.png"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_notifications.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_notifications.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_group_contributions.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_group_contributions.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable-night_seed_phrase_background.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable-night/seed_phrase_background.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_payment.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_payment.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_group.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_group.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/xml_data_extraction_rules.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/xml/data_extraction_rules.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_seed_phrase_background.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/seed_phrase_background.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_error.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_error.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_language.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_language.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_my_contributions.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_my_contributions.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_pin_verification.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_pin_verification.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_share.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_share.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable-night_seed_phrase_background.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable-night/seed_phrase_background.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/navigation_nav_graph.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/navigation/nav_graph.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_main.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_main.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_wallet_multi.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_wallet_multi.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/anim_slide_out_right.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/anim/slide_out_right.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/anim_slide_in_left.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/anim/slide_in_left.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/anim_slide_out_left.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/anim/slide_out_left.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_exit_confirmation.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_exit_confirmation.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/anim_slide_in_right.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/anim/slide_in_right.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_google.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_google.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_notification_settings.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_notification_settings.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_create_rosca.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_create_rosca.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_wallet.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_wallet.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_verified.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_verified.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_pin_dot.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/pin_dot.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_lock.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_lock.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_error.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_error.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/xml_backup_rules.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_item_group_contribution.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_group_contribution.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_help.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_help.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-hdpi/ic_launcher.png"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_main.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_main.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_profile.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_profile.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_seed_phrase_background.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/seed_phrase_background.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_info.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_info.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_status_badge_background.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/status_badge_background.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_share.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_share.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/xml_data_extraction_rules.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "com.techducat.ajo.app-main-83:/mipmap-xxhdpi/ic_launcher_round.png"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_payment.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_payment.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_exchange.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_exchange.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_item_group_contribution.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/item_group_contribution.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_item_payout.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_payout.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_splash.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_splash.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_join_rosca.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_join_rosca.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/color_bottom_nav_color_selector.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/color/bottom_nav_color_selector.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_item_rosca_wallet.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_rosca_wallet.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_join_rosca.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_join_rosca.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_rounded_background.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/rounded_background.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_contribute.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_contribute.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_bidding.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_bidding.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_copy.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_copy.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_fingerprint.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_fingerprint.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_exchange.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_exchange.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_button_background_red.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/button_background_red.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_wallet.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_wallet.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_close.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_close.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_refresh.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_refresh.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_fragment_rosca_detail.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/fragment_rosca_detail.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_button_background_red.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/button_background_red.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_privacy.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_privacy.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_activity_invite.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/activity_invite.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_activity_exit_confirmation.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/activity_exit_confirmation.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/anim_slide_out_left.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/anim/slide_out_left.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/raw_service_wallet_public_key.pem.flat",
-        "source": "com.techducat.ajo.app-main-83:/raw/service_wallet_public_key.pem"
+        "merged": "com.techducat.ajo.app-debug-83:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.techducat.ajo.app-main-85:/mipmap-mdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/menu_dashboard_menu.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/menu/dashboard_menu.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/raw_service_wallet_public_key.pem.flat",
+        "source": "com.techducat.ajo.app-main-85:/raw/service_wallet_public_key.pem"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/xml_backup_rules.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/xml/backup_rules.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_rounded_background.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/rounded_background.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/layout_item_rosca_member.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/layout/item_rosca_member.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_dashboard.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_dashboard.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_ic_language.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/ic_language.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_help.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_help.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/drawable_pin_dot.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/drawable/pin_dot.xml"
     },
     {
-        "merged": "com.techducat.ajo.app-debug-81:/drawable_ic_chevron_right.xml.flat",
-        "source": "com.techducat.ajo.app-main-83:/drawable/ic_chevron_right.xml"
+        "merged": "com.techducat.ajo.app-debug-83:/layout_fragment_pin_setup.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/layout/fragment_pin_setup.xml"
     }
 ]

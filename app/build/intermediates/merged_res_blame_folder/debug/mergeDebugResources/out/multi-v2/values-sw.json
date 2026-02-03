@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.techducat.ajo.app-mergeDebugResources-79:/values-sw/values-sw.xml",
+            "outputFile": "com.techducat.ajo.app-mergeDebugResources-81:/values-sw/values-sw.xml",
             "map": [
                 {
                     "source": "/home/niyid/.gradle/caches/8.11.1/transforms/4e7512e02a692625889a8d65c91a0161/transformed/jetified-play-services-basement-18.2.0/res/values-sw/values.xml",

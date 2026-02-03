@@ -101,6 +101,7 @@
     <string name="icon_content_description">Ikona dialogového okna</string>
     <string msgid="6827826412747255547" name="in_progress">"Probíhá"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Částečně zaškrtnuto"</string>
+    <string name="install_i2p_android">Instalovat I2P Android?</string>
     <string name="item_view_role_description">Karta</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Sbalit spodní tabulku"</string>
     <string msgid="1555567894577437024" name="m3c_bottom_sheet_dismiss_description">"Zavřít spodní tabulku"</string>
@@ -221,6 +222,7 @@
     <string msgid="6301633601645100427" name="nav_app_bar_navigate_up_description">"Přejít nahoru"</string>
     <string msgid="7456070600745802113" name="nav_app_bar_open_drawer_description">"Otevřít vysouvací panel navigace"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Navigační nabídka"</string>
+    <string name="no">Ne</string>
     <string msgid="6610465462668679431" name="not_selected">"Nevybráno"</string>
     <string name="password_toggle_content_description">Zobrazit heslo</string>
     <string msgid="5941395253238309765" name="range_end">"Konec rozsahu"</string>
@@ -232,6 +234,7 @@
     <string msgid="6043586758067023" name="selected">"Vybráno"</string>
     <string name="side_sheet_accessibility_pane_title">Postranní list</string>
     <string msgid="2792228137354697160" name="snackbar_pane_title">"Upozornění"</string>
+    <string name="start_i2p_android">Otevřít I2P Android?</string>
     <string msgid="4139871816613051306" name="state_empty">"Prázdné"</string>
     <string msgid="5834637030682409883" name="state_off">"Vypnuto"</string>
     <string msgid="1490883874751719580" name="state_on">"Zapnuto"</string>
@@ -248,6 +251,8 @@
     <string msgid="6961788485681412417" name="use_fingerprint_label">"Použít otisk prstu"</string>
     <string msgid="7577690399303139443" name="use_fingerprint_or_screen_lock_label">"Použít otisk prstu nebo zámek obrazovky"</string>
     <string msgid="5459869335976243512" name="use_screen_lock_label">"Použít zámek obrazovky"</string>
+    <string name="yes">Ano</string>
+    <string name="you_must_have_i2p_android">Musíte mít nainstalovaný a zapnutý I2P Android. Přejete si jej nainstalovat?</string>
     <string name="zxing_app_name">Barcode Scanner</string>
     <string name="zxing_button_ok">OK</string>
     <string name="zxing_msg_camera_framework_bug">Omlouváme se, zjistili jsem problém s fotoaparátem. Možná bude nutné restartovat zařízení.</string>
