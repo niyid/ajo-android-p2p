@@ -31,11 +31,12 @@ import java.util.UUID
 import com.techducat.ajo.model.Member
 import com.techducat.ajo.model.Invite
 import com.techducat.ajo.util.WalletSelectionManager
+import com.techducat.ajo.ui.sync.ReferralScannerActivity
 
 class DashboardFragment : Fragment() {
 
     companion object {
-        private const val TAG = "com.techducat.ajo.ui.dashboard.DashboardFragment"
+        private const val TAG = "DashboardFragment"
     }  
     
     private var _binding: FragmentDashboardBinding? = null
@@ -66,6 +67,26 @@ class DashboardFragment : Fragment() {
         }
     }
     
+    // ✅ NEW: QR Scanner Launcher
+    private val qrScannerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == AppCompatActivity.RESULT_OK) {
+            val scannedCode = result.data?.getStringExtra("referral_code")
+            if (!scannedCode.isNullOrEmpty()) {
+                Log.d(TAG, "✓ QR Code scanned: $scannedCode")
+                binding.editTextInviteCode.setText(scannedCode)
+                processInviteCode(scannedCode)
+            } else {
+                Log.d(TAG, "QR Scanner returned but no code found")
+                // Refresh the list anyway in case the scanner handled joining internally
+                checkLoginAndLoadData()
+            }
+        } else {
+            Log.d(TAG, "QR Scanner cancelled or failed")
+        }
+    }
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -85,6 +106,7 @@ class DashboardFragment : Fragment() {
         setupFab()
         setupLoginObservers()
         setupInviteInput()
+        setupQRScanner()  // ✅ NEW: Setup QR scanner button
         
         debugUserIdentity()
         checkLoginAndLoadData()
@@ -112,6 +134,34 @@ class DashboardFragment : Fragment() {
             }
             
             processInviteCode(code)
+        }
+    }
+    
+    // ✅ NEW: Setup QR Scanner Button
+    private fun setupQRScanner() {
+        binding.btnScanQR.setOnClickListener {
+            val userId = getUserId()
+            if (userId.isNullOrEmpty()) {
+                Toast.makeText(
+                    requireContext(), 
+                    getString(R.string.Dashboard_please_log_first), 
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            
+            Log.d(TAG, "Launching QR Scanner...")
+            try {
+                val intent = Intent(requireContext(), ReferralScannerActivity::class.java)
+                qrScannerLauncher.launch(intent)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error launching QR scanner", e)
+                Toast.makeText(
+                    requireContext(), 
+                    getString(R.string.Dashboard_qr_scanner_manual_fallback), 
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
     
@@ -184,7 +234,7 @@ class DashboardFragment : Fragment() {
                 
             } catch (e: Exception) {
                 Log.e(TAG, "Error processing invite code", e)
-                Toast.makeText(requireContext(), getString(R.string.Dashboard_error_message), Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.Dashboard_error_message, e.message), Toast.LENGTH_LONG).show()
                 binding.btnJoinWithCode.isEnabled = true
             }
         }
@@ -252,12 +302,12 @@ class DashboardFragment : Fragment() {
                     loadRoscas()
                     
                 } else {
-                    val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                    val error = result.exceptionOrNull()?.message ?: getString(R.string.RoscaDetail_unknown_error)
                     Log.e(TAG, "Failed to join ROSCA: $error", result.exceptionOrNull())
                     
                     Toast.makeText(
                         requireContext(), 
-                        getString(R.string.Dashboard_failed_join_message) + ": $error", 
+                        getString(R.string.Dashboard_failed_join_message, error), 
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -266,7 +316,7 @@ class DashboardFragment : Fragment() {
                 Log.e(TAG, "Error joining ROSCA", e)
                 Toast.makeText(
                     requireContext(), 
-                    getString(R.string.Dashboard_failed_join_message) + ": ${e.message}", 
+                    getString(R.string.Dashboard_failed_join_message, e.message), 
                     Toast.LENGTH_LONG
                 ).show()
             } finally {
@@ -572,7 +622,7 @@ class DashboardFragment : Fragment() {
             } catch (e: Exception) {
                 Log.e(TAG, "Error loading ROSCAs", e)
                 hideLoading()
-                showError("Failed to load ROSCAs: ${e.message}")
+                showError(getString(R.string.error_loading_roscas))
             }
         }
     }
@@ -665,7 +715,7 @@ class DashboardFragment : Fragment() {
                         loadRoscas()
                         
                     } else {
-                        val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                        val error = result.exceptionOrNull()?.message ?: getString(R.string.RoscaDetail_unknown_error)
                         Log.e(TAG, "    ❌ Finalization failed: $error")
                     }
                 } else {
@@ -746,9 +796,9 @@ class DashboardFragment : Fragment() {
             emptyStateLayout.visibility = View.VISIBLE
             fabCreate.visibility = View.VISIBLE
             
-            tvActiveCount.text = "0"
-            tvTotalCount.text = "0"
-            tvCompletedCount.text = "0"
+            tvActiveCount.text = getString(R.string.Dashboard_stats_total)
+            tvTotalCount.text = getString(R.string.Dashboard_stats_total)
+            tvCompletedCount.text = getString(R.string.Dashboard_stats_total)
         }
     }
         
@@ -807,7 +857,7 @@ class DashboardFragment : Fragment() {
                 Log.e(TAG, "Fallback navigation also failed", fallbackError)
                 Toast.makeText(
                     requireContext(), 
-                    "Unable to open ROSCA details", 
+                    getString(R.string.error_failed_to_open_rosca_details, fallbackError.message), 
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -822,7 +872,7 @@ class DashboardFragment : Fragment() {
             Log.e(TAG, "Navigation error", e)
             Toast.makeText(
                 requireContext(), 
-                "Unable to open create ROSCA screen", 
+                getString(R.string.error_failed_to_open_exchange, e.message), 
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -838,9 +888,9 @@ class DashboardFragment : Fragment() {
             fabCreate.visibility = View.GONE
             inviteCard.visibility = View.GONE
             
-            tvActiveCount.text = "0"
-            tvTotalCount.text = "0"
-            tvCompletedCount.text = "0"
+            tvActiveCount.text = getString(R.string.Dashboard_stats_total)
+            tvTotalCount.text = getString(R.string.Dashboard_stats_total)
+            tvCompletedCount.text = getString(R.string.Dashboard_stats_total)
         }
     }   
     

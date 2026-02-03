@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.zxing.integration.android.IntentIntegrator
+import com.techducat.ajo.R
 import com.techducat.ajo.sync.ReferralCodec
 import com.techducat.ajo.data.local.AjoDatabase
 import com.techducat.ajo.data.local.entity.*
@@ -42,27 +43,27 @@ class ReferralScannerActivity : AppCompatActivity() {
             setPadding(48, 48, 48, 48)
             
             addView(TextView(context).apply {
-                text = "Scan Referral Code"
+                text = getString(R.string.ReferralScanner_title)
                 textSize = 28f
                 setTypeface(null, android.graphics.Typeface.BOLD)
                 setPadding(0, 0, 0, 32)
             })
             
             addView(TextView(context).apply {
-                text = "Point your camera at the QR code to join a ROSCA"
+                text = getString(R.string.ReferralScanner_instructions)
                 textSize = 16f
                 setPadding(0, 0, 0, 24)
             })
             
             addView(Button(context).apply {
-                text = "Scan QR Code"
+                text = getString(R.string.ReferralScanner_btn_scan)
                 textSize = 16f
                 setPadding(32, 24, 32, 24)
                 setOnClickListener { startScanner() }
             })
             
             addView(Button(context).apply {
-                text = "Enter Code Manually"
+                text = getString(R.string.ReferralScanner_btn_manual)
                 textSize = 16f
                 setPadding(32, 24, 32, 24)
                 layoutParams = LinearLayout.LayoutParams(
@@ -79,7 +80,7 @@ class ReferralScannerActivity : AppCompatActivity() {
     private fun startScanner() {
         IntentIntegrator(this).apply {
             setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-            setPrompt("Scan Referral QR Code")
+            setPrompt(getString(R.string.ReferralScanner_title))
             setBeepEnabled(true)
             initiateScan()
         }
@@ -87,17 +88,17 @@ class ReferralScannerActivity : AppCompatActivity() {
     
     private fun showManualEntry() {
         val editText = EditText(this).apply {
-            hint = "Paste referral code here"
+            hint = getString(R.string.ReferralScanner_manual_hint)
         }
         
         androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Enter Referral Code")
+            .setTitle(getString(R.string.ReferralScanner_manual_title))
             .setView(editText)
-            .setPositiveButton("Join") { _, _ ->
+            .setPositiveButton(getString(R.string.ReferralScanner_join)) { _, _ ->
                 val code = editText.text.toString()
                 processReferralCode(code)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
     
@@ -116,19 +117,19 @@ class ReferralScannerActivity : AppCompatActivity() {
                 // Parse code
                 val referral = ReferralCodec.parse(code)
                 if (referral == null) {
-                    Toast.makeText(this@ReferralScannerActivity, "Invalid referral code", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ReferralScannerActivity, getString(R.string.ReferralScanner_invalid_code), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
                 
                 // Verify signature
                 if (!ReferralCodec.verify(referral)) {
-                    Toast.makeText(this@ReferralScannerActivity, "Invalid signature", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ReferralScannerActivity, getString(R.string.ReferralScanner_invalid_signature), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
                 
                 // Check expiry
                 if (!ReferralCodec.isValid(referral)) {
-                    Toast.makeText(this@ReferralScannerActivity, "Code expired", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ReferralScannerActivity, getString(R.string.ReferralScanner_code_expired), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
                 
@@ -136,7 +137,7 @@ class ReferralScannerActivity : AppCompatActivity() {
                 consumeReferral(referral)
                 
             } catch (e: Exception) {
-                Toast.makeText(this@ReferralScannerActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@ReferralScannerActivity, getString(R.string.ReferralScanner_error_format, e.message), Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
         }
@@ -195,7 +196,10 @@ class ReferralScannerActivity : AppCompatActivity() {
             syncEnabled = true
         ))
         
-        Toast.makeText(this, "Successfully joined ${payload.roscaName}!", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, getString(R.string.ReferralScanner_success_format, payload.roscaName), Toast.LENGTH_LONG).show()
+        
+        // ✅ Return success result to calling activity
+        setResult(RESULT_OK)
         finish()
     }
 }

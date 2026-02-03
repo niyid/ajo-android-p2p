@@ -149,6 +149,9 @@
     <string name="Dashboard_join_with_code">Join with Code</string>
     <string name="Dashboard_rosca_created_successfully">ROSCA created successfully!</string>
     <string name="Dashboard_failed_to_create_rosca">Failed to create ROSCA</string>    
+    <string name="Dashboard_scan_qr_code">Scan QR Code</string>
+    <string name="Dashboard_qr_scanner_error">Unable to open QR scanner</string>
+    <string name="Dashboard_enter_code_manually">Enter code manually</string>
     <string name="RoscaList_rosca_currentmembers_rosca_totalmembers">%1$d/%2$d members • %3$s</string>
     <string name="RoscaList_rosca_contributionamount_xmr">%s XMR</string>
     <string name="RoscaList_rosca_currentround_rosca_totalmembers">%1$d/%2$d rounds</string>
@@ -679,6 +682,39 @@
     
     <string name="Dashboard_rosca_finalized">%1$s is now active! All members can start contributing.</string>
     <string name="Dashboard_joining_rosca">Joining ROSCA…</string>
-        
+
+    <!-- ReferralScannerActivity Strings -->
+    <string name="ReferralScanner_title">Scan Referral Code</string>
+    <string name="ReferralScanner_instructions">Point your camera at the QR code to join a ROSCA</string>
+    <string name="ReferralScanner_btn_scan">Scan QR Code</string>
+    <string name="ReferralScanner_btn_manual">Enter Code Manually</string>
+    <string name="ReferralScanner_manual_title">Enter Referral Code</string>
+    <string name="ReferralScanner_manual_hint">Paste referral code here</string>
+    <string name="ReferralScanner_join">Join</string>
+    <string name="ReferralScanner_invalid_code">Invalid referral code</string>
+    <string name="ReferralScanner_invalid_signature">Invalid signature</string>
+    <string name="ReferralScanner_code_expired">Code expired</string>
+    <string name="ReferralScanner_error_format">Error: %s</string>
+    <string name="ReferralScanner_success_format">Successfully joined %s!</string>
+    
+    <!-- DashboardFragment Strings - Additional -->
+    <string name="Dashboard_welcome_to_ajo">Welcome to Àjọ</string>
+    <string name="Dashboard_sign_in_message">Sign in to view and manage your ROSCAs</string>
+    <string name="Dashboard_have_invite_code">Have an Invite Code?</string>
+    <string name="Dashboard_enter_invite_instructions">Enter your invite code to join a ROSCA</string>
+    <string name="Dashboard_scan_qr">Scan QR Code</string>
+    <string name="Dashboard_or">OR</string>
+    <string name="Dashboard_invite_code_hint">Invite Code</string>
+    <string name="Dashboard_join_with_code_btn">Join with Code</string>
+    <string name="Dashboard_stats_active">Active</string>
+    <string name="Dashboard_stats_total">Total</string>
+    <string name="Dashboard_stats_completed">Completed</string>
+    <string name="Dashboard_oops">Oops!</string>
+    <string name="Dashboard_qr_scanner_manual_fallback">Unable to open QR scanner. Please enter code manually.</string>
+    <string name="Dashboard_creation_moment">This may take a moment…</string>
+    
+    <!-- Debug and Logging Strings (not user-facing but for consistency) -->
+    <string name="Dashboard_tag" translatable="false">com.techducat.ajo.ui.dashboard.DashboardFragment</string>
+    <string name="ReferralScanner_tag" translatable="false">ReferralScannerActivity</string>        
 
 </resources>

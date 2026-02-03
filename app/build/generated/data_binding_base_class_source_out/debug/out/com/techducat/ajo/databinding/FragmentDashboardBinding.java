@@ -42,6 +42,9 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final MaterialButton btnRetry;
 
   @NonNull
+  public final MaterialButton btnScanQR;
+
+  @NonNull
   public final TextInputEditText editTextInviteCode;
 
   @NonNull
@@ -116,23 +119,25 @@ public final class FragmentDashboardBinding implements ViewBinding {
   private FragmentDashboardBinding(@NonNull ConstraintLayout rootView,
       @NonNull MaterialButton btnCreateRosca, @NonNull SignInButton btnGoogleSignIn,
       @NonNull MaterialButton btnJoinWithCode, @NonNull MaterialButton btnRetry,
-      @NonNull TextInputEditText editTextInviteCode, @NonNull TextView emptyStateIcon,
-      @NonNull LinearLayout emptyStateLayout, @NonNull TextView emptyStateMessage,
-      @NonNull TextView emptyStateTitle, @NonNull TextView errorIcon,
-      @NonNull LinearLayout errorLayout, @NonNull TextView errorMessage,
-      @NonNull FloatingActionButton fabCreate, @NonNull MaterialCardView headerCard,
-      @NonNull MaterialCardView inviteCard, @NonNull TextView loginIcon,
-      @NonNull LinearLayout loginLayout, @NonNull TextView loginMessage,
-      @NonNull TextView loginTitle, @NonNull ProgressBar progressBar,
-      @NonNull RecyclerView recyclerViewRoscas, @NonNull FrameLayout roscaCreationOverlay,
-      @NonNull ProgressBar roscaCreationProgress, @NonNull SwipeRefreshLayout swipeRefreshLayout,
-      @NonNull TextView textViewTitle, @NonNull TextView tvActiveCount,
-      @NonNull TextView tvCompletedCount, @NonNull TextView tvTotalCount) {
+      @NonNull MaterialButton btnScanQR, @NonNull TextInputEditText editTextInviteCode,
+      @NonNull TextView emptyStateIcon, @NonNull LinearLayout emptyStateLayout,
+      @NonNull TextView emptyStateMessage, @NonNull TextView emptyStateTitle,
+      @NonNull TextView errorIcon, @NonNull LinearLayout errorLayout,
+      @NonNull TextView errorMessage, @NonNull FloatingActionButton fabCreate,
+      @NonNull MaterialCardView headerCard, @NonNull MaterialCardView inviteCard,
+      @NonNull TextView loginIcon, @NonNull LinearLayout loginLayout,
+      @NonNull TextView loginMessage, @NonNull TextView loginTitle,
+      @NonNull ProgressBar progressBar, @NonNull RecyclerView recyclerViewRoscas,
+      @NonNull FrameLayout roscaCreationOverlay, @NonNull ProgressBar roscaCreationProgress,
+      @NonNull SwipeRefreshLayout swipeRefreshLayout, @NonNull TextView textViewTitle,
+      @NonNull TextView tvActiveCount, @NonNull TextView tvCompletedCount,
+      @NonNull TextView tvTotalCount) {
     this.rootView = rootView;
     this.btnCreateRosca = btnCreateRosca;
     this.btnGoogleSignIn = btnGoogleSignIn;
     this.btnJoinWithCode = btnJoinWithCode;
     this.btnRetry = btnRetry;
+    this.btnScanQR = btnScanQR;
     this.editTextInviteCode = editTextInviteCode;
     this.emptyStateIcon = emptyStateIcon;
     this.emptyStateLayout = emptyStateLayout;
@@ -207,6 +212,12 @@ public final class FragmentDashboardBinding implements ViewBinding {
       id = R.id.btnRetry;
       MaterialButton btnRetry = ViewBindings.findChildViewById(rootView, id);
       if (btnRetry == null) {
+        break missingId;
+      }
+
+      id = R.id.btnScanQR;
+      MaterialButton btnScanQR = ViewBindings.findChildViewById(rootView, id);
+      if (btnScanQR == null) {
         break missingId;
       }
 
@@ -355,7 +366,7 @@ public final class FragmentDashboardBinding implements ViewBinding {
       }
 
       return new FragmentDashboardBinding((ConstraintLayout) rootView, btnCreateRosca,
-          btnGoogleSignIn, btnJoinWithCode, btnRetry, editTextInviteCode, emptyStateIcon,
+          btnGoogleSignIn, btnJoinWithCode, btnRetry, btnScanQR, editTextInviteCode, emptyStateIcon,
           emptyStateLayout, emptyStateMessage, emptyStateTitle, errorIcon, errorLayout,
           errorMessage, fabCreate, headerCard, inviteCard, loginIcon, loginLayout, loginMessage,
           loginTitle, progressBar, recyclerViewRoscas, roscaCreationOverlay, roscaCreationProgress,

@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-132:12
-INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-132:12
-INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-132:12
-INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-132:12
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-137:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-137:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-137:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-137:12
 MERGED from [androidx.databinding:databinding-adapters:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/f184bc78f044538664eae423f298557b/transformed/databinding-adapters-8.7.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.databinding:databinding-ktx:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/9c15d66753b8425032ecdf15ffe70424/transformed/jetified-databinding-ktx-8.7.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.databinding:databinding-runtime:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/4f525cc029daa713d4fc9952d235a884/transformed/databinding-runtime-8.7.3/AndroidManifest.xml:2:1-7:12
@@ -160,15 +160,37 @@ MERGED from [com.google.android.recaptcha:recaptcha:18.4.0] /home/niyid/.gradle/
 MERGED from [com.google.android.recaptcha:recaptcha:18.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/458545a32b3451a4b9ac2740fda8b418/transformed/jetified-recaptcha-18.4.0/AndroidManifest.xml:8:5-79
 	android:name
 		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:7:22-76
-queries
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:9:5-11:15
-package#org.torproject.android
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:10:9-58
+uses-permission#android.permission.CAMERA
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:8:5-65
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:22:5-65
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:22:5-65
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:10:18-55
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:8:22-62
+uses-feature#android.hardware.camera
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:11:5-85
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:25:5-27:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:25:5-27:36
+	android:required
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:11:58-82
+	android:name
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:11:19-57
+uses-feature#android.hardware.camera.autofocus
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:12:5-95
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:33:5-35:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:33:5-35:36
+	android:required
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:12:68-92
+	android:name
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:12:19-67
+queries
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:14:5-16:15
+package#org.torproject.android
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:15:9-58
+	android:name
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:15:18-55
 application
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:13:5-131:19
-INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:13:5-131:19
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:18:5-136:19
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:18:5-136:19
 MERGED from [io.insert-koin:koin-androidx-navigation:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/e0ad31bdb64d007d9c1770fa7fc86ba5/transformed/jetified-koin-androidx-navigation-4.0.0/AndroidManifest.xml:7:5-20
 MERGED from [io.insert-koin:koin-androidx-navigation:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/e0ad31bdb64d007d9c1770fa7fc86ba5/transformed/jetified-koin-androidx-navigation-4.0.0/AndroidManifest.xml:7:5-20
 MERGED from [io.insert-koin:koin-android:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/0787df89bbed5db0a7e81a5cff2112d5/transformed/jetified-koin-android-4.0.0/AndroidManifest.xml:7:5-20
@@ -234,145 +256,145 @@ MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/c
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.15.0] /home/niyid/.gradle/caches/8.11.1/transforms/3d45dea60af6301b01f2c5515c48051e/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:21:9-35
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:26:9-35
 	android:label
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:19:9-41
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:24:9-41
 	android:fullBackupContent
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:17:9-54
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:22:9-54
 	android:roundIcon
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:20:9-54
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:25:9-54
 	tools:targetApi
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:24:9-29
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:29:9-29
 	android:icon
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:18:9-43
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:23:9-43
 	android:allowBackup
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:15:9-35
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:20:9-35
 	android:theme
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:22:9-41
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:27:9-41
 	android:dataExtractionRules
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:16:9-65
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:21:9-65
 	android:usesCleartextTraffic
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:23:9-44
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:28:9-44
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:14:9-39
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:19:9-39
 activity#com.techducat.ajo.ui.splash.SplashActivity
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:27:9-82:20
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:32:9-87:20
 	android:launchMode
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:31:13-44
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:36:13-44
 	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:29:13-36
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:34:13-36
 	android:theme
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:30:13-52
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:35:13-52
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:28:13-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:33:13-53
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:32:13-35:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:37:13-40:29
 action#android.intent.action.MAIN
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:33:17-69
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:38:17-69
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:33:25-66
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:38:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:34:17-77
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:39:17-77
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:34:27-74
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:39:27-74
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:join+data:scheme:ajo
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:38:13-46:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:43:13-51:29
 	android:autoVerify
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:38:28-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:43:28-53
 action#android.intent.action.VIEW
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:39:17-69
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:44:17-69
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:39:25-66
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:44:25-66
 category#android.intent.category.DEFAULT
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:40:17-76
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:45:17-76
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:40:27-73
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:45:27-73
 category#android.intent.category.BROWSABLE
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:41:17-78
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:46:17-78
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:41:27-75
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:46:27-75
 data
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:43:17-45:43
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:48:17-50:43
 	android:host
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:45:21-40
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:50:21-40
 	android:scheme
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:44:21-41
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:49:21-41
 	android:pathPrefix
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:57:21-47
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:62:21-47
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:ajo.app+data:pathPrefix:/join+data:scheme:https
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:49:13-58:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:54:13-63:29
 	android:autoVerify
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:49:28-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:54:28-53
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:www.ajo.app+data:pathPrefix:/join+data:scheme:https
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:61:13-70:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:66:13-75:29
 	android:autoVerify
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:61:28-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:66:28-53
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:invite+data:scheme:ajo
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:73:13-81:29
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:78:13-86:29
 activity#com.techducat.ajo.ui.MainActivity
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:85:9-88:46
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:90:9-93:46
 	android:launchMode
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:88:13-43
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:93:13-43
 	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:87:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:92:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:86:13-44
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:91:13-44
 activity#com.techducat.ajo.ui.create.CreateRoscaActivity
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:91:9-95:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:96:9-100:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:95:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:100:13-58
 	android:windowSoftInputMode
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:94:13-55
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:99:13-55
 	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:93:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:98:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:92:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:97:13-58
 activity#com.techducat.ajo.ui.detail.RoscaDetailActivity
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:98:9-101:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:103:9-106:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:101:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:106:13-58
 	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:100:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:105:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:99:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:104:13-58
 activity#com.techducat.ajo.ui.invite.InviteActivity
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:104:9-108:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:109:9-113:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:108:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:113:13-58
 	android:windowSoftInputMode
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:107:13-55
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:112:13-55
 	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:106:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:111:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:105:13-53
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:110:13-53
 activity#com.techducat.ajo.ui.contributions.GroupContributionsActivity
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:111:9-114:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:116:9-119:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:114:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:119:13-58
 	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:113:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:118:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:112:13-72
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:117:13-72
 activity#com.techducat.ajo.ui.exchange.ExchangeActivity
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:117:9-120:61
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:122:9-125:61
 	android:parentActivityName
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:120:13-58
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:125:13-58
 	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:119:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:124:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:118:13-57
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:123:13-57
 service#com.techducat.ajo.service.NotificationService
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:123:9-125:40
-	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:125:13-37
-	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:124:13-56
-service#com.techducat.ajo.service.SyncService
 ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:128:9-130:40
 	android:exported
 		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:130:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:129:13-48
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:129:13-56
+service#com.techducat.ajo.service.SyncService
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:133:9-135:40
+	android:exported
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:135:13-37
+	android:name
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:134:13-48
 uses-sdk
 INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
@@ -1113,28 +1135,12 @@ action#androidx.profileinstaller.action.BENCHMARK_OPERATION
 ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/ffd9d9df78425a9fde904c21fb9b1ab2/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:50:17-95
 	android:name
 		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] /home/niyid/.gradle/caches/8.11.1/transforms/ffd9d9df78425a9fde904c21fb9b1ab2/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:50:25-92
-uses-permission#android.permission.CAMERA
-ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:22:5-65
-	android:name
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:22:22-62
-uses-feature#android.hardware.camera
-ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:25:5-27:36
-	android:required
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:27:9-33
-	android:name
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:26:9-47
 uses-feature#android.hardware.camera.front
 ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:28:5-30:36
 	android:required
 		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:30:9-33
 	android:name
 		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:29:9-53
-uses-feature#android.hardware.camera.autofocus
-ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:33:5-35:36
-	android:required
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:35:9-33
-	android:name
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:34:9-57
 uses-feature#android.hardware.camera.flash
 ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/niyid/.gradle/caches/8.11.1/transforms/5db11909e1b416725fc02b9ff6aab0dd/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:36:5-38:36
 	android:required
