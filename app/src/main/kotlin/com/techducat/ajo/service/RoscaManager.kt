@@ -1257,8 +1257,8 @@ class RoscaManager(
             Log.d(TAG, "✓ Switched to ROSCA wallet")
             
             // ✅ FIX BUG #6: Verify wallet identity before finalization
-            val members = repository.getMembersByRoscaId(roscaId)
-            val ourMember = members.find { it.userId == userId }
+            val membersVerify = repository.getMembersByRoscaId(roscaId)
+            val ourMember = membersVerify.find { it.userId == userId }
                 ?: return@withContext Result.failure(Exception("Member not found for user $userId"))
             
             val currentWalletAddress = getCurrentWalletAddress().getOrNull()

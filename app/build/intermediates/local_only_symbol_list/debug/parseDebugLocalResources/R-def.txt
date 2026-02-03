@@ -733,6 +733,8 @@ string RoscaDetail_invite_expired
 string RoscaDetail_invite_link_message
 string RoscaDetail_invite_link_ready
 string RoscaDetail_invite_member
+string RoscaDetail_invite_qr_message
+string RoscaDetail_invite_qr_ready
 string RoscaDetail_joined
 string RoscaDetail_joined_date
 string RoscaDetail_link_copied_clipboard

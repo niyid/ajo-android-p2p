@@ -717,4 +717,6 @@
     <string name="Dashboard_tag" translatable="false">com.techducat.ajo.ui.dashboard.DashboardFragment</string>
     <string name="ReferralScanner_tag" translatable="false">ReferralScannerActivity</string>        
 
+    <string name="RoscaDetail_invite_qr_message">Your invite QR code is ready!\n\nInvite Code: %1$s\n\nChoose how to share the QR code:</string>
+    <string name="RoscaDetail_invite_qr_ready">Invite QR Code Ready</string>
 </resources>

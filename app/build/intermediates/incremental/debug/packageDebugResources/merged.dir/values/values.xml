@@ -306,6 +306,8 @@
     <string name="RoscaDetail_invite_link_message">Your invite link is ready!\n\nInvite Code: %s\n\nShare this link via WhatsApp, email, SMS, or any messaging app.\n\nThe link expires in 30 days.</string>
     <string name="RoscaDetail_invite_link_ready">Invite Link Ready</string>
     <string name="RoscaDetail_invite_member">Invite Member</string>
+    <string name="RoscaDetail_invite_qr_message">Your invite QR code is ready!\n\nInvite Code: %1$s\n\nChoose how to share the QR code:</string>
+    <string name="RoscaDetail_invite_qr_ready">Invite QR Code Ready</string>
     <string name="RoscaDetail_joined">Joined: %s</string>
     <string name="RoscaDetail_joined_date">Joined: %s</string>
     <string name="RoscaDetail_link_copied_clipboard">Invite link copied to clipboard</string>

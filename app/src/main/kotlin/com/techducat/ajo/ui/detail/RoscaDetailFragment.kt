@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +26,7 @@ import com.techducat.ajo.databinding.FragmentRoscaDetailBinding
 import com.techducat.ajo.service.RoscaManager
 import com.techducat.ajo.ui.auth.LoginViewModel
 import com.techducat.ajo.ui.contributions.GroupContributionsActivity
+import com.techducat.ajo.ui.sync.QRCodeGenerator
 import com.techducat.ajo.util.CurrencyFormatter
 import com.techducat.ajo.util.WalletSelectionManager
 import com.techducat.ajo.wallet.WalletSuite
@@ -34,6 +38,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import java.io.File
 import android.content.Context
 import com.techducat.ajo.R
 
@@ -982,25 +987,74 @@ class RoscaDetailFragment : Fragment() {
 
     private fun showInviteLinkDialog(inviteCode: String) {
         val appDeepLink = "ajo://join?ref=$inviteCode&rosca=$roscaId"
-        val webLink = "https://ajo.app/join?ref=$inviteCode&rosca=$roscaId"
         
-        val message = getString(R.string.RoscaDetail_invite_link_message, inviteCode)
-        
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.RoscaDetail_invite_link_ready))
-            .setMessage(message)
-            .setPositiveButton(getString(R.string.RoscaDetail_share_link)) { _, _ ->
-                shareInviteLink(webLink, inviteCode)
+        try {
+            // ✅ Generate QR code bitmap to display inline
+            val qrBitmap = QRCodeGenerator.generate(appDeepLink, 512)
+            
+            // Create custom view with QR code displayed
+            val dialogView = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(48, 48, 48, 48)
+                
+                // QR Code ImageView
+                addView(ImageView(context).apply {
+                    setImageBitmap(qrBitmap)
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        bottomMargin = 24
+                    }
+                    scaleType = ImageView.ScaleType.FIT_CENTER
+                })
+                
+                // Invite code text (tappable to copy)
+                addView(TextView(context).apply {
+                    text = "Code: $inviteCode"
+                    textSize = 18f
+                    gravity = android.view.Gravity.CENTER
+                    setPadding(16, 16, 16, 16)
+                    setBackgroundColor(0xFFF5F5F5.toInt())
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        bottomMargin = 16
+                    }
+                    setOnClickListener {
+                        copyToClipboard(inviteCode)
+                        showSuccess("Invite code copied to clipboard")
+                    }
+                })
+                
+                // Instructions
+                addView(TextView(context).apply {
+                    text = "Share this QR code with people you want to invite. Tap the code above to copy it."
+                    textSize = 14f
+                    gravity = android.view.Gravity.CENTER
+                    setTextColor(android.graphics.Color.GRAY)
+                })
             }
-            .setNeutralButton(getString(R.string.RoscaDetail_copy_link)) { _, _ ->
-                copyToClipboard(webLink)
-                showSuccess(getString(R.string.RoscaDetail_link_copied_clipboard))
-            }
-            .setNegativeButton(getString(R.string.RoscaDetail_copy_code)) { _, _ ->
-                copyToClipboard(inviteCode)
-                showSuccess(getString(R.string.RoscaDetail_code_copied_clipboard))
-            }
-            .show()
+            
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Invite via QR Code")
+                .setView(dialogView)
+                .setPositiveButton("View Full Screen") { _, _ ->
+                    showQRCodeFullScreen(appDeepLink, inviteCode)
+                }
+                .setNeutralButton("Share QR Image") { _, _ ->
+                    shareQRCodeImage(appDeepLink, inviteCode)
+                }
+                .setNegativeButton("Save to Gallery") { _, _ ->
+                    saveQRCodeToGallery(appDeepLink, inviteCode)
+                }
+                .show()
+                
+        } catch (e: Exception) {
+            Log.e(TAG, "Error generating QR code for dialog", e)
+            showError("Failed to generate QR code: ${e.message}")
+        }
     }
 
     private fun shareInviteLink(inviteLink: String, inviteCode: String) {
@@ -1054,6 +1108,151 @@ class RoscaDetailFragment : Fragment() {
         val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
         val clip = android.content.ClipData.newPlainText(getString(R.string.RoscaDetail_invite), text)
         clipboard.setPrimaryClip(clip)
+    }
+    
+    private fun showQRCodeFullScreen(deepLink: String, inviteCode: String) {
+        try {
+            // Generate QR code bitmap
+            val qrBitmap = QRCodeGenerator.generate(deepLink, 800)
+            
+            // Create a custom dialog with full-screen QR code
+            val imageView = ImageView(requireContext()).apply {
+                setImageBitmap(qrBitmap)
+                setPadding(32, 32, 32, 32)
+                setBackgroundColor(android.graphics.Color.WHITE)
+            }
+            
+            val codeTextView = TextView(requireContext()).apply {
+                text = "Invite Code: $inviteCode"
+                textSize = 16f
+                gravity = android.view.Gravity.CENTER
+                setPadding(16, 24, 16, 16)
+            }
+            
+            val instructionTextView = TextView(requireContext()).apply {
+                text = "Have the new member scan this QR code to join the ROSCA"
+                textSize = 14f
+                gravity = android.view.Gravity.CENTER
+                setPadding(16, 8, 16, 32)
+                setTextColor(android.graphics.Color.GRAY)
+            }
+            
+            val layout = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.VERTICAL
+                addView(imageView)
+                addView(codeTextView)
+                addView(instructionTextView)
+            }
+            
+            MaterialAlertDialogBuilder(requireContext())
+                .setView(layout)
+                .setPositiveButton("Close", null)
+                .setNeutralButton("Share") { _, _ ->
+                    shareQRCodeImage(deepLink, inviteCode)
+                }
+                .setNegativeButton("Save") { _, _ ->
+                    saveQRCodeToGallery(deepLink, inviteCode)
+                }
+                .show()
+                
+        } catch (e: Exception) {
+            Log.e(TAG, "Error showing QR code", e)
+            showError("Failed to generate QR code: ${e.message}")
+        }
+    }
+    
+    private fun shareQRCodeImage(deepLink: String, inviteCode: String) {
+        lifecycleScope.launch {
+            try {
+                showProgress("Preparing QR code...")
+                
+                // Generate QR code bitmap
+                val qrBitmap = QRCodeGenerator.generate(deepLink, 800)
+                
+                // Save to cache directory temporarily
+                val cachePath = File(requireContext().cacheDir, "qr_codes")
+                cachePath.mkdirs()
+                val imageFile = File(cachePath, "invite_qr_$inviteCode.png")
+                
+                withContext(Dispatchers.IO) {
+                    imageFile.outputStream().use { out ->
+                        qrBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
+                    }
+                }
+                
+                // Create share intent with file provider
+                val imageUri = androidx.core.content.FileProvider.getUriForFile(
+                    requireContext(),
+                    "${requireContext().packageName}.fileprovider",
+                    imageFile
+                )
+                
+                val shareText = buildString {
+                    rosca?.let { r ->
+                        append("Join my ROSCA: ${r.name}\n\n")
+                        append("Contribution: ${formatXMR(r.contributionAmount)} XMR\n")
+                        append("Frequency: Every ${r.frequencyDays} days\n\n")
+                    }
+                    append("Scan the QR code to join!\n")
+                    append("Invite Code: $inviteCode")
+                }
+                
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "image/png"
+                    putExtra(Intent.EXTRA_STREAM, imageUri)
+                    putExtra(Intent.EXTRA_TEXT, shareText)
+                    putExtra(Intent.EXTRA_SUBJECT, "Join my ROSCA")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                
+                hideProgress()
+                startActivity(Intent.createChooser(shareIntent, "Share QR Code"))
+                
+            } catch (e: Exception) {
+                hideProgress()
+                Log.e(TAG, "Error sharing QR code", e)
+                showError("Failed to share QR code: ${e.message}")
+            }
+        }
+    }
+    
+    private fun saveQRCodeToGallery(deepLink: String, inviteCode: String) {
+        lifecycleScope.launch {
+            try {
+                showProgress("Saving QR code...")
+                
+                // Generate QR code bitmap
+                val qrBitmap = QRCodeGenerator.generate(deepLink, 1024)
+                
+                withContext(Dispatchers.IO) {
+                    // Save to Pictures directory
+                    val picturesDir = android.os.Environment.getExternalStoragePublicDirectory(
+                        android.os.Environment.DIRECTORY_PICTURES
+                    )
+                    val ajoDir = File(picturesDir, "AJO_QR_Codes")
+                    ajoDir.mkdirs()
+                    
+                    val imageFile = File(ajoDir, "ROSCA_Invite_${inviteCode}_${System.currentTimeMillis()}.png")
+                    
+                    imageFile.outputStream().use { out ->
+                        qrBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
+                    }
+                    
+                    // Notify media scanner
+                    val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                    mediaScanIntent.data = android.net.Uri.fromFile(imageFile)
+                    requireContext().sendBroadcast(mediaScanIntent)
+                }
+                
+                hideProgress()
+                showSuccess("QR code saved to Gallery in AJO_QR_Codes folder")
+                
+            } catch (e: Exception) {
+                hideProgress()
+                Log.e(TAG, "Error saving QR code", e)
+                showError("Failed to save QR code: ${e.message}")
+            }
+        }
     }
     
     private fun showMemberDetails(member: MemberEntity) {
