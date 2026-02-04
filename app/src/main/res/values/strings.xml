@@ -719,4 +719,116 @@
 
     <string name="RoscaDetail_invite_qr_message">Your invite QR code is ready!\n\nInvite Code: %1$s\n\nChoose how to share the QR code:</string>
     <string name="RoscaDetail_invite_qr_ready">Invite QR Code Ready</string>
+
+    <!-- Add these strings to your existing strings.xml -->
+
+    <!-- ReferralScannerActivity Strings - Additional -->
+    <string name="ReferralScanner_code_scanned">Code scanned successfully!</string>
+    <string name="ReferralScanner_code_verified">Code verified successfully!</string>
+
+    <!-- DashboardFragment - Additional QR Scanner Strings -->
+    <string name="Dashboard_qr_scanner_not_available">QR Scanner not available. Please enter code manually.</string>
+    <string name="Dashboard_qr_scanner_unavailable_manual">QR Scanner unavailable. Please enter code manually.</string>
+
+    <!-- WalletFragment - Transaction Strings -->
+    <string name="wallet_transactions_clickable_hint">Tap to view transaction history</string>
+
+    <!-- General Error Messages -->
+    <string name="error_failed_to_share_text">Failed to share: %1$s</string>
+
+    <!-- Wallet Management Strings -->
+    <string name="credentials_copied_to_clipboard">Credentials copied to clipboard</string>
+    <string name="password_copied">Password copied</string>
+    <string name="record_copied_to_clipboard">Record copied to clipboard</string>
+    <string name="history_copied_to_clipboard">History copied to clipboard</string>
+    <string name="path_copied_to_clipboard">Path copied to clipboard</string>
+    <string name="config_path_copied">Config path copied</string>
+
+    <!-- Action Button Labels -->
+    <string name="action_copy_password">Copy Password</string>
+    <string name="action_copy_record">Copy Record</string>
+    <string name="action_share_history">Share History</string>
+
+    <!-- Wallet History Strings -->
+    <string name="wallet_history_export_subject">Wallet History</string>
+    <string name="wallet_record_subject">Wallet Record</string>
+    <string name="wallet_credentials_subject">Wallet Credentials</string>
+    <string name="config_path_subject">Config Path</string>
+    <string name="history_file_path_subject">File Path</string>
+
+    <!-- Additional Transaction Strings -->
+    <string name="no_transactions_yet">No transactions yet</string>
+    <string name="failed_load_transactions_retry">Failed to load transaction history. Retry?</string>
+    <string name="failed_load_transactions_msg">Failed to load transactions: %1$s</string>
+
+    <!-- ROSCA Wallet Selection -->
+    <string name="personal_wallet_selected">Personal Wallet</string>
+    <string name="rosca_wallet_selected">ROSCA Wallet: %1$s</string>
+    <string name="error_no_rosca_selected">No ROSCA selected</string>
+
+    <!-- Wallet Address Strings -->
+    <string name="personal_address_copied">Personal address copied</string>
+    <string name="rosca_address_copied">ROSCA address copied</string>
+
+    <!-- Share Dialog Titles -->
+    <string name="share_wallet_credentials">Share Wallet Credentials</string>
+    <string name="share_wallet_history">Share Wallet History</string>
+    <string name="share_wallet_record">Share Wallet Record</string>
+
+    <!-- Additional Status Messages -->
+    <string name="wallet_data_loaded">Wallet data loaded</string>
+    <string name="refreshing_balance_after_initialization">Refreshing balance after initialization...</string>
+
+    <!-- ROSCA Status Updates -->
+    <string name="rosca_list_refreshed">ROSCA list refreshed</string>
+    <string name="checking_rosca_finalization">Checking ROSCA finalization tasks…</string>
+    <string name="finalization_check_complete">Finalization check complete</string>
+
+    <!-- Additional Invitation/Join Strings -->
+    <string name="invite_code_autofilled">Invite code autofilled from QR scan</string>
+    <string name="processing_scanned_code">Processing scanned code…</string>
+    
+    <!-- ReferralScannerActivity - Additional Strings (2 new strings) -->
+    <string name="ReferralScanner_camera_permission_required">Camera permission is required to scan QR codes</string>
+    <string name="ReferralScanner_scanner_failed">Failed to start scanner: %s</string>
+
+    <!-- QR Code Sharing for RoscaDetailFragment (22 new strings) -->
+    <string name="QRShare_invite_via_qr">Invite via QR Code</string>
+    <string name="QRShare_code_label">Code: %s</string>
+    <string name="QRShare_instructions">Share this QR code with people you want to invite. Tap the code above to copy it.</string>
+    <string name="QRShare_view_full_screen">View Full Screen</string>
+    <string name="QRShare_share_qr_image">Share QR Image</string>
+    <string name="QRShare_save_to_gallery">Save to Gallery</string>
+    <string name="QRShare_invite_code_label">Invite Code: %s</string>
+    <string name="QRShare_scan_instruction">Have the new member scan this QR code to join the ROSCA</string>
+    <string name="QRShare_close">Close</string>
+    <string name="QRShare_share">Share</string>
+    <string name="QRShare_save">Save</string>
+    <string name="QRShare_preparing">Preparing QR code...</string>
+    <string name="QRShare_saving">Saving QR code...</string>
+    <string name="QRShare_share_title">Share QR Code</string>
+    <string name="QRShare_no_apps_available">No apps available to share the QR code</string>
+    <string name="QRShare_file_not_created">QR code file was not created</string>
+    <string name="QRShare_fileprovider_error">Failed to create shareable URI: %s</string>
+    <string name="QRShare_share_failed">Failed to share QR code: %s</string>
+    <string name="QRShare_save_failed">Failed to save QR code: %s</string>
+    <string name="QRShare_saved_success">QR code saved to Gallery in AJO_QR_Codes folder</string>
+    <string name="QRShare_qr_generation_failed">Failed to generate QR code: %s</string>
+    <string name="QRShare_code_copied">Invite code copied to clipboard</string>
+    <string name="QRShare_deep_link_scheme" translatable="false">ajo://join?ref=%1$s&amp;rosca=%2$s</string>
+    <string name="QRShare_cache_dir_name" translatable="false">qr_codes</string>
+    <string name="QRShare_filename_pattern" translatable="false">invite_qr_%s.png</string>
+    <string name="QRShare_gallery_folder_name" translatable="false">AJO_QR_Codes</string>
+    <string name="QRShare_saved_filename_pattern" translatable="false">ROSCA_Invite_%1$s_%2$d.png</string>
+    <string name="QRShare_mime_type" translatable="false">image/png</string>
+    <string name="QRShare_fileprovider_suffix" translatable="false">.fileprovider</string>
+
+    <!-- Share Text Templates for Invite Messages (6 new strings) -->
+    <string name="ShareText_join_rosca">Join my ROSCA: %s\n\n</string>
+    <string name="ShareText_contribution_label">Contribution: %s XMR\n</string>
+    <string name="ShareText_frequency_label">Frequency: Every %d days\n\n</string>
+    <string name="ShareText_scan_instruction">Scan the QR code to join!\n</string>
+    <string name="ShareText_invite_code">Invite Code: %s</string>
+    <string name="ShareText_join_subject">Join my ROSCA</string>        
+    
 </resources>

@@ -147,47 +147,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
             
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Dashboard_have_invite_code"
                 android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="?attr/colorOnPrimaryContainer"
-                android:layout_marginBottom="8dp" />
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Dashboard_enter_invite_instructions"
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                android:alpha="0.8"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="4dp" />
             
-            <!-- QR Code Scan Button - PRIMARY ACTION -->
+            <!-- Remove the instruction text to save space -->
+            
+            <!-- QR Code Scan Button - Make it smaller -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnScanQR"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:text="@string/Dashboard_scan_qr"
                 android:textColor="?attr/colorOnPrimary"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:backgroundTint="?attr/colorPrimary"
                 app:cornerRadius="8dp"
                 app:icon="@drawable/ic_qr_code"
                 app:iconTint="?attr/colorOnPrimary"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="8dp" />
             
-            <!-- Divider with "OR" text -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="8dp">
                 
                 <View
                     android:layout_width="0dp"
@@ -201,10 +193,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/Dashboard_or"
                     android:textColor="?attr/colorOnPrimaryContainer"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
                     android:alpha="0.6" />
                 
                 <View
@@ -224,7 +216,7 @@
                 app:boxBackgroundColor="?attr/colorSurface"
                 app:hintTextColor="?attr/colorOnPrimaryContainer"
                 app:boxStrokeColor="?attr/colorOnPrimaryContainer"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="8dp">
                 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextInviteCode"
@@ -233,6 +225,7 @@
                     android:inputType="textCapCharacters"
                     android:maxLength="8"
                     android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
                     android:imeOptions="actionDone" />
                     
             </com.google.android.material.textfield.TextInputLayout>
@@ -240,9 +233,10 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnJoinWithCode"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:text="@string/Dashboard_join_with_code_btn"
                 android:textColor="?attr/colorOnPrimary"
+                android:textSize="14sp"
                 app:backgroundTint="?attr/colorPrimary"
                 app:cornerRadius="8dp"
                 app:icon="@android:drawable/ic_input_add"

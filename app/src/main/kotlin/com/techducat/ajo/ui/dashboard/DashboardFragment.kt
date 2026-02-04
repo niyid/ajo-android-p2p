@@ -36,7 +36,7 @@ import com.techducat.ajo.ui.sync.ReferralScannerActivity
 class DashboardFragment : Fragment() {
 
     companion object {
-        private const val TAG = "DashboardFragment"
+        private const val TAG = "com.techducat.ajo.ui.dashboard.DashboardFragment"
     }  
     
     private var _binding: FragmentDashboardBinding? = null
@@ -47,7 +47,6 @@ class DashboardFragment : Fragment() {
     private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var adapter: RoscaListAdapter
     
-    // ✅ NEW: Track if join operation is in progress
     private var isJoiningRosca = false
     
     private val signInLauncher = registerForActivityResult(
@@ -67,7 +66,6 @@ class DashboardFragment : Fragment() {
         }
     }
     
-    // ✅ NEW: QR Scanner Launcher
     private val qrScannerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -79,7 +77,6 @@ class DashboardFragment : Fragment() {
                 processInviteCode(scannedCode)
             } else {
                 Log.d(TAG, "QR Scanner returned but no code found")
-                // Refresh the list anyway in case the scanner handled joining internally
                 checkLoginAndLoadData()
             }
         } else {
@@ -106,7 +103,7 @@ class DashboardFragment : Fragment() {
         setupFab()
         setupLoginObservers()
         setupInviteInput()
-        setupQRScanner()  // ✅ NEW: Setup QR scanner button
+        setupQRScanner()
         
         debugUserIdentity()
         checkLoginAndLoadData()
@@ -137,7 +134,6 @@ class DashboardFragment : Fragment() {
         }
     }
     
-    // ✅ NEW: Setup QR Scanner Button
     private fun setupQRScanner() {
         binding.btnScanQR.setOnClickListener {
             val userId = getUserId()
@@ -153,14 +149,26 @@ class DashboardFragment : Fragment() {
             Log.d(TAG, "Launching QR Scanner...")
             try {
                 val intent = Intent(requireContext(), ReferralScannerActivity::class.java)
-                qrScannerLauncher.launch(intent)
+                
+                if (intent.resolveActivity(requireContext().packageManager) != null) {
+                    qrScannerLauncher.launch(intent)
+                } else {
+                    Log.w(TAG, "ReferralScannerActivity not found in manifest")
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.Dashboard_qr_scanner_not_available),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    binding.editTextInviteCode.requestFocus()
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "Error launching QR scanner", e)
                 Toast.makeText(
                     requireContext(), 
-                    getString(R.string.Dashboard_qr_scanner_manual_fallback), 
-                    Toast.LENGTH_SHORT
+                    getString(R.string.Dashboard_qr_scanner_unavailable_manual),
+                    Toast.LENGTH_LONG
                 ).show()
+                binding.editTextInviteCode.requestFocus()
             }
         }
     }
@@ -259,7 +267,6 @@ class DashboardFragment : Fragment() {
     private fun joinRosca(invite: Invite, userId: String) {
         lifecycleScope.launch {
             try {
-                // ✅ NEW: Show loading overlay and prevent interaction
                 isJoiningRosca = true
                 showJoinLoading(true)
                 
@@ -267,7 +274,7 @@ class DashboardFragment : Fragment() {
                 
                 val result = roscaManager.joinRosca(
                     roscaId = invite.roscaId,
-                    setupInfo = "", // Empty for manual invite code join
+                    setupInfo = "",
                     context = requireContext()
                 )
                 
@@ -279,7 +286,6 @@ class DashboardFragment : Fragment() {
                     Log.d(TAG, "  User ID: ${member.userId}")
                     Log.d(TAG, "  Has MultisigInfo: ${member.multisigInfo != null}")
                     
-                    // Update invite status
                     val updatedInvite = invite.copy(
                         status = Invite.InviteStatus.ACCEPTED,
                         acceptedAt = System.currentTimeMillis(),
@@ -297,8 +303,6 @@ class DashboardFragment : Fragment() {
                     ).show()
                     
                     binding.editTextInviteCode.text?.clear()
-                    
-                    // Refresh the ROSCA list
                     loadRoscas()
                     
                 } else {
@@ -320,7 +324,6 @@ class DashboardFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             } finally {
-                // ✅ NEW: Always hide loading overlay and re-enable interaction
                 isJoiningRosca = false
                 showJoinLoading(false)
                 binding.btnJoinWithCode.isEnabled = true
@@ -328,29 +331,15 @@ class DashboardFragment : Fragment() {
         }
     }
     
-    /**
-     * ✅ NEW: Show/hide loading overlay for ROSCA join operation
-     */
     private fun showJoinLoading(show: Boolean) {
         if (show) {
-            // Show loading overlay
             binding.roscaCreationOverlay.visibility = View.VISIBLE
-            
-            // Disable all interactive elements
             binding.btnJoinWithCode.isEnabled = false
             binding.editTextInviteCode.isEnabled = false
             binding.fabCreate.isEnabled = false
             binding.swipeRefreshLayout.isEnabled = false
-            
-            // Update loading text
-            // Note: The layout reuses the same overlay from CreateRoscaActivity
-            // If you want different text, you'll need to add a TextView ID to the overlay
-            
         } else {
-            // Hide loading overlay
             binding.roscaCreationOverlay.visibility = View.GONE
-            
-            // Re-enable interactive elements
             binding.btnJoinWithCode.isEnabled = true
             binding.editTextInviteCode.isEnabled = true
             binding.fabCreate.isEnabled = true
@@ -610,7 +599,6 @@ class DashboardFragment : Fragment() {
                     showRoscasList(roscas)
                 }
                 
-                // ✅ NEW: Check if creator needs to finalize any ROSCAs
                 lifecycleScope.launch {
                     checkCreatorFinalizationTasks(roscas, userId)
                 }
@@ -627,22 +615,16 @@ class DashboardFragment : Fragment() {
         }
     }
     
-    /**
-     * ✅ FIXED: Check if creator needs to finalize any ROSCAs
-     * Collects ALL members' multisig infos (including creator)
-     */
     private suspend fun checkCreatorFinalizationTasks(roscas: List<Rosca>, userId: String) {
         try {
             Log.d(TAG, "=== CHECKING CREATOR FINALIZATION TASKS ===")
             Log.d(TAG, "User ID: $userId")
             
-            // Filter ROSCAs where user is the creator
             val creatorRoscas = roscas.filter { it.creatorId == userId }
             
             Log.d(TAG, "Found ${creatorRoscas.size} ROSCAs created by this user")
             
             for (rosca in creatorRoscas) {
-                // Only check ROSCAs in SETUP state that are full
                 if (rosca.status != Rosca.RoscaState.SETUP) {
                     Log.d(TAG, "  ${rosca.name}: Already ${rosca.status}, skipping")
                     continue
@@ -655,7 +637,6 @@ class DashboardFragment : Fragment() {
                 
                 Log.i(TAG, "  ${rosca.name}: Full and ready - checking if can finalize...")
                 
-                // Check if all members have multisig info
                 val members = withContext(Dispatchers.IO) {
                     roscaManager.repository.getMembersByRoscaId(rosca.id)
                 }
@@ -670,8 +651,6 @@ class DashboardFragment : Fragment() {
                 if (membersWithInfo.size == rosca.totalMembers) {
                     Log.i(TAG, "    ✅ All members ready! Attempting finalization...")
                     
-                    // ✅ FIXED: Collect ALL members' multisig infos (including creator)
-                    // The WalletSuite will internally filter out the current user's info by address
                     val allMultisigInfos = membersWithInfo.mapNotNull { member ->
                         org.json.JSONObject().apply {
                             put("address", member.walletAddress)
@@ -689,11 +668,10 @@ class DashboardFragment : Fragment() {
                     
                     Log.d(TAG, "    ✓ All ${rosca.totalMembers} members have multisig info, proceeding with finalization")
                     
-                    // Attempt finalization
                     val result = withContext(Dispatchers.IO) {
                         roscaManager.finalizeSetup(
                             roscaId = rosca.id,
-                            allMemberMultisigInfos = allMultisigInfos,  // Now correctly includes ALL members
+                            allMemberMultisigInfos = allMultisigInfos,
                             userId = userId
                         )
                     }
@@ -701,7 +679,6 @@ class DashboardFragment : Fragment() {
                     if (result.isSuccess) {
                         Log.i(TAG, "    🎉 Successfully finalized ${rosca.name}!")
                         
-                        // Show success message to creator
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 requireContext(),
@@ -710,7 +687,6 @@ class DashboardFragment : Fragment() {
                             ).show()
                         }
                         
-                        // Reload ROSCAs to show updated status
                         kotlinx.coroutines.delay(500)
                         loadRoscas()
                         
@@ -756,9 +732,7 @@ class DashboardFragment : Fragment() {
     private fun showSetupRequiredDialog(rosca: Rosca) {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.Dashboard_complete_rosca_setup))
-            .setMessage(
-                getString(R.string.Dashboard_setup_message, rosca.name)
-            )
+            .setMessage(getString(R.string.Dashboard_setup_message, rosca.name))
             .setPositiveButton(getString(R.string.Dashboard_complete_setup)) { _, _ ->
                 navigateToRoscaDetail(rosca.id)
             }

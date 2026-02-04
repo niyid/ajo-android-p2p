@@ -986,7 +986,8 @@ class RoscaDetailFragment : Fragment() {
     }
 
     private fun showInviteLinkDialog(inviteCode: String) {
-        val appDeepLink = "ajo://join?ref=$inviteCode&rosca=$roscaId"
+        // Build deep link using string resource
+        val appDeepLink = getString(R.string.QRShare_deep_link_scheme, inviteCode, roscaId)
         
         try {
             // ✅ Generate QR code bitmap to display inline
@@ -1011,7 +1012,7 @@ class RoscaDetailFragment : Fragment() {
                 
                 // Invite code text (tappable to copy)
                 addView(TextView(context).apply {
-                    text = "Code: $inviteCode"
+                    text = getString(R.string.QRShare_code_label, inviteCode)
                     textSize = 18f
                     gravity = android.view.Gravity.CENTER
                     setPadding(16, 16, 16, 16)
@@ -1024,13 +1025,13 @@ class RoscaDetailFragment : Fragment() {
                     }
                     setOnClickListener {
                         copyToClipboard(inviteCode)
-                        showSuccess("Invite code copied to clipboard")
+                        showSuccess(getString(R.string.QRShare_code_copied))
                     }
                 })
                 
                 // Instructions
                 addView(TextView(context).apply {
-                    text = "Share this QR code with people you want to invite. Tap the code above to copy it."
+                    text = getString(R.string.QRShare_instructions)
                     textSize = 14f
                     gravity = android.view.Gravity.CENTER
                     setTextColor(android.graphics.Color.GRAY)
@@ -1038,22 +1039,22 @@ class RoscaDetailFragment : Fragment() {
             }
             
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Invite via QR Code")
+                .setTitle(getString(R.string.QRShare_invite_via_qr))
                 .setView(dialogView)
-                .setPositiveButton("View Full Screen") { _, _ ->
+                .setPositiveButton(getString(R.string.QRShare_view_full_screen)) { _, _ ->
                     showQRCodeFullScreen(appDeepLink, inviteCode)
                 }
-                .setNeutralButton("Share QR Image") { _, _ ->
+                .setNeutralButton(getString(R.string.QRShare_share_qr_image)) { _, _ ->
                     shareQRCodeImage(appDeepLink, inviteCode)
                 }
-                .setNegativeButton("Save to Gallery") { _, _ ->
+                .setNegativeButton(getString(R.string.QRShare_save_to_gallery)) { _, _ ->
                     saveQRCodeToGallery(appDeepLink, inviteCode)
                 }
                 .show()
                 
         } catch (e: Exception) {
             Log.e(TAG, "Error generating QR code for dialog", e)
-            showError("Failed to generate QR code: ${e.message}")
+            showError(getString(R.string.QRShare_qr_generation_failed, e.message))
         }
     }
 
@@ -1123,14 +1124,14 @@ class RoscaDetailFragment : Fragment() {
             }
             
             val codeTextView = TextView(requireContext()).apply {
-                text = "Invite Code: $inviteCode"
+                text = getString(R.string.QRShare_invite_code_label, inviteCode)
                 textSize = 16f
                 gravity = android.view.Gravity.CENTER
                 setPadding(16, 24, 16, 16)
             }
             
             val instructionTextView = TextView(requireContext()).apply {
-                text = "Have the new member scan this QR code to join the ROSCA"
+                text = getString(R.string.QRShare_scan_instruction)
                 textSize = 14f
                 gravity = android.view.Gravity.CENTER
                 setPadding(16, 8, 16, 32)
@@ -1146,72 +1147,104 @@ class RoscaDetailFragment : Fragment() {
             
             MaterialAlertDialogBuilder(requireContext())
                 .setView(layout)
-                .setPositiveButton("Close", null)
-                .setNeutralButton("Share") { _, _ ->
+                .setPositiveButton(getString(R.string.QRShare_close), null)
+                .setNeutralButton(getString(R.string.QRShare_share)) { _, _ ->
                     shareQRCodeImage(deepLink, inviteCode)
                 }
-                .setNegativeButton("Save") { _, _ ->
+                .setNegativeButton(getString(R.string.QRShare_save)) { _, _ ->
                     saveQRCodeToGallery(deepLink, inviteCode)
                 }
                 .show()
                 
         } catch (e: Exception) {
             Log.e(TAG, "Error showing QR code", e)
-            showError("Failed to generate QR code: ${e.message}")
+            showError(getString(R.string.QRShare_qr_generation_failed, e.message))
         }
     }
     
     private fun shareQRCodeImage(deepLink: String, inviteCode: String) {
         lifecycleScope.launch {
             try {
-                showProgress("Preparing QR code...")
+                showProgress(getString(R.string.QRShare_preparing))
                 
-                // Generate QR code bitmap
-                val qrBitmap = QRCodeGenerator.generate(deepLink, 800)
+                // Generate QR code bitmap on IO thread
+                val qrBitmap = withContext(Dispatchers.IO) {
+                    QRCodeGenerator.generate(deepLink, 800)
+                }
                 
                 // Save to cache directory temporarily
-                val cachePath = File(requireContext().cacheDir, "qr_codes")
-                cachePath.mkdirs()
-                val imageFile = File(cachePath, "invite_qr_$inviteCode.png")
+                val cacheDirName = getString(R.string.QRShare_cache_dir_name)
+                val cachePath = File(requireContext().cacheDir, cacheDirName)
+                if (!cachePath.exists()) {
+                    cachePath.mkdirs()
+                }
+                
+                val filename = getString(R.string.QRShare_filename_pattern, inviteCode)
+                val imageFile = File(cachePath, filename)
                 
                 withContext(Dispatchers.IO) {
-                    imageFile.outputStream().use { out ->
-                        qrBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
+                    try {
+                        imageFile.outputStream().use { out ->
+                            qrBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
+                        }
+                        Log.d(TAG, "QR code saved to: ${imageFile.absolutePath}")
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to save QR code to file", e)
+                        throw e
                     }
+                }
+                
+                // Verify file exists before creating URI
+                if (!imageFile.exists()) {
+                    throw Exception(getString(R.string.QRShare_file_not_created))
                 }
                 
                 // Create share intent with file provider
-                val imageUri = androidx.core.content.FileProvider.getUriForFile(
-                    requireContext(),
-                    "${requireContext().packageName}.fileprovider",
-                    imageFile
-                )
+                val imageUri = try {
+                    val authority = requireContext().packageName + getString(R.string.QRShare_fileprovider_suffix)
+                    androidx.core.content.FileProvider.getUriForFile(
+                        requireContext(),
+                        authority,
+                        imageFile
+                    )
+                } catch (e: Exception) {
+                    Log.e(TAG, "FileProvider error. Package: ${requireContext().packageName}, File: ${imageFile.absolutePath}", e)
+                    throw Exception(getString(R.string.QRShare_fileprovider_error, e.message))
+                }
+                
+                Log.d(TAG, "Created URI for sharing: $imageUri")
                 
                 val shareText = buildString {
                     rosca?.let { r ->
-                        append("Join my ROSCA: ${r.name}\n\n")
-                        append("Contribution: ${formatXMR(r.contributionAmount)} XMR\n")
-                        append("Frequency: Every ${r.frequencyDays} days\n\n")
+                        append(getString(R.string.ShareText_join_rosca, r.name))
+                        append(getString(R.string.ShareText_contribution_label, formatXMR(r.contributionAmount)))
+                        append(getString(R.string.ShareText_frequency_label, r.frequencyDays))
                     }
-                    append("Scan the QR code to join!\n")
-                    append("Invite Code: $inviteCode")
+                    append(getString(R.string.ShareText_scan_instruction))
+                    append(getString(R.string.ShareText_invite_code, inviteCode))
                 }
                 
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "image/png"
+                    type = getString(R.string.QRShare_mime_type)
                     putExtra(Intent.EXTRA_STREAM, imageUri)
                     putExtra(Intent.EXTRA_TEXT, shareText)
-                    putExtra(Intent.EXTRA_SUBJECT, "Join my ROSCA")
+                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.ShareText_join_subject))
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }
                 
                 hideProgress()
-                startActivity(Intent.createChooser(shareIntent, "Share QR Code"))
+                
+                try {
+                    startActivity(Intent.createChooser(shareIntent, getString(R.string.QRShare_share_title)))
+                } catch (e: Exception) {
+                    Log.e(TAG, "No apps available to share", e)
+                    showError(getString(R.string.QRShare_no_apps_available))
+                }
                 
             } catch (e: Exception) {
                 hideProgress()
                 Log.e(TAG, "Error sharing QR code", e)
-                showError("Failed to share QR code: ${e.message}")
+                showError(getString(R.string.QRShare_share_failed, e.message))
             }
         }
     }
@@ -1219,7 +1252,7 @@ class RoscaDetailFragment : Fragment() {
     private fun saveQRCodeToGallery(deepLink: String, inviteCode: String) {
         lifecycleScope.launch {
             try {
-                showProgress("Saving QR code...")
+                showProgress(getString(R.string.QRShare_saving))
                 
                 // Generate QR code bitmap
                 val qrBitmap = QRCodeGenerator.generate(deepLink, 1024)
@@ -1229,10 +1262,12 @@ class RoscaDetailFragment : Fragment() {
                     val picturesDir = android.os.Environment.getExternalStoragePublicDirectory(
                         android.os.Environment.DIRECTORY_PICTURES
                     )
-                    val ajoDir = File(picturesDir, "AJO_QR_Codes")
+                    val folderName = getString(R.string.QRShare_gallery_folder_name)
+                    val ajoDir = File(picturesDir, folderName)
                     ajoDir.mkdirs()
                     
-                    val imageFile = File(ajoDir, "ROSCA_Invite_${inviteCode}_${System.currentTimeMillis()}.png")
+                    val filename = getString(R.string.QRShare_saved_filename_pattern, inviteCode, System.currentTimeMillis())
+                    val imageFile = File(ajoDir, filename)
                     
                     imageFile.outputStream().use { out ->
                         qrBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
@@ -1245,12 +1280,12 @@ class RoscaDetailFragment : Fragment() {
                 }
                 
                 hideProgress()
-                showSuccess("QR code saved to Gallery in AJO_QR_Codes folder")
+                showSuccess(getString(R.string.QRShare_saved_success))
                 
             } catch (e: Exception) {
                 hideProgress()
                 Log.e(TAG, "Error saving QR code", e)
-                showError("Failed to save QR code: ${e.message}")
+                showError(getString(R.string.QRShare_save_failed, e.message))
             }
         }
     }

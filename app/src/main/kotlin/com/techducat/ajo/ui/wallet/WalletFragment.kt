@@ -1024,6 +1024,17 @@ class WalletFragment : Fragment() {
         binding.textViewPersonalAddress.setOnClickListener {
             copyPersonalAddressToClipboard()
         }
+        
+        // ADD THIS - Make transaction count clickable
+        binding.textViewTransactionCount.setOnClickListener {
+            showTransactionHistory()
+        }
+        
+        // OPTIONAL: Also make it visually clear it's clickable
+        binding.textViewTransactionCount.apply {
+            isClickable = true
+            isFocusable = true
+        }
     }
     
     private fun handleExchangeClick() {

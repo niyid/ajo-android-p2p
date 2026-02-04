@@ -1,9 +1,20 @@
 -- Merging decision tree log ---
+provider#androidx.core.content.FileProvider
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:142:9-150:20
+	android:grantUriPermissions
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:146:13-47
+	android:authorities
+		INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:144:13-64
+	android:exported
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:145:13-37
+	android:name
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:143:13-62
 manifest
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-137:12
-INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-137:12
-INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-137:12
-INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-137:12
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-152:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-152:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-152:12
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:2:1-152:12
 MERGED from [androidx.databinding:databinding-adapters:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/f184bc78f044538664eae423f298557b/transformed/databinding-adapters-8.7.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.databinding:databinding-ktx:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/9c15d66753b8425032ecdf15ffe70424/transformed/jetified-databinding-ktx-8.7.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.databinding:databinding-runtime:8.7.3] /home/niyid/.gradle/caches/8.11.1/transforms/4f525cc029daa713d4fc9952d235a884/transformed/databinding-runtime-8.7.3/AndroidManifest.xml:2:1-7:12
@@ -189,8 +200,8 @@ ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:15:9
 	android:name
 		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:15:18-55
 application
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:18:5-136:19
-INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:18:5-136:19
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:18:5-151:19
+INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:18:5-151:19
 MERGED from [io.insert-koin:koin-androidx-navigation:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/e0ad31bdb64d007d9c1770fa7fc86ba5/transformed/jetified-koin-androidx-navigation-4.0.0/AndroidManifest.xml:7:5-20
 MERGED from [io.insert-koin:koin-androidx-navigation:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/e0ad31bdb64d007d9c1770fa7fc86ba5/transformed/jetified-koin-androidx-navigation-4.0.0/AndroidManifest.xml:7:5-20
 MERGED from [io.insert-koin:koin-android:4.0.0] /home/niyid/.gradle/caches/8.11.1/transforms/0787df89bbed5db0a7e81a5cff2112d5/transformed/jetified-koin-android-4.0.0/AndroidManifest.xml:7:5-20
@@ -383,18 +394,32 @@ ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:122:
 		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:124:13-37
 	android:name
 		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:123:13-57
-service#com.techducat.ajo.service.NotificationService
-ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:128:9-130:40
+activity#com.techducat.ajo.ui.sync.ReferralScannerActivity
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:127:9-130:52
+	android:screenOrientation
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:130:13-49
 	android:exported
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:130:13-37
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:129:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:129:13-56
-service#com.techducat.ajo.service.SyncService
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:128:13-60
+service#com.techducat.ajo.service.NotificationService
 ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:133:9-135:40
 	android:exported
 		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:135:13-37
 	android:name
-		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:134:13-48
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:134:13-56
+service#com.techducat.ajo.service.SyncService
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:138:9-140:40
+	android:exported
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:140:13-37
+	android:name
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:139:13-48
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:147:13-149:54
+	android:resource
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:149:17-51
+	android:name
+		ADDED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml:148:17-67
 uses-sdk
 INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/niyid/git/ajo-android-p2p/app/src/main/AndroidManifest.xml

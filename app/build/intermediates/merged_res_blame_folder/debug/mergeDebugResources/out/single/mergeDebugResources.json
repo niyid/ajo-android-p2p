@@ -284,6 +284,10 @@
         "source": "com.techducat.ajo.app-main-85:/layout/item_group_contribution.xml"
     },
     {
+        "merged": "com.techducat.ajo.app-debug-83:/xml_file_paths.xml.flat",
+        "source": "com.techducat.ajo.app-main-85:/xml/file_paths.xml"
+    },
+    {
         "merged": "com.techducat.ajo.app-debug-83:/layout_activity_splash.xml.flat",
         "source": "com.techducat.ajo.app-main-85:/layout/activity_splash.xml"
     },
