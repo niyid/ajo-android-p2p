@@ -4719,6 +4719,7 @@ string QRShare_share_failed
 string QRShare_share_qr_image
 string QRShare_share_title
 string QRShare_view_full_screen
+string ReferralScanner_already_used
 string ReferralScanner_btn_manual
 string ReferralScanner_btn_scan
 string ReferralScanner_camera_permission_required
@@ -4732,6 +4733,7 @@ string ReferralScanner_invalid_signature
 string ReferralScanner_join
 string ReferralScanner_manual_hint
 string ReferralScanner_manual_title
+string ReferralScanner_not_found
 string ReferralScanner_scanner_failed
 string ReferralScanner_success_format
 string ReferralScanner_tag
@@ -4750,10 +4752,12 @@ string RoscaDetail_copy_code
 string RoscaDetail_copy_link
 string RoscaDetail_created_formatdate_rosca_createdat
 string RoscaDetail_creating_invite
+string RoscaDetail_crypto_not_initialized
 string RoscaDetail_description
 string RoscaDetail_dismiss
 string RoscaDetail_error_checking_activation
 string RoscaDetail_error_checking_balance
+string RoscaDetail_error_joining_rosca
 string RoscaDetail_error_triggering_payout
 string RoscaDetail_every_rosca_frequencydays_days
 string RoscaDetail_expecting_members
@@ -4761,6 +4765,7 @@ string RoscaDetail_failed_activate_rosca
 string RoscaDetail_failed_check_balance
 string RoscaDetail_failed_create_invite
 string RoscaDetail_failed_generate_code
+string RoscaDetail_failed_join_rosca
 string RoscaDetail_failed_load_details
 string RoscaDetail_failed_load_members
 string RoscaDetail_failed_process_invitation
@@ -4772,6 +4777,7 @@ string RoscaDetail_has_received_payout
 string RoscaDetail_initiate_payout_confirm
 string RoscaDetail_initiating_payout
 string RoscaDetail_invalid_invite_code
+string RoscaDetail_invalid_invite_data
 string RoscaDetail_invalid_rosca
 string RoscaDetail_invite
 string RoscaDetail_invite_already_used
@@ -4779,10 +4785,16 @@ string RoscaDetail_invite_expired
 string RoscaDetail_invite_link_message
 string RoscaDetail_invite_link_ready
 string RoscaDetail_invite_member
+string RoscaDetail_invite_needs_sync
 string RoscaDetail_invite_qr_message
 string RoscaDetail_invite_qr_ready
+string RoscaDetail_invite_synced
+string RoscaDetail_join_rosca_confirm_message
+string RoscaDetail_join_rosca_confirm_title
+string RoscaDetail_join_success_message
 string RoscaDetail_joined
 string RoscaDetail_joined_date
+string RoscaDetail_joining_rosca
 string RoscaDetail_link_copied_clipboard
 string RoscaDetail_link_copied_clipboard_fallback
 string RoscaDetail_make_contribution
@@ -4791,10 +4803,13 @@ string RoscaDetail_member_number
 string RoscaDetail_member_position
 string RoscaDetail_members_joined_progress
 string RoscaDetail_members_size_members
+string RoscaDetail_missing_creator_info
 string RoscaDetail_name
 string RoscaDetail_next_payout_formatdate_nextpayouttimestamp
+string RoscaDetail_no_private_key
 string RoscaDetail_not_logged_in
 string RoscaDetail_not_setup
+string RoscaDetail_p2p_sync_not_implemented
 string RoscaDetail_payout_error
 string RoscaDetail_payout_failed
 string RoscaDetail_payout_initiated
@@ -4808,6 +4823,7 @@ string RoscaDetail_processing_contribution
 string RoscaDetail_ready_for_payout
 string RoscaDetail_rosca_data_not_loaded
 string RoscaDetail_rosca_not_active
+string RoscaDetail_rosca_not_loaded
 string RoscaDetail_rosca_now_active
 string RoscaDetail_rosca_totalmembers
 string RoscaDetail_round_rosca_currentround
@@ -4829,6 +4845,11 @@ string RoscaDetail_share_subject
 string RoscaDetail_share_via
 string RoscaDetail_signature_collection_msg
 string RoscaDetail_status
+string RoscaDetail_sync_failed
+string RoscaDetail_sync_now
+string RoscaDetail_sync_required
+string RoscaDetail_sync_timeout
+string RoscaDetail_syncing_invite
 string RoscaDetail_total_contributed
 string RoscaDetail_transaction_failed
 string RoscaDetail_trigger_payout
@@ -4837,6 +4858,7 @@ string RoscaDetail_tx_sent_failed_record
 string RoscaDetail_unknown_error
 string RoscaDetail_waiting_multisig_info
 string RoscaDetail_welcome_back_member
+string RoscaDetail_yes_scan_code
 string RoscaDetail_you_need_requiredxmr_but
 string RoscaList_rosca_contributionamount_xmr
 string RoscaList_rosca_currentmembers_rosca_totalmembers

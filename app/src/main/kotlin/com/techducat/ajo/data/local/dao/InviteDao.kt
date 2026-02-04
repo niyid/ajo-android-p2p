@@ -49,4 +49,16 @@ interface InviteDao {
         roscaId: String, 
         status: String = InviteEntity.STATUS_PENDING
     ): Int
+    
+    /**
+     * Get all invites (for sync status display)
+     */
+    @Query("SELECT * FROM invites")
+    suspend fun getAllInvites(): List<InviteEntity>
+    
+    /**
+     * Get specific invite by ID
+     */
+    @Query("SELECT * FROM invites WHERE referralCode = :referralCode LIMIT 1")
+    suspend fun getInvite(referralCode: String): InviteEntity?
 }

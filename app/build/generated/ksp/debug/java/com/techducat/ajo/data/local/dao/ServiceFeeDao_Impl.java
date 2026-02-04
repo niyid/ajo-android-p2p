@@ -36,6 +36,8 @@ public final class ServiceFeeDao_Impl implements ServiceFeeDao {
 
   private final EntityInsertionAdapter<ServiceFeeEntity> __insertionAdapterOfServiceFeeEntity;
 
+  private final EntityDeletionOrUpdateAdapter<ServiceFeeEntity> __deletionAdapterOfServiceFeeEntity;
+
   private final EntityDeletionOrUpdateAdapter<ServiceFeeEntity> __updateAdapterOfServiceFeeEntity;
 
   public ServiceFeeDao_Impl(@NonNull final RoomDatabase __db) {
@@ -80,6 +82,19 @@ public final class ServiceFeeDao_Impl implements ServiceFeeDao {
         } else {
           statement.bindLong(14, entity.getCompletedAt());
         }
+      }
+    };
+    this.__deletionAdapterOfServiceFeeEntity = new EntityDeletionOrUpdateAdapter<ServiceFeeEntity>(__db) {
+      @Override
+      @NonNull
+      protected String createQuery() {
+        return "DELETE FROM `service_fees` WHERE `id` = ?";
+      }
+
+      @Override
+      protected void bind(@NonNull final SupportSQLiteStatement statement,
+          @NonNull final ServiceFeeEntity entity) {
+        statement.bindString(1, entity.getId());
       }
     };
     this.__updateAdapterOfServiceFeeEntity = new EntityDeletionOrUpdateAdapter<ServiceFeeEntity>(__db) {
@@ -136,6 +151,25 @@ public final class ServiceFeeDao_Impl implements ServiceFeeDao {
         __db.beginTransaction();
         try {
           __insertionAdapterOfServiceFeeEntity.insert(fee);
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
+        } finally {
+          __db.endTransaction();
+        }
+      }
+    }, $completion);
+  }
+
+  @Override
+  public Object delete(final ServiceFeeEntity penalty,
+      final Continuation<? super Unit> $completion) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      @NonNull
+      public Unit call() throws Exception {
+        __db.beginTransaction();
+        try {
+          __deletionAdapterOfServiceFeeEntity.handle(penalty);
           __db.setTransactionSuccessful();
           return Unit.INSTANCE;
         } finally {

@@ -593,6 +593,137 @@ public final class InviteDao_Impl implements InviteDao {
     }, $completion);
   }
 
+  @Override
+  public Object getAllInvites(final Continuation<? super List<InviteEntity>> $completion) {
+    final String _sql = "SELECT * FROM invites";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
+    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<InviteEntity>>() {
+      @Override
+      @NonNull
+      public List<InviteEntity> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
+          final int _cursorIndexOfInviterUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "inviterUserId");
+          final int _cursorIndexOfInviteeEmail = CursorUtil.getColumnIndexOrThrow(_cursor, "inviteeEmail");
+          final int _cursorIndexOfReferralCode = CursorUtil.getColumnIndexOrThrow(_cursor, "referralCode");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfAcceptedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "acceptedAt");
+          final int _cursorIndexOfExpiresAt = CursorUtil.getColumnIndexOrThrow(_cursor, "expiresAt");
+          final int _cursorIndexOfAcceptedByUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "acceptedByUserId");
+          final List<InviteEntity> _result = new ArrayList<InviteEntity>(_cursor.getCount());
+          while (_cursor.moveToNext()) {
+            final InviteEntity _item;
+            final String _tmpId;
+            _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final String _tmpInviterUserId;
+            _tmpInviterUserId = _cursor.getString(_cursorIndexOfInviterUserId);
+            final String _tmpInviteeEmail;
+            _tmpInviteeEmail = _cursor.getString(_cursorIndexOfInviteeEmail);
+            final String _tmpReferralCode;
+            _tmpReferralCode = _cursor.getString(_cursorIndexOfReferralCode);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpAcceptedAt;
+            if (_cursor.isNull(_cursorIndexOfAcceptedAt)) {
+              _tmpAcceptedAt = null;
+            } else {
+              _tmpAcceptedAt = _cursor.getLong(_cursorIndexOfAcceptedAt);
+            }
+            final long _tmpExpiresAt;
+            _tmpExpiresAt = _cursor.getLong(_cursorIndexOfExpiresAt);
+            final String _tmpAcceptedByUserId;
+            if (_cursor.isNull(_cursorIndexOfAcceptedByUserId)) {
+              _tmpAcceptedByUserId = null;
+            } else {
+              _tmpAcceptedByUserId = _cursor.getString(_cursorIndexOfAcceptedByUserId);
+            }
+            _item = new InviteEntity(_tmpId,_tmpRoscaId,_tmpInviterUserId,_tmpInviteeEmail,_tmpReferralCode,_tmpStatus,_tmpCreatedAt,_tmpAcceptedAt,_tmpExpiresAt,_tmpAcceptedByUserId);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+          _statement.release();
+        }
+      }
+    }, $completion);
+  }
+
+  @Override
+  public Object getInvite(final String referralCode,
+      final Continuation<? super InviteEntity> $completion) {
+    final String _sql = "SELECT * FROM invites WHERE referralCode = ? LIMIT 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    _statement.bindString(_argIndex, referralCode);
+    final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
+    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<InviteEntity>() {
+      @Override
+      @Nullable
+      public InviteEntity call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfRoscaId = CursorUtil.getColumnIndexOrThrow(_cursor, "roscaId");
+          final int _cursorIndexOfInviterUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "inviterUserId");
+          final int _cursorIndexOfInviteeEmail = CursorUtil.getColumnIndexOrThrow(_cursor, "inviteeEmail");
+          final int _cursorIndexOfReferralCode = CursorUtil.getColumnIndexOrThrow(_cursor, "referralCode");
+          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfAcceptedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "acceptedAt");
+          final int _cursorIndexOfExpiresAt = CursorUtil.getColumnIndexOrThrow(_cursor, "expiresAt");
+          final int _cursorIndexOfAcceptedByUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "acceptedByUserId");
+          final InviteEntity _result;
+          if (_cursor.moveToFirst()) {
+            final String _tmpId;
+            _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpRoscaId;
+            _tmpRoscaId = _cursor.getString(_cursorIndexOfRoscaId);
+            final String _tmpInviterUserId;
+            _tmpInviterUserId = _cursor.getString(_cursorIndexOfInviterUserId);
+            final String _tmpInviteeEmail;
+            _tmpInviteeEmail = _cursor.getString(_cursorIndexOfInviteeEmail);
+            final String _tmpReferralCode;
+            _tmpReferralCode = _cursor.getString(_cursorIndexOfReferralCode);
+            final String _tmpStatus;
+            _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            final Long _tmpAcceptedAt;
+            if (_cursor.isNull(_cursorIndexOfAcceptedAt)) {
+              _tmpAcceptedAt = null;
+            } else {
+              _tmpAcceptedAt = _cursor.getLong(_cursorIndexOfAcceptedAt);
+            }
+            final long _tmpExpiresAt;
+            _tmpExpiresAt = _cursor.getLong(_cursorIndexOfExpiresAt);
+            final String _tmpAcceptedByUserId;
+            if (_cursor.isNull(_cursorIndexOfAcceptedByUserId)) {
+              _tmpAcceptedByUserId = null;
+            } else {
+              _tmpAcceptedByUserId = _cursor.getString(_cursorIndexOfAcceptedByUserId);
+            }
+            _result = new InviteEntity(_tmpId,_tmpRoscaId,_tmpInviterUserId,_tmpInviteeEmail,_tmpReferralCode,_tmpStatus,_tmpCreatedAt,_tmpAcceptedAt,_tmpExpiresAt,_tmpAcceptedByUserId);
+          } else {
+            _result = null;
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+          _statement.release();
+        }
+      }
+    }, $completion);
+  }
+
   @NonNull
   public static List<Class<?>> getRequiredConverters() {
     return Collections.emptyList();

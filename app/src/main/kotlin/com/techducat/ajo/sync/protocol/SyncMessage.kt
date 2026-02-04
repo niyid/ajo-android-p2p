@@ -22,6 +22,8 @@ data class SyncMessage(
 enum class MessageType {
     MEMBERSHIP_REQUEST,
     MEMBERSHIP_RESPONSE,
+    INVITE_REQUEST,
+    INVITE_RESPONSE,
     ENTITY_UPDATE,
     STATE_SYNC,
     ACK,

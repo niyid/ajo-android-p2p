@@ -1,5 +1,6 @@
 package com.techducat.ajo.ui.detail
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,9 +25,11 @@ import com.techducat.ajo.data.local.entity.RoscaEntity
 import com.techducat.ajo.data.local.entity.InviteEntity
 import com.techducat.ajo.databinding.FragmentRoscaDetailBinding
 import com.techducat.ajo.service.RoscaManager
+import com.techducat.ajo.model.Member
 import com.techducat.ajo.ui.auth.LoginViewModel
 import com.techducat.ajo.ui.contributions.GroupContributionsActivity
 import com.techducat.ajo.ui.sync.QRCodeGenerator
+import com.techducat.ajo.ui.sync.ReferralScannerActivity
 import com.techducat.ajo.util.CurrencyFormatter
 import com.techducat.ajo.util.WalletSelectionManager
 import com.techducat.ajo.wallet.WalletSuite
@@ -41,6 +44,17 @@ import java.util.*
 import java.io.File
 import android.content.Context
 import com.techducat.ajo.R
+
+import com.techducat.ajo.sync.protocol.*
+import com.techducat.ajo.core.crypto.MessageSigner
+import com.techducat.ajo.core.crypto.KeyManagerImpl
+import com.techducat.ajo.core.network.NetworkTransport
+import com.techducat.ajo.core.network.I2PTransport
+import com.techducat.ajo.data.local.entity.PeerEntity
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
+import java.util.UUID
+
 
 class RoscaDetailFragment : Fragment() {
     
@@ -65,7 +79,16 @@ class RoscaDetailFragment : Fragment() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         loginViewModel.handleSignInResult(result.data)
-    }    
+    }
+    
+    private val json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+    }
+
+    private val transport: NetworkTransport by lazy {
+        I2PTransport(requireContext())
+    }        
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -454,27 +477,7 @@ class RoscaDetailFragment : Fragment() {
                 return
             }
             
-            // For now, hide payout button since we don't have Round tracking yet
-            // This will be enabled once Round entities are properly implemented
-            binding.layoutPayoutSection.visibility = View.GONE
-            binding.btnTriggerPayout.visibility = View.GONE
-            
-            // Show next payout calculation if active
-            if (rosca.status == RoscaEntity.STATUS_ACTIVE) {
-                val nextPayoutTimestamp = calculateNextPayout(rosca)
-                if (nextPayoutTimestamp != null) {
-                    binding.textViewNextPayout.text = getString(
-                        R.string.RoscaDetail_next_payout_formatdate_nextpayouttimestamp, 
-                        formatDate(nextPayoutTimestamp)
-                    )
-                    binding.textViewNextPayout.visibility = View.VISIBLE
-                } else {
-                    binding.textViewNextPayout.visibility = View.GONE
-                }
-            }
-            
-            /* 
-            // TODO: Enable this when Round DAO is implemented
+            // ✅ ROUND TRACKING ENABLED
             val round = withContext(Dispatchers.IO) {
                 database.roundDao().getRoundByNumber(roscaId!!, rosca.currentRound)
             }
@@ -506,17 +509,30 @@ class RoscaDetailFragment : Fragment() {
                     binding.textViewPayoutRecipient.visibility = View.GONE
                 }
             } else {
+                // No round found - show next payout calculation if active
+                if (rosca.status == RoscaEntity.STATUS_ACTIVE) {
+                    val nextPayoutTimestamp = calculateNextPayout(rosca)
+                    if (nextPayoutTimestamp != null) {
+                        binding.textViewNextPayout.text = getString(
+                            R.string.RoscaDetail_next_payout_formatdate_nextpayouttimestamp, 
+                            formatDate(nextPayoutTimestamp)
+                        )
+                        binding.textViewNextPayout.visibility = View.VISIBLE
+                    } else {
+                        binding.textViewNextPayout.visibility = View.GONE
+                    }
+                }
+                
                 binding.layoutPayoutSection.visibility = View.GONE
             }
-            */
             
         } catch (e: Exception) {
             Log.e(TAG, "Error updating round status", e)
             binding.textViewNextPayout.visibility = View.GONE
             binding.layoutPayoutSection.visibility = View.GONE
         }
-    }
-    
+    }    
+
     private fun triggerPayout() {
         val currentRosca = rosca
         
@@ -914,16 +930,458 @@ class RoscaDetailFragment : Fragment() {
     }
     
     private fun showAddMemberDialog() {
+        // Show confirmation dialog BEFORE launching scanner
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.RoscaDetail_invite_member))
-            .setMessage(getString(R.string.RoscaDetail_generate_invite_link_that))
-            .setPositiveButton(getString(R.string.RoscaDetail_generate_invite_link)) { _, _ ->
-                createInvite()
+            .setTitle(getString(R.string.RoscaDetail_join_rosca_confirm_title))
+            .setMessage(getString(R.string.RoscaDetail_join_rosca_confirm_message))
+            .setPositiveButton(getString(R.string.RoscaDetail_yes_scan_code)) { _, _ ->
+                // User confirmed, now launch the scanner
+                launchQRScanner()
             }
-            .setNegativeButton(getString(R.string.cancel), null)
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                Log.d(TAG, "User cancelled joining ROSCA")
+                dialog.dismiss()
+            }
+            .setCancelable(true)
             .show()
     }
+    
+    private fun handleScanResult(data: Intent) {
+        val referralCode = data.getStringExtra("referral_code") ?: return
+        val roscaId = data.getStringExtra("rosca_id") ?: return
+        val requiresSync = data.getBooleanExtra("requires_sync", false)
+        
+        Log.d(TAG, "QR scan successful")
+        Log.d(TAG, "  ROSCA ID: $roscaId")
+        Log.d(TAG, "  Requires sync: $requiresSync")
+        
+        if (requiresSync) {
+            // Invite not in local DB yet - need to sync from creator
+            val roscaName = data.getStringExtra("rosca_name") ?: "Unknown ROSCA"
+            val creatorNodeId = data.getStringExtra("creator_node_id")
+            val creatorEndpoint = data.getStringExtra("creator_endpoint")
+            
+            Log.d(TAG, "Invite not synced - will fetch from creator")
+            Log.d(TAG, "  ROSCA Name: $roscaName")
+            Log.d(TAG, "  Creator Node: $creatorNodeId")
+            
+            // TODO: Implement P2P sync to fetch invite
+            // For now, show message that sync is required
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.RoscaDetail_sync_required))
+                .setMessage(getString(
+                    R.string.RoscaDetail_invite_needs_sync,
+                    roscaName
+                ))
+                .setPositiveButton(getString(R.string.RoscaDetail_sync_now)) { _, _ ->
+                    // Trigger P2P sync to fetch invite
+                    syncInviteFromCreator(referralCode, roscaId, creatorNodeId, creatorEndpoint)
+                }
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show()
+        } else {
+            // Invite already in local DB - proceed with join
+            val inviteId = data.getStringExtra("invite_id") ?: return
+            Log.d(TAG, "Invite already synced, processing join")
+            processJoinRosca(referralCode, inviteId, roscaId)
+        }
+    }
+    
+    /**
+     * Sync invite from creator via P2P
+     */
+    private fun syncInviteFromCreator(
+        referralCode: String,
+        roscaId: String,
+        creatorNodeId: String?,
+        creatorEndpoint: String?
+    ) {
+        lifecycleScope.launch {
+            try {
+                showProgress(getString(R.string.RoscaDetail_syncing_invite))
+                
+                if (creatorNodeId.isNullOrEmpty() || creatorEndpoint.isNullOrEmpty()) {
+                    hideProgress()
+                    showError(getString(R.string.RoscaDetail_invalid_invite_data))
+                    return@launch
+                }
+                
+                Log.d(TAG, "Starting P2P sync for invite: $referralCode")
+                Log.d(TAG, "Creator node: $creatorNodeId, endpoint: $creatorEndpoint")
+                
+                // Step 1: Initialize transport if needed
+                withContext(Dispatchers.IO) {
+                    try {
+                        transport.initialize()
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Transport already initialized or failed", e)
+                    }
+                }
+                
+                // Step 2: Ensure creator is in peers table
+                val peer = withContext(Dispatchers.IO) {
+                    var existingPeer = database.peerDao().getPeerByNodeId(creatorNodeId)
+                    
+                    if (existingPeer == null) {
+                        // ✅ FIX #1: Extract public key from referral code payload (not root level)
+                        val codec = com.techducat.ajo.sync.ReferralCodec.parse(referralCode)
+                        val publicKey = codec?.payload?.creatorPublicKey ?: ""
+                        
+                        // ✅ FIX #2: Use correct PeerEntity constructor parameters
+                        val newPeer = PeerEntity(
+                            id = "peer_$creatorNodeId",
+                            nodeId = creatorNodeId,
+                            roscaId = roscaId,
+                            publicKey = publicKey,
+                            role = PeerEntity.ROLE_CREATOR,
+                            endpoint = creatorEndpoint,
+                            status = PeerEntity.STATUS_ACTIVE,
+                            addedAt = System.currentTimeMillis(),
+                            lastSeenAt = System.currentTimeMillis()
+                        )
+                        database.peerDao().insert(newPeer)
+                        existingPeer = newPeer
+                        Log.d(TAG, "Created peer entry for creator")
+                    }
+                    existingPeer
+                }
+                
+                // Step 3: Get local node info
+                val localNode = withContext(Dispatchers.IO) {
+                    KeyManagerImpl.getOrCreateLocalNode(requireContext())
+                }
+                
+                val privateKey = withContext(Dispatchers.IO) {
+                    KeyManagerImpl.getPrivateKey(requireContext())
+                }
+                
+                if (privateKey == null) {
+                    hideProgress()
+                    showError(getString(R.string.RoscaDetail_crypto_not_initialized))
+                    return@launch
+                }
+                
+                // Step 4: Build INVITE_REQUEST payload
+                val requestPayload = InviteRequestPayload(
+                    roscaId = roscaId,
+                    referralCode = referralCode,
+                    requestingNodeId = localNode.nodeId,
+                    timestamp = System.currentTimeMillis()
+                )
+                
+                val payloadJson = json.encodeToString(requestPayload)
+                
+                // Step 5: Create signed SyncMessage
+                val message = SyncMessage(
+                    protocolVersion = 1,
+                    messageId = UUID.randomUUID().toString(),
+                    senderNodeId = localNode.nodeId,
+                    recipientNodeId = creatorNodeId,
+                    timestamp = System.currentTimeMillis(),
+                    messageType = MessageType.INVITE_REQUEST,
+                    payload = payloadJson,
+                    signature = "" // Will be signed below
+                )
+                
+                val signature = MessageSigner.sign(message, privateKey)
+                val signedMessage = message.copy(signature = signature)
+                
+                val messageBytes = json.encodeToString(signedMessage).toByteArray()
+                
+                Log.d(TAG, "Sending INVITE_REQUEST to creator")
+                
+                // ✅ FIX #3: Swap parameter order - send(destination, data) not send(data, destination)
+                withContext(Dispatchers.IO) {
+                    transport.send(creatorEndpoint, messageBytes)
+                }
+                
+                // Step 7: Wait for response (poll database)
+                val invite = withContext(Dispatchers.IO) {
+                    var attempts = 0
+                    val maxAttempts = 30 // 30 seconds max wait
+                    
+                    while (attempts < maxAttempts) {
+                        delay(1000) // Check every second
+                        
+                        val foundInvite = database.inviteDao().getInviteByReferralCode(referralCode)
+                        if (foundInvite != null) {
+                            Log.d(TAG, "Invite received via P2P sync!")
+                            return@withContext foundInvite
+                        }
+                        
+                        attempts++
+                        
+                        if (attempts % 5 == 0) {
+                            Log.d(TAG, "Still waiting for invite... ($attempts/$maxAttempts)")
+                        }
+                    }
+                    
+                    null
+                }
+                
+                hideProgress()
+                
+                if (invite != null) {
+                    // Success! Now process the join
+                    Log.d(TAG, "P2P sync successful, proceeding to join")
+                    processJoinRosca(referralCode, invite.referralCode, roscaId)
+                } else {
+                    showError(getString(R.string.RoscaDetail_sync_timeout))
+                    Log.w(TAG, "P2P sync timed out after 30 seconds")
+                }
+                
+            } catch (e: Exception) {
+                hideProgress()
+                Log.e(TAG, "Failed to sync invite via P2P", e)
+                showError(getString(R.string.RoscaDetail_sync_failed, e.message ?: getString(R.string.RoscaDetail_unknown_error)))
+            }
+        }
+    }
 
+    /**
+     * Share referral code via system share
+     */
+    private fun shareReferralCode(referralCode: String) {
+        val shareText = buildString {
+            rosca?.let { r ->
+                append(getString(R.string.ShareText_join_rosca, r.name))
+                append(getString(R.string.ShareText_contribution_label, formatXMR(r.contributionAmount)))
+                append(getString(R.string.ShareText_frequency_label, r.frequencyDays))
+            }
+            append(getString(R.string.ShareText_scan_instruction))
+            append(getString(R.string.ShareText_invite_code, referralCode))
+        }
+        
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareText)
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.ShareText_join_subject))
+        }
+        startActivity(Intent.createChooser(intent, getString(R.string.QRShare_share_title)))
+    }
+    
+    /**
+     * Show QR code in dialog for sharing
+     */
+    private fun showQRCodeDialog(qrBitmap: android.graphics.Bitmap, referralCode: String) {
+        val imageView = ImageView(requireContext()).apply {
+            setImageBitmap(qrBitmap)
+            setPadding(32, 32, 32, 32)
+        }
+        
+        val textView = TextView(requireContext()).apply {
+            text = getString(R.string.QRShare_scan_instruction)
+            textSize = 16f
+            gravity = android.view.Gravity.CENTER
+            setPadding(16, 16, 16, 16)
+        }
+        
+        val codeView = TextView(requireContext()).apply {
+            text = referralCode
+            textSize = 10f
+            gravity = android.view.Gravity.CENTER
+            setPadding(16, 0, 16, 16)
+            setTextIsSelectable(true)
+        }
+        
+        val layout = LinearLayout(requireContext()).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(textView)
+            addView(imageView)
+            addView(codeView)
+        }
+        
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.QRShare_invite_via_qr))
+            .setView(layout)
+            .setPositiveButton(getString(R.string.QRShare_share)) { _, _ ->
+                shareReferralCode(referralCode)
+            }
+            .setNegativeButton(getString(R.string.QRShare_close), null)
+            .show()
+    }
+    
+    /**
+     * Create invite with full ReferralCodec payload for QR code
+     * This ensures invitees can join even before sync
+     */
+    private fun createInviteWithFullPayload(roscaEntity: RoscaEntity) {
+        lifecycleScope.launch {
+            try {
+                showProgress(getString(R.string.RoscaDetail_creating_invite))
+                
+                val userId = getUserId()
+                if (userId.isNullOrEmpty()) {
+                    hideProgress()
+                    showError(getString(R.string.RoscaDetail_not_logged_in))
+                    return@launch
+                }
+                
+                // Get local node and key
+                val localNode = withContext(Dispatchers.IO) {
+                    KeyManagerImpl.getOrCreateLocalNode(requireContext())
+                }
+                
+                val privateKey = withContext(Dispatchers.IO) {
+                    KeyManagerImpl.getPrivateKey(requireContext())
+                }
+                
+                if (privateKey == null) {
+                    hideProgress()
+                    showError(getString(R.string.RoscaDetail_crypto_not_initialized))
+                    return@launch
+                }
+                
+                // ✅ FIX #4: Remove currency parameter - RoscaEntity doesn't have it
+                // Generate referral code with full payload
+                val referralCode = com.techducat.ajo.sync.ReferralCodec.create(
+                    roscaId = roscaEntity.id,
+                    roscaName = roscaEntity.name,
+                    creatorNodeId = localNode.nodeId,
+                    creatorPublicKey = localNode.publicKey,
+                    creatorEndpoint = "mock://localhost", // Replace with actual endpoint
+                    contributionAmount = roscaEntity.contributionAmount.toDouble(),
+                    currency = "XMR", // Hardcoded - app only supports Monero
+                    frequency = roscaEntity.contributionFrequency,
+                    maxMembers = roscaEntity.totalMembers,
+                    currentMembers = roscaEntity.currentMembers,
+                    privateKey = privateKey
+                )
+                
+                // ✅ FIX #5: Use correct InviteEntity constructor
+                // Store invite in database
+                val invite = InviteEntity(
+                    id = UUID.randomUUID().toString(),
+                    referralCode = referralCode,
+                    roscaId = roscaEntity.id,
+                    inviterUserId = userId,
+                    inviteeEmail = "", // Empty for link invites
+                    status = InviteEntity.STATUS_PENDING,
+                    createdAt = System.currentTimeMillis(),
+                    expiresAt = System.currentTimeMillis() + (30L * 24 * 60 * 60 * 1000) // 30 days
+                )
+                
+                withContext(Dispatchers.IO) {
+                    database.inviteDao().insertInvite(invite)
+                }
+                
+                // Generate QR code
+                val qrBitmap = withContext(Dispatchers.IO) {
+                    QRCodeGenerator.generate(referralCode)
+                }
+                
+                hideProgress()
+                
+                // Show QR code dialog or navigate to share screen
+                showQRCodeDialog(qrBitmap, referralCode)
+                
+                Log.d(TAG, "Invite created successfully with full payload")
+                
+            } catch (e: Exception) {
+                hideProgress()
+                Log.e(TAG, "Failed to create invite", e)
+                showError(getString(R.string.RoscaDetail_failed_create_invite, e.message ?: getString(R.string.RoscaDetail_unknown_error)))
+            }
+        }
+    }    
+
+    private fun processJoinRosca(referralCode: String, inviteId: String, targetRoscaId: String) {
+        lifecycleScope.launch {
+            try {
+                showProgress(getString(R.string.RoscaDetail_joining_rosca))
+                
+                val userId = getUserId()
+                if (userId.isNullOrEmpty()) {
+                    hideProgress()
+                    showError(getString(R.string.RoscaDetail_not_logged_in))
+                    return@launch
+                }
+                
+                // Call RoscaManager.joinRosca()
+                // Note: setupInfo parameter is not used in the current implementation,
+                // so we can pass an empty string or the referralCode
+                val result: Result<com.techducat.ajo.model.Member> = withContext(Dispatchers.IO) {
+                    roscaManager.joinRosca(
+                        roscaId = targetRoscaId,
+                        setupInfo = referralCode,  // Pass referral code as setupInfo
+                        context = requireContext()
+                    )
+                }
+                
+                hideProgress()
+                
+                if (result.isSuccess) {
+                    // Mark the invite as accepted
+                    try {
+                        withContext(Dispatchers.IO) {
+                            val invite = database.inviteDao().getInvite(inviteId)
+                            if (invite != null) {
+                                val acceptedInvite = invite.copy(
+                                    status = com.techducat.ajo.data.local.entity.InviteEntity.STATUS_ACCEPTED,
+                                    acceptedAt = System.currentTimeMillis(),
+                                    acceptedByUserId = userId
+                                )
+                                database.inviteDao().updateInvite(acceptedInvite)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Failed to update invite status", e)
+                        // Don't fail the whole operation if invite update fails
+                    }
+                    
+                    showSuccess(getString(R.string.RoscaDetail_join_success_message))
+                    
+                    // Reload details if we're viewing the same ROSCA
+                    if (targetRoscaId == roscaId) {
+                        loadRoscaDetails()
+                        rosca?.let { checkAndActivateRosca(it) }
+                    } else {
+                        // Navigate to the newly joined ROSCA
+                        try {
+                            val bundle = Bundle().apply {
+                                putString("rosca_id", targetRoscaId)
+                            }
+                            findNavController().navigate(R.id.roscaDetailFragment, bundle)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Navigation failed", e)
+                            // If navigation fails, at least reload current view
+                            loadRoscaDetails()
+                        }
+                    }
+                } else {
+                    val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                    showError(getString(R.string.RoscaDetail_failed_join_rosca, error))
+                }
+                
+            } catch (e: Exception) {
+                hideProgress()
+                Log.e(TAG, "Error joining ROSCA", e)
+                showError(getString(R.string.RoscaDetail_error_joining_rosca, e.message ?: "Unknown"))
+            }
+        }
+    }        
+    
+    private fun launchQRScanner() {
+        Log.d(TAG, "User confirmed, launching QR scanner...")
+        val intent = Intent(requireContext(), ReferralScannerActivity::class.java)
+        
+        // Use existing activity result launcher (or create one if you don't have it)
+        scanInviteLauncher.launch(intent)
+    }
+
+    // Add this activity result launcher at class level if you don't have one:
+    private val scanInviteLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let { data ->
+                handleScanResult(data)
+            }
+        } else {
+            Log.d(TAG, "QR scan cancelled or failed")
+        }
+    }    
+    
     private fun createInvite() {
         lifecycleScope.launch {
             try {

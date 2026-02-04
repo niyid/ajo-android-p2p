@@ -281,6 +281,7 @@
     <string name="QRShare_share_qr_image">Share QR Image</string>
     <string name="QRShare_share_title">Share QR Code</string>
     <string name="QRShare_view_full_screen">View Full Screen</string>
+    <string name="ReferralScanner_already_used">This invite has already been used or expired</string>
     <string name="ReferralScanner_btn_manual">Enter Code Manually</string>
     <string name="ReferralScanner_btn_scan">Scan QR Code</string>
     <string name="ReferralScanner_camera_permission_required">Camera permission is required to scan QR codes</string>
@@ -294,6 +295,7 @@
     <string name="ReferralScanner_join">Join</string>
     <string name="ReferralScanner_manual_hint">Paste referral code here</string>
     <string name="ReferralScanner_manual_title">Enter Referral Code</string>
+    <string name="ReferralScanner_not_found">Invite not found</string>
     <string name="ReferralScanner_scanner_failed">Failed to start scanner: %s</string>
     <string name="ReferralScanner_success_format">Successfully joined %s!</string>
     <string name="ReferralScanner_tag" translatable="false">ReferralScannerActivity</string>
@@ -312,10 +314,12 @@
     <string name="RoscaDetail_copy_link">Copy Link</string>
     <string name="RoscaDetail_created_formatdate_rosca_createdat">Created: %s</string>
     <string name="RoscaDetail_creating_invite">Creating invite...</string>
+    <string name="RoscaDetail_crypto_not_initialized">Cryptography system not initialized</string>
     <string name="RoscaDetail_description">No description</string>
     <string name="RoscaDetail_dismiss">Dismiss</string>
     <string name="RoscaDetail_error_checking_activation">Error checking activation: %s</string>
     <string name="RoscaDetail_error_checking_balance">Error checking balance: %s</string>
+    <string name="RoscaDetail_error_joining_rosca">Error joining group: %1$s</string>
     <string name="RoscaDetail_error_triggering_payout">Error triggering payout: %1$s</string>
     <string name="RoscaDetail_every_rosca_frequencydays_days">Every %d days</string>
     <string name="RoscaDetail_expecting_members">Expecting members...</string>
@@ -323,6 +327,7 @@
     <string name="RoscaDetail_failed_check_balance">Failed to check balance: %s</string>
     <string name="RoscaDetail_failed_create_invite">Failed to create invite: %s</string>
     <string name="RoscaDetail_failed_generate_code">Failed to generate unique invite code</string>
+    <string name="RoscaDetail_failed_join_rosca">Failed to join group: %1$s</string>
     <string name="RoscaDetail_failed_load_details">Failed to load details: %s</string>
     <string name="RoscaDetail_failed_load_members">Failed to load members: %s</string>
     <string name="RoscaDetail_failed_process_invitation">Failed to process invitation: %s</string>
@@ -334,6 +339,7 @@
     <string name="RoscaDetail_initiate_payout_confirm">Payout payout initiated; please confirm.</string>
     <string name="RoscaDetail_initiating_payout">Initiating payout...</string>
     <string name="RoscaDetail_invalid_invite_code">Invalid invite code. Please check the link and try again.</string>
+    <string name="RoscaDetail_invalid_invite_data">Invalid invite data - missing creator information</string>
     <string name="RoscaDetail_invalid_rosca">Invalid ROSCA</string>
     <string name="RoscaDetail_invite">Invite</string>
     <string name="RoscaDetail_invite_already_used">This invite has already been used.</string>
@@ -341,10 +347,16 @@
     <string name="RoscaDetail_invite_link_message">Your invite link is ready!\n\nInvite Code: %s\n\nShare this link via WhatsApp, email, SMS, or any messaging app.\n\nThe link expires in 30 days.</string>
     <string name="RoscaDetail_invite_link_ready">Invite Link Ready</string>
     <string name="RoscaDetail_invite_member">Invite Member</string>
+    <string name="RoscaDetail_invite_needs_sync">This invite needs to be synced from the creator before you can join %1$s</string>
     <string name="RoscaDetail_invite_qr_message">Your invite QR code is ready!\n\nInvite Code: %1$s\n\nChoose how to share the QR code:</string>
     <string name="RoscaDetail_invite_qr_ready">Invite QR Code Ready</string>
+    <string name="RoscaDetail_invite_synced">Invite synced successfully</string>
+    <string name="RoscaDetail_join_rosca_confirm_message">You are about to scan a QR code to join a savings group. Do you want to proceed?</string>
+    <string name="RoscaDetail_join_rosca_confirm_title">Join a Savings Group?</string>
+    <string name="RoscaDetail_join_success_message">Successfully joined the group!</string>
     <string name="RoscaDetail_joined">Joined: %s</string>
     <string name="RoscaDetail_joined_date">Joined: %s</string>
+    <string name="RoscaDetail_joining_rosca">Joining group...</string>
     <string name="RoscaDetail_link_copied_clipboard">Invite link copied to clipboard</string>
     <string name="RoscaDetail_link_copied_clipboard_fallback">Invite link copied to clipboard: %s</string>
     <string name="RoscaDetail_make_contribution">Contribute</string>
@@ -353,10 +365,13 @@
     <string name="RoscaDetail_member_position">Member #%d</string>
     <string name="RoscaDetail_members_joined_progress">%1$d/%2$d members joined</string>
     <string name="RoscaDetail_members_size_members">%d members</string>
+    <string name="RoscaDetail_missing_creator_info">Missing creator information</string>
     <string name="RoscaDetail_name">Name: %s</string>
     <string name="RoscaDetail_next_payout_formatdate_nextpayouttimestamp">Next payout: %s</string>
+    <string name="RoscaDetail_no_private_key">Private key not available</string>
     <string name="RoscaDetail_not_logged_in">Not logged in</string>
     <string name="RoscaDetail_not_setup">Not setup...</string>
+    <string name="RoscaDetail_p2p_sync_not_implemented">P2P sync not implemented</string>
     <string name="RoscaDetail_payout_error">Error triggering payout: %1$s</string>
     <string name="RoscaDetail_payout_failed">Payout failed: %1$s</string>
     <string name="RoscaDetail_payout_initiated">Payout initiated! Collecting signatures from members...</string>
@@ -370,6 +385,7 @@
     <string name="RoscaDetail_ready_for_payout">Ready for payout</string>
     <string name="RoscaDetail_rosca_data_not_loaded">ROSCA data not loaded</string>
     <string name="RoscaDetail_rosca_not_active">ROSCA is not active</string>
+    <string name="RoscaDetail_rosca_not_loaded">ROSCA data not loaded</string>
     <string name="RoscaDetail_rosca_now_active">🎉 ROSCA is now ACTIVE! All members have joined.</string>
     <string name="RoscaDetail_rosca_totalmembers">of %d</string>
     <string name="RoscaDetail_round_rosca_currentround">Round %d</string>
@@ -391,6 +407,11 @@
     <string name="RoscaDetail_share_via">Share Invite Via</string>
     <string name="RoscaDetail_signature_collection_msg">Payout transaction created. Collecting %1$d of %2$d signatures from members. The transaction will be broadcast once enough signatures are collected.</string>
     <string name="RoscaDetail_status">Status: %s</string>
+    <string name="RoscaDetail_sync_failed">Sync failed: %1$s</string>
+    <string name="RoscaDetail_sync_now">Sync Now</string>
+    <string name="RoscaDetail_sync_required">Sync Required</string>
+    <string name="RoscaDetail_sync_timeout">Sync timed out. Please try again.</string>
+    <string name="RoscaDetail_syncing_invite">Syncing invite from creator…</string>
     <string name="RoscaDetail_total_contributed">Total contributed: %s</string>
     <string name="RoscaDetail_transaction_failed">Transaction failed: %s</string>
     <string name="RoscaDetail_trigger_payout">Trigger Payout</string>
@@ -399,6 +420,7 @@
     <string name="RoscaDetail_unknown_error">Unknown error</string>
     <string name="RoscaDetail_waiting_multisig_info">Waiting for multisig info</string>
     <string name="RoscaDetail_welcome_back_member">Welcome back! You\'re already a member of %s</string>
+    <string name="RoscaDetail_yes_scan_code">Yes, Scan Code</string>
     <string name="RoscaDetail_you_need_requiredxmr_but">You need %1$s but only have %2$s available.\n\nPlease add funds to your wallet.</string>
     <string name="RoscaList_rosca_contributionamount_xmr">%s XMR</string>
     <string name="RoscaList_rosca_currentmembers_rosca_totalmembers">%1$d/%2$d members • %3$s</string>

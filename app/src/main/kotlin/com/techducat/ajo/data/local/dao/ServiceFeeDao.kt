@@ -32,4 +32,9 @@ interface ServiceFeeDao {
     
     @Update
     suspend fun update(fee: ServiceFeeEntity)
+    
+    // Delete Operations
+    @Delete
+    suspend fun delete(penalty: ServiceFeeEntity)
+    
 }

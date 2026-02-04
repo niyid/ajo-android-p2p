@@ -171,68 +171,210 @@ class ReferralScannerActivity : AppCompatActivity() {
         }
     }
 
-    private fun processReferralCode(code: String) {
+    private fun processReferralCode(scannedCode: String) {
         Log.d(TAG, "=== Processing Referral Code ===")
-        Log.d(TAG, "Code length: ${code.length}")
-        Log.d(TAG, "Code preview: ${code.take(20)}...")
+        Log.d(TAG, "Scanned code length: ${scannedCode.length}")
+        Log.d(TAG, "Scanned code preview: ${scannedCode.take(50)}...")
         
         lifecycleScope.launch {
             try {
-                // Step 1: Parse code
-                Log.d(TAG, "Step 1: Parsing referral code...")
-                val referral = ReferralCodec.parse(code)
-                if (referral == null) {
-                    Log.w(TAG, "✗ Failed to parse referral code - invalid format")
+                // ════════════════════════════════════════════════════════
+                // STEP 1: PARSE DEEP LINK OR QR CODE
+                // ════════════════════════════════════════════════════════
+                
+                Log.d(TAG, "Step 1: Parsing scanned code...")
+                
+                val referralCode: String
+                val roscaIdFromLink: String?
+                
+                // Try parsing as deep link first
+                if (scannedCode.startsWith("ajo://") || scannedCode.startsWith("http")) {
+                    // Parse as deep link: ajo://join?code=ABC12345&rosca=rosca_123
+                    val uri = android.net.Uri.parse(scannedCode)
+                    referralCode = uri.getQueryParameter("code") 
+                        ?: run {
+                            Log.e(TAG, "✗ Deep link missing 'code' parameter")
+                            Toast.makeText(
+                                this@ReferralScannerActivity,
+                                getString(R.string.ReferralScanner_invalid_code),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@launch
+                        }
+                    roscaIdFromLink = uri.getQueryParameter("rosca")
+                    Log.d(TAG, "✓ Parsed deep link")
+                    Log.d(TAG, "  Referral code: $referralCode")
+                    Log.d(TAG, "  ROSCA ID: ${roscaIdFromLink ?: "not specified"}")
+                } else {
+                    // Could be either:
+                    // 1. Simple referral code: "ABC12345"
+                    // 2. Base64-encoded ReferralCode with full ROSCA info
+                    referralCode = scannedCode.trim()
+                    roscaIdFromLink = null
+                    Log.d(TAG, "Processing as referral code or encoded payload")
+                }
+                
+                if (referralCode.isBlank()) {
+                    Log.e(TAG, "✗ Referral code is empty")
                     Toast.makeText(
-                        this@ReferralScannerActivity, 
-                        getString(R.string.ReferralScanner_invalid_code), 
+                        this@ReferralScannerActivity,
+                        getString(R.string.ReferralScanner_invalid_code),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@launch
                 }
-                Log.d(TAG, "✓ Code parsed successfully")
                 
-                // Step 2: Verify signature
-                Log.d(TAG, "Step 2: Verifying signature...")
-                if (!ReferralCodec.verify(referral)) {
-                    Log.w(TAG, "✗ Signature verification failed")
+                // ════════════════════════════════════════════════════════
+                // STEP 2: CHECK IF IT'S A FULL REFERRAL PAYLOAD (P2P SYNC)
+                // ════════════════════════════════════════════════════════
+                
+                Log.d(TAG, "Step 2: Attempting to parse as ReferralCodec payload...")
+                
+                val parsedReferralCode = ReferralCodec.parse(referralCode)
+                
+                if (parsedReferralCode != null) {
+                    // ════════════════════════════════════════════════════
+                    // PATH A: FULL REFERRAL CODE WITH ROSCA INFO
+                    // ════════════════════════════════════════════════════
+                    
+                    Log.d(TAG, "✓ Parsed as ReferralCodec payload")
+                    Log.d(TAG, "  ROSCA ID: ${parsedReferralCode.payload.roscaId}")
+                    Log.d(TAG, "  ROSCA Name: ${parsedReferralCode.payload.roscaName}")
+                    
+                    // Verify signature
+                    Log.d(TAG, "Step 2a: Verifying signature...")
+                    if (!ReferralCodec.verify(parsedReferralCode)) {
+                        Log.w(TAG, "✗ Signature verification failed")
+                        Toast.makeText(
+                            this@ReferralScannerActivity,
+                            getString(R.string.ReferralScanner_invalid_signature),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@launch
+                    }
+                    Log.d(TAG, "✓ Signature verified")
+                    
+                    // Check expiry
+                    Log.d(TAG, "Step 2b: Checking expiry...")
+                    if (!ReferralCodec.isValid(parsedReferralCode)) {
+                        Log.w(TAG, "✗ Code has expired")
+                        Toast.makeText(
+                            this@ReferralScannerActivity,
+                            getString(R.string.ReferralScanner_code_expired),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@launch
+                    }
+                    Log.d(TAG, "✓ Code is valid and not expired")
+                    
+                    // Extract ROSCA info from payload
+                    val roscaId = parsedReferralCode.payload.roscaId
+                    val roscaName = parsedReferralCode.payload.roscaName
+                    
+                    // Check if invite exists in local database
+                    Log.d(TAG, "Step 2c: Checking if invite already synced to local DB...")
+                    
+                    // Try to find any pending invite for this ROSCA
+                    val allInvites = db.inviteDao().getAllInvites()
+                    val invite = allInvites.firstOrNull { 
+                        it.roscaId == roscaId && it.status == InviteEntity.STATUS_PENDING 
+                    }
+                    
+                    if (invite != null) {
+                        // Invite already synced - use it
+                        Log.d(TAG, "✓ Invite found in local database")
+                        Log.d(TAG, "  Invite ID: ${invite.id}")
+                        
+                        returnResult(invite.referralCode, invite.id, invite.roscaId)
+                        return@launch
+                    }
+                    
+                    // Invite not synced yet - return ROSCA info so app can handle joining
+                    Log.d(TAG, "⚠️ Invite not yet synced to local database")
+                    Log.d(TAG, "Returning ROSCA info from QR code payload")
+                    
+                    val resultIntent = android.content.Intent().apply {
+                        putExtra("referral_code", referralCode)  // Full encoded payload
+                        putExtra("rosca_id", roscaId)
+                        putExtra("rosca_name", roscaName)
+                        putExtra("creator_node_id", parsedReferralCode.payload.creatorNodeId)
+                        putExtra("creator_endpoint", parsedReferralCode.payload.creatorEndpoint)
+                        putExtra("contribution_amount", parsedReferralCode.payload.contributionAmount)
+                        putExtra("currency", parsedReferralCode.payload.currency)
+                        putExtra("max_members", parsedReferralCode.payload.maxMembers)
+                        putExtra("current_members", parsedReferralCode.payload.currentMembers)
+                        putExtra("requires_sync", true)  // Flag that invite needs to be fetched
+                    }
+                    
                     Toast.makeText(
-                        this@ReferralScannerActivity, 
-                        getString(R.string.ReferralScanner_invalid_signature), 
+                        this@ReferralScannerActivity,
+                        getString(R.string.ReferralScanner_code_verified),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    
+                    Log.d(TAG, "✓ Returning ROSCA info (invite will be synced on join)")
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                    return@launch
+                }
+                
+                // ════════════════════════════════════════════════════════
+                // PATH B: SIMPLE REFERRAL CODE (INVITE ALREADY SYNCED)
+                // ════════════════════════════════════════════════════════
+                
+                Log.d(TAG, "Not a ReferralCodec payload - treating as simple referral code")
+                Log.d(TAG, "Step 3: Looking up invite in local database...")
+                Log.d(TAG, "  Searching for referral code: $referralCode")
+                
+                val invite = db.inviteDao().getInviteByReferralCode(referralCode)
+                
+                if (invite == null) {
+                    Log.w(TAG, "✗ Invite not found in database")
+                    Log.w(TAG, "  This could mean:")
+                    Log.w(TAG, "  1. Invalid referral code")
+                    Log.w(TAG, "  2. Invite hasn't synced yet")
+                    Log.w(TAG, "  3. Full QR code (with ROSCA info) should be used instead")
+                    Toast.makeText(
+                        this@ReferralScannerActivity,
+                        getString(R.string.ReferralScanner_not_found),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@launch
                 }
-                Log.d(TAG, "✓ Signature verified")
                 
-                // Step 3: Check expiry
-                Log.d(TAG, "Step 3: Checking code validity/expiry...")
-                if (!ReferralCodec.isValid(referral)) {
-                    Log.w(TAG, "✗ Code has expired or is invalid")
+                Log.d(TAG, "✓ Invite found in database")
+                Log.d(TAG, "  Invite ID: ${invite.id}")
+                Log.d(TAG, "  ROSCA ID: ${invite.roscaId}")
+                Log.d(TAG, "  Status: ${invite.status}")
+                
+                // Validate ROSCA ID matches if provided in deep link
+                if (roscaIdFromLink != null && roscaIdFromLink != invite.roscaId) {
+                    Log.w(TAG, "✗ ROSCA ID mismatch")
+                    Log.w(TAG, "  Expected: $roscaIdFromLink")
+                    Log.w(TAG, "  Got: ${invite.roscaId}")
                     Toast.makeText(
-                        this@ReferralScannerActivity, 
-                        getString(R.string.ReferralScanner_code_expired), 
+                        this@ReferralScannerActivity,
+                        getString(R.string.ReferralScanner_invalid_code),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@launch
                 }
-                Log.d(TAG, "✓ Code is valid and not expired")
                 
-                // Step 4: Return code to calling activity
-                Log.d(TAG, "Step 4: Returning verified code to caller...")
-                val resultIntent = android.content.Intent().apply {
-                    putExtra("referral_code", code)
+                // Check invite status
+                Log.d(TAG, "Step 4: Checking invite status...")
+                if (invite.status != InviteEntity.STATUS_PENDING) {
+                    Log.w(TAG, "✗ Invite is not pending (status: ${invite.status})")
+                    Toast.makeText(
+                        this@ReferralScannerActivity,
+                        getString(R.string.ReferralScanner_already_used),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@launch
                 }
+                Log.d(TAG, "✓ Invite is pending and can be accepted")
                 
-                Toast.makeText(
-                    this@ReferralScannerActivity,
-                    getString(R.string.ReferralScanner_code_verified),
-                    Toast.LENGTH_SHORT
-                ).show()
-                
-                Log.d(TAG, "✓ Code verification complete - returning to DashboardFragment")
-                setResult(RESULT_OK, resultIntent)
-                finish()
+                // Return result
+                returnResult(referralCode, invite.id, invite.roscaId)
                 
             } catch (e: Exception) {
                 Log.e(TAG, "✗ Error processing referral code", e)
@@ -240,13 +382,35 @@ class ReferralScannerActivity : AppCompatActivity() {
                 Log.e(TAG, "  Error message: ${e.message}")
                 
                 Toast.makeText(
-                    this@ReferralScannerActivity, 
-                    getString(R.string.ReferralScanner_error_format, e.message), 
+                    this@ReferralScannerActivity,
+                    getString(R.string.ReferralScanner_error_format, e.message),
                     Toast.LENGTH_LONG
                 ).show()
                 e.printStackTrace()
             }
         }
+    }
+    
+    /**
+     * Helper function to return successful scan result
+     */
+    private fun returnResult(referralCode: String, inviteId: String, roscaId: String) {
+        val resultIntent = android.content.Intent().apply {
+            putExtra("referral_code", referralCode)
+            putExtra("invite_id", inviteId)
+            putExtra("rosca_id", roscaId)
+            putExtra("requires_sync", false)  // Invite already in local DB
+        }
+        
+        Toast.makeText(
+            this@ReferralScannerActivity,
+            getString(R.string.ReferralScanner_code_verified),
+            Toast.LENGTH_SHORT
+        ).show()
+        
+        Log.d(TAG, "✓ Code verification complete - returning to caller")
+        setResult(RESULT_OK, resultIntent)
+        finish()
     }
     
     override fun onDestroy() {

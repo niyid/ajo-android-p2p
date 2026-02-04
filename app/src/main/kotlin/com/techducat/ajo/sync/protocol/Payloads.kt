@@ -31,6 +31,54 @@ data class MembershipResponsePayload(
 )
 
 /**
+ * INVITE_REQUEST payload
+ * Sent by invitee to request invite details from creator
+ */
+@Serializable
+data class InviteRequestPayload(
+    val roscaId: String,
+    val referralCode: String,
+    val requestingNodeId: String,
+    val timestamp: Long
+)
+
+/**
+ * INVITE_RESPONSE payload
+ * Sent by creator in response to INVITE_REQUEST
+ */
+@Serializable
+data class InviteResponsePayload(
+    val roscaId: String,
+    val referralCode: String,
+    val inviteData: InviteData?,
+    val success: Boolean,
+    val errorMessage: String? = null
+)
+
+/**
+ * Complete invite data
+ */
+@Serializable
+data class InviteData(
+    val roscaId: String,
+    val roscaName: String,
+    val referralCode: String,
+    val inviterUserId: String,
+    val inviterNodeId: String,
+    val inviterPublicKey: String,
+    val creatorEndpoint: String,
+    val contributionAmount: Double,
+    val currency: String,
+    val frequency: String,
+    val maxMembers: Int,
+    val currentMembers: Int,
+    val expiresAt: Long,
+    val createdAt: Long,
+    val status: String,
+    val signature: String
+)
+
+/**
  * Complete ROSCA state snapshot
  */
 @Serializable

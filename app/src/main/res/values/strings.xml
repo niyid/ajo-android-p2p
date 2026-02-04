@@ -791,6 +791,9 @@
     <!-- ReferralScannerActivity - Additional Strings (2 new strings) -->
     <string name="ReferralScanner_camera_permission_required">Camera permission is required to scan QR codes</string>
     <string name="ReferralScanner_scanner_failed">Failed to start scanner: %s</string>
+    <string name="ReferralScanner_not_found">Invite not found</string>
+    <string name="ReferralScanner_already_used">This invite has already been used or expired</string>
+    
 
     <!-- QR Code Sharing for RoscaDetailFragment (22 new strings) -->
     <string name="QRShare_invite_via_qr">Invite via QR Code</string>
@@ -829,6 +832,33 @@
     <string name="ShareText_frequency_label">Frequency: Every %d days\n\n</string>
     <string name="ShareText_scan_instruction">Scan the QR code to join!\n</string>
     <string name="ShareText_invite_code">Invite Code: %s</string>
-    <string name="ShareText_join_subject">Join my ROSCA</string>        
+    <string name="ShareText_join_subject">Join my ROSCA</string>
+    
+    <string name="RoscaDetail_join_rosca_confirm_title">Join a Savings Group?</string>
+    <string name="RoscaDetail_join_rosca_confirm_message">You are about to scan a QR code to join a savings group. Do you want to proceed?</string>
+    <string name="RoscaDetail_yes_scan_code">Yes, Scan Code</string>
+    
+    <!-- Join Process Messages -->
+    <string name="RoscaDetail_joining_rosca">Joining group...</string>
+    <string name="RoscaDetail_join_success_message">Successfully joined the group!</string>
+    <string name="RoscaDetail_failed_join_rosca">Failed to join group: %1$s</string>
+    <string name="RoscaDetail_error_joining_rosca">Error joining group: %1$s</string>
+
+    <string name="RoscaDetail_syncing_invite">Syncing invite from creator…</string>
+    <string name="RoscaDetail_missing_creator_info">Missing creator information</string>
+    <string name="RoscaDetail_no_private_key">Private key not available</string>
+    <string name="RoscaDetail_invite_synced">Invite synced successfully</string>
+    <string name="RoscaDetail_sync_timeout">Sync timed out. Please try again.</string>
+    <string name="RoscaDetail_sync_failed">Sync failed: %1$s</string>
+    <string name="RoscaDetail_p2p_sync_not_implemented">P2P sync not implemented</string>
+    <string name="RoscaDetail_rosca_not_loaded">ROSCA data not loaded</string>
+    
+    <!-- Sync Dialog -->
+    <string name="RoscaDetail_sync_required">Sync Required</string>
+    <string name="RoscaDetail_invite_needs_sync">This invite needs to be synced from the creator before you can join %1$s</string>
+    <string name="RoscaDetail_sync_now">Sync Now</string>
+    
+    <string name="RoscaDetail_invalid_invite_data">Invalid invite data - missing creator information</string>
+    <string name="RoscaDetail_crypto_not_initialized">Cryptography system not initialized</string>
     
 </resources>
